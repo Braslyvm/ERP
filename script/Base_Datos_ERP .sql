@@ -83,17 +83,79 @@ create table usuarios.plantilla (
 		departamento varchar (180) not null,
 		foreign key (cedula) references usuarios.empleados (cedula),
 		foreign key (departamento) references usuarios.departamento (id_departamento),
- );
-
+);
  --
 
 --modulo gestion_inventario
+create table gestion_inventario.familia_articulos (
+    codigo varchar(180) not null,
+    nombre varchar(180) not null,
+    descripcion varchar(200) not null,
+	activo bit not null,
+	primary key (codigo)
+);
+
+create table gestion_inventario.articulos (
+    c_articulo varchar(180) not null,
+    nombre varchar(180) not null,
+    activo bit not null,
+    descripcion varchar(255)not null,
+    c_familia varchar(180) not null,
+    peso int, 
+    costo int,
+    precio int,
+	primary key (c_articulo),
+    foreign key (c_familia) references gestion_inventario.familia_articulos(codigo)
+);
+
+create table gestion_inventario.bodegas (
+    c_bodega varchar(180),
+    nombre varchar(180) not null,
+    ubicacion varchar(255) not null,
+    c_toneladas int not null, 
+    e_cubico int not null,
+	primary key (c_bodega)
+);
+
+create table gestion_inventario.bodegas_familias (
+    c_bodega varchar(180) not null,
+    codigo varchar(180) not null,
+    foreign key (c_bodega) references gestion_inventario.bodegas (c_bodega),
+    foreign key (codigo) references gestion_inventario.familia_articulos(codigo)
+);
+create table gestion_inventario.inventario (
+    c_bodega varchar(180) not null,
+    c_articulo varchar(180) not null,
+    cantidad int not null,
+    foreign key (c_bodega) references gestion_inventario.bodegas(c_bodega),
+    foreign key (c_articulo) references gestion_inventario.articulos (c_articulo)
+);
+
+-- tabla de movimientos de inventario
+create table gestion_inventario.movimientos_inventario (
+    id_movimiento int identity(1,1) primary key,
+    tipo varchar(30) not null check (tipo in ('entrada','salida','movimiento')),
+    fecha datetime not null default getdate(),
+    usuario int not null, 
+    bodega_origen varchar(180) not null, 
+    bodega_destino varchar(180) not null, 
+	foreign key (usuario) references usuarios.empleados(cedula),
+    foreign key (bodega_origen) references gestion_inventario.bodegas(c_bodega),
+    foreign key (bodega_destino) references gestion_inventario.bodegas(c_bodega)
+);
+
+-- tabla para los detalles de los movimientos de inventario
+create table gestion_inventario.detalle_moviminto (
+    id_detalle int identity(1,1) primary key,
+    id_movimiento int not null,
+    c_articulo varchar(180) not null,
+    cantidad int not null,
+    foreign key (id_movimiento) references gestion_inventario.movimientos_inventario(id_movimiento),
+    foreign key (c_articulo) references gestion_inventario.articulos(c_articulo)
+);
 --
-
-
-
- -- modulo de cliente
- create table clientes.cliente (
+-- modulo de cliente
+create table clientes.cliente (
 		cedula int not null primary key,
 		nombre varchar (180) not null,
 		Correo_Electronico varchar (180) not null,
@@ -105,7 +167,8 @@ create table usuarios.plantilla (
  );
  --
 
- --modulo ventas
+--modulo ventas
+
 --
 --modulo cotizaciones
 --
