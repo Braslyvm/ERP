@@ -156,23 +156,82 @@ create table gestion_inventario.detalle_moviminto (
 --
 -- modulo de cliente
 create table clientes.cliente (
-		cedula int not null primary key,
+		cedula int not null,
 		nombre varchar (180) not null,
 		Correo_Electronico varchar (180) not null,
 		Telefono int not null,
 		celular int not null,
-		fax varchar (180)not null,
-		Zon varchar (180)not null,
-		sector varchar (180) not null
+		fax varchar (180)not null, 
+		primary key (cedula)
  );
  --
 
---modulo ventas
-
---
 --modulo cotizaciones
+create table cotizaciones.cotizaciones (
+	id_cotizacion int identity(1,1),
+	cliente int not null,
+	fecha_corizacion date not null,
+	m_cierre varchar (180) not null,
+	probabilidad int not null,
+	orden_compra varchar (180) not null,
+	tipo varchar (180) not null,
+	descripción varchar (180) not null,
+	zona varchar (180) not null,
+	sector varchar (180) not null,
+	estado varchar (180) not null check (estado in ('abierta','aprobada','denegada')),
+	m_denegacion varchar(255),
+    contra_quien nvarchar(255),
+    monto_total int,
+	primary key (id_cotizacion),
+	foreign key (cliente) references  clientes.cliente (cedula)
+);
+
+create table cotizaciones.lista_articulos_cotizacion (
+    id_cotizacion int not null,
+    c_producto varchar(180) not null,
+    cantidad int not null,
+    monto int not null,
+    foreign key (id_cotizacion) references cotizaciones.cotizaciones(id_cotizacion),
+    foreign key (c_producto) references gestion_inventario.articulos(c_articulo)
+);
+create table cotizaciones.tareas (
+    id_tarea int identity(1,1) primary key,
+    id_cotizacion int not null,
+    descripcion varchar(255) not null,
+    usuario int not null,
+    fecha_inicio datetime not null default getdate(),
+    fecha_limite datetime,
+    estado varchar (180) not null check (estado in ('pendiente','en progreso','completada')),
+    foreign key (id_cotizacion) references cotizaciones.cotizaciones(id_cotizacion),
+	foreign key (usuario) references usuarios.empleados(cedula)
+);
 --
+
 --modulo facturación
+create table facturación.facturas (
+    n_factura int identity(1,1),
+    nombre_local varchar(100) not null,
+    cedula_juridica_local int not null,
+    telefono_local int not null ,
+    id_cliente int not null,
+    id_cotizacion int not null, 
+    id_empleado int not null, 
+    fecha_factura datetime not null default getdate(),
+    estado varchar(20) not null check (estado in ('creada','anulada')), 
+	primary key (n_factura),
+	foreign key (id_cliente) references clientes.cliente (cedula),
+	foreign key (id_empleado) references usuarios.empleados(cedula),
+    foreign key (id_cotizacion) references cotizaciones.cotizaciones(id_cotizacion)
+);
+create table facturación.facturas_articulos (
+    n_factura int not null,
+    c_articulo varchar(180) not null,
+    cantidad int not null,
+    precio_unitario int not null,
+    monto_total int not null,
+    foreign key (n_factura) references facturación.facturas(n_factura),
+    foreign key (c_articulo) references gestion_inventario.articulos(c_articulo)
+);
 --
 --modulo registro_caso
 --
