@@ -8,19 +8,41 @@ use Planificador_recorsos_empresariales
 go
 
 -- creacion de los esquemas(modulos)
- CREATE SCHEMA usuarios;
 
- CREATE SCHEMA gestion_inventario;
- 
- CREATE SCHEMA clientes;
- 
- CREATE SCHEMA ventas;
+if not exists (select * from sys.schemas where name = 'usuarios')
+begin
+    create schema usuarios;
+end;
 
- CREATE SCHEMA cotizaciones;
- 
- CREATE SCHEMA facturación;
- 
- CREATE SCHEMA registro_caso;
+if not exists (select * from sys.schemas where name = 'gestion_inventario')
+begin
+    create schema gestion_inventario;
+end;
+
+if not exists (select * from sys.schemas where name = 'clientes')
+begin
+    create schema clientes;
+end;
+
+if not exists (select * from sys.schemas where name = 'ventas')
+begin
+    create schema ventas;
+end;
+
+if not exists (select * from sys.schemas where name = 'cotizaciones')
+begin
+    create schema cotizaciones;
+end;
+
+if not exists (select * from sys.schemas where name = 'facturación')
+begin
+    create schema facturación;
+end;
+
+if not exists (select * from sys.schemas where name = 'registro_caso')
+begin
+    create schema registro_caso;
+end;
 
 
 -- Módulo de usuario
@@ -71,7 +93,7 @@ begin
     );
 end;
 
-if not exists (select * from sysobjects where name='historico_puesto' and xtype='U')
+if not exists (select * from sys.tables where name='historico_puesto' and schema_id = schema_id('usuarios'))
 create table usuarios.historico_puesto (
     cedula int not null,
     FechaInicio date NOT NULL,
@@ -83,7 +105,7 @@ create table usuarios.historico_puesto (
 	foreign key (Departamento) references usuarios.departamento (id_departamento)
 );
 
-if not exists (select * from sysobjects where name='historico_salarios' and xtype='U')
+if not exists (select * from sys.tables where name='historico_salarios' and schema_id = schema_id('usuarios'))
 create table usuarios.historico_salarios (
     cedula int not null,
     FechaInicio date NOT NULL,
@@ -96,7 +118,7 @@ create table usuarios.historico_salarios (
 	foreign key (Departamento) references usuarios.departamento (id_departamento)
 );
 
-if not exists (select * from sysobjects where name='plantilla' and xtype='U')
+if not exists (select * from sys.tables where name='plantilla' and schema_id = schema_id('usuarios'))
 create table usuarios.plantilla (
 		IdPlanilla int identity  (1,1) primary key,
 		cedula int not null,
@@ -115,7 +137,7 @@ create table usuarios.plantilla (
 -- modulo gestion_inventario
 
 -- Verificar y crear la tabla familia_articulos si no existe
-if not exists (select * from sysobjects where name='familia_articulos' and xtype='U')
+if not exists (select * from sys.tables where name='familia_articulos' and schema_id = schema_id('gestion_inventario'))
 begin
     create table gestion_inventario.familia_articulos (
         codigo varchar(180) not null,
@@ -127,7 +149,7 @@ begin
 end;
 
 -- Verificar y crear la tabla articulos si no existe
-if not exists (select * from sysobjects where name='articulos' and xtype='U')
+if not exists (select * from sys.tables where name='articulos' and schema_id = schema_id('gestion_inventario'))
 begin
     create table gestion_inventario.articulos (
         c_articulo varchar(180) not null,
@@ -144,7 +166,7 @@ begin
 end;
 
 -- Verificar y crear la tabla bodegas si no existe
-if not exists (select * from sysobjects where name='bodegas' and xtype='U')
+if not exists (select * from sys.tables where name='bodegas' and schema_id = schema_id('gestion_inventario'))
 begin
     create table gestion_inventario.bodegas (
         c_bodega varchar(180),
@@ -157,7 +179,7 @@ begin
 end;
 
 -- Verificar y crear la tabla bodegas_familias si no existe
-if not exists (select * from sysobjects where name='bodegas_familias' and xtype='U')
+if not exists (select * from sys.tables where name='bodegas_familias' and schema_id = schema_id('gestion_inventario'))
 begin
     create table gestion_inventario.bodegas_familias (
         c_bodega varchar(180) not null,
@@ -168,7 +190,7 @@ begin
 end;
 
 -- Verificar y crear la tabla inventario si no existe
-if not exists (select * from sysobjects where name='inventario' and xtype='U')
+if not exists (select * from sys.tables where name='inventario' and schema_id = schema_id('gestion_inventario'))
 begin
     create table gestion_inventario.inventario (
         c_bodega varchar(180) not null,
@@ -180,7 +202,7 @@ begin
 end;
 
 -- Verificar y crear la tabla movimientos_inventario si no existe
-if not exists (select * from sysobjects where name='movimientos_inventario' and xtype='U')
+if not exists (select * from sys.tables where name='movimientos_inventario' and schema_id = schema_id('gestion_inventario'))
 begin
     create table gestion_inventario.movimientos_inventario (
         id_movimiento int identity(1,1) primary key,
@@ -196,7 +218,7 @@ begin
 end;
 
 -- Verificar y crear la tabla detalle_movimiento si no existe
-if not exists (select * from sysobjects where name='detalle_movimiento' and xtype='U')
+if not exists (select * from sys.tables where name='detalle_movimiento' and schema_id = schema_id('gestion_inventario'))
 begin
     create table gestion_inventario.detalle_moviminto (
         id_detalle int identity(1,1) primary key,
@@ -209,7 +231,7 @@ begin
 end;
 --
 -- Modulo de clientes
-if not exists (select * from sysobjects where name='cliente' and xtype='U')
+if not exists (select * from sys.tables where name='cliente' and schema_id = schema_id('clientes'))
 begin
     create table clientes.cliente (
         cedula int not null,
@@ -223,7 +245,7 @@ begin
 end;
 
 -- Modulo de cotizaciones
-if not exists (select * from sysobjects where name='cotizaciones' and xtype='U')
+if not exists (select * from sys.tables where name='cotizaciones' and schema_id = schema_id('cotizaciones'))
 begin
     create table cotizaciones.cotizaciones (
         id_cotizacion int identity(1,1),
@@ -245,7 +267,7 @@ begin
     );
 end;
 
-if not exists (select * from sysobjects where name='lista_articulos_cotizacion' and xtype='U')
+if not exists (select * from sys.tables where name='lista_articulos_cotizacion' and schema_id = schema_id('cotizaciones'))
 begin
     create table cotizaciones.lista_articulos_cotizacion (
         id_cotizacion int not null,
@@ -257,7 +279,7 @@ begin
     );
 end;
 
-if not exists (select * from sysobjects where name='tareas' and xtype='U')
+if not exists (select * from sys.tables where name='tareas' and schema_id = schema_id('cotizaciones'))
 begin
     create table cotizaciones.tareas (
         id_tarea int identity(1,1) primary key,
@@ -273,7 +295,7 @@ begin
 end;
 
 -- Modulo de facturación
-if not exists (select * from sysobjects where name='facturas' and xtype='U')
+if not exists (select * from sys.tables where name='facturas' and schema_id = schema_id('facturación'))
 begin
     create table facturación.facturas (
         n_factura int identity(1,1),
@@ -292,7 +314,7 @@ begin
     );
 end;
 
-if not exists (select * from sysobjects where name='lista_articulos_facturados' and xtype='U')
+if not exists (select * from sys.tables where name='lista_articulos_facturados' and schema_id = schema_id('facturación'))
 begin
     create table facturación.lista_articulos_facturados (
         n_factura int not null,
@@ -306,7 +328,7 @@ begin
 end;
 
 -- Modulo de registro de casos
-if not exists (select * from sysobjects where name='casos' and xtype='U')
+if not exists (select * from sys.tables where name='casos' and schema_id = schema_id('registro_caso'))
 begin
     create table registro_caso.casos (
         id_caso int identity(1,1),
@@ -329,7 +351,7 @@ begin
     );
 end;
 
-if not exists (select * from sysobjects where name='tarea_casos' and xtype='U')
+if not exists (select * from sys.tables where name='tarea_casos' and schema_id = schema_id('registro_caso'))
 begin
     create table registro_caso.tarea_casos (
         id_tarea int identity(1,1),
