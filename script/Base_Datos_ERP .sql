@@ -140,11 +140,11 @@ create table usuarios.plantilla (
 if not exists (select * from sys.tables where name='familia_articulos' and schema_id = schema_id('gestion_inventario'))
 begin
     create table gestion_inventario.familia_articulos (
-        codigo varchar(180) not null,
+        id_familia varchar(180) not null,
         nombre varchar(180) not null,
         descripcion varchar(200) not null,
         activo bit not null,
-        primary key (codigo)
+        primary key (id_familia)
     );
 end;
 
@@ -161,7 +161,7 @@ begin
         costo int,
         precio int,
         primary key (c_articulo),
-        foreign key (c_familia) references gestion_inventario.familia_articulos(codigo)
+        foreign key (c_familia) references gestion_inventario.familia_articulos(id_familia)
     );
 end;
 
@@ -183,9 +183,9 @@ if not exists (select * from sys.tables where name='bodegas_familias' and schema
 begin
     create table gestion_inventario.bodegas_familias (
         c_bodega varchar(180) not null,
-        codigo varchar(180) not null,
+        id_familia varchar(180) not null,
         foreign key (c_bodega) references gestion_inventario.bodegas(c_bodega),
-        foreign key (codigo) references gestion_inventario.familia_articulos(codigo)
+        foreign key (id_familia) references gestion_inventario.familia_articulos(id_familia)
     );
 end;
 
