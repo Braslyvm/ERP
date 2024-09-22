@@ -4,27 +4,15 @@ begin
     create database Planificador_recorsos_empresariales;
 end;
 go
+
 use Planificador_recorsos_empresariales
 go
 
--- creacion de los esquemas(modulos)
+
 
 
 create schema usuarios;
 go
-create schema gestion_inventario;
-go
-create schema clientes;
-go
-create schema ventas;
-go
-create schema cotizaciones;
-go
-create schema facturación;
-go
-create schema registro_caso;
-go
-
 
 -- Módulo de usuario
 if not exists (select * from sys.tables where name = 'roles' and schema_id = schema_id('usuarios'))
@@ -129,7 +117,8 @@ go
  --
 
 -- modulo gestion_inventario
-
+create schema gestion_inventario;
+go
 -- Verificar y crear la tabla familia_articulos si no existe
 if not exists (select * from sys.tables where name='familia_articulos' and schema_id = schema_id('gestion_inventario'))
 begin
@@ -234,6 +223,8 @@ go
 
 --
 -- Modulo de clientes
+create schema clientes;
+go
 if not exists (select * from sys.tables where name='cliente' and schema_id = schema_id('clientes'))
 begin
     create table clientes.cliente (
@@ -242,13 +233,19 @@ begin
         Correo_Electronico varchar (180) not null,
         Telefono int not null,
         celular int not null,
-        fax varchar (180) not null, 
+        fax varchar (180) not null,
+		zona varchar (180) not null, 
+		sector varchar (180) not null, 
         primary key (cedula)
     );
 end;
 go
 
 -- Modulo de cotizaciones
+
+create schema cotizaciones;
+go
+
 if not exists (select * from sys.tables where name='cotizaciones' and schema_id = schema_id('cotizaciones'))
 begin
     create table cotizaciones.cotizaciones (
@@ -257,7 +254,6 @@ begin
         fecha_corizacion date not null,
         m_cierre varchar (180) not null,
         probabilidad int not null,
-        orden_compra varchar (180) not null,
         tipo varchar (180) not null,
         descripción varchar (180) not null,
         zona varchar (180) not null,
@@ -275,10 +271,12 @@ go
 if not exists (select * from sys.tables where name='lista_articulos_cotizacion' and schema_id = schema_id('cotizaciones'))
 begin
     create table cotizaciones.lista_articulos_cotizacion (
+		id_lista int identity(1,1),
         id_cotizacion int not null,
         c_producto varchar(180) not null,
         cantidad int not null,
         monto int not null,
+		primary key (id_lista),
         foreign key (id_cotizacion) references cotizaciones.cotizaciones(id_cotizacion),
         foreign key (c_producto) references gestion_inventario.articulos(c_articulo)
     );
@@ -302,6 +300,9 @@ end;
 go
 
 -- Modulo de facturación
+
+create schema facturación;
+go
 if not exists (select * from sys.tables where name='facturas' and schema_id = schema_id('facturación'))
 begin
     create table facturación.facturas (
@@ -325,15 +326,21 @@ go
 if not exists (select * from sys.tables where name='lista_articulos_facturados' and schema_id = schema_id('facturación'))
 begin
     create table facturación.lista_articulos_facturados (
+		n_lista int identity(1,1),
         n_factura int not null,
         c_articulo varchar(180) not null,
         cantidad int not null,
         precio_unitario int not null,
         monto_total int not null,
+		primary key (n_lista),
         foreign key (n_factura) references facturación.facturas(n_factura),
         foreign key (c_articulo) references gestion_inventario.articulos(c_articulo)
     );
 end;
+go
+
+
+create schema registro_caso;
 go
 
 -- Modulo de registro de casos
