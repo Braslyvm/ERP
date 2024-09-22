@@ -3,46 +3,27 @@ if not exists (select * from sys.databases where name = 'Planificador_recorsos_e
 begin
     create database Planificador_recorsos_empresariales;
 end;
-
+go
 use Planificador_recorsos_empresariales
 go
 
 -- creacion de los esquemas(modulos)
 
-if not exists (select * from sys.schemas where name = 'usuarios')
-begin
-    create schema usuarios;
-end;
 
-if not exists (select * from sys.schemas where name = 'gestion_inventario')
-begin
-    create schema gestion_inventario;
-end;
-
-if not exists (select * from sys.schemas where name = 'clientes')
-begin
-    create schema clientes;
-end;
-
-if not exists (select * from sys.schemas where name = 'ventas')
-begin
-    create schema ventas;
-end;
-
-if not exists (select * from sys.schemas where name = 'cotizaciones')
-begin
-    create schema cotizaciones;
-end;
-
-if not exists (select * from sys.schemas where name = 'facturación')
-begin
-    create schema facturación;
-end;
-
-if not exists (select * from sys.schemas where name = 'registro_caso')
-begin
-    create schema registro_caso;
-end;
+create schema usuarios;
+go
+create schema gestion_inventario;
+go
+create schema clientes;
+go
+create schema ventas;
+go
+create schema cotizaciones;
+go
+create schema facturación;
+go
+create schema registro_caso;
+go
 
 
 -- Módulo de usuario
@@ -53,6 +34,7 @@ begin
 		primary key (nombre)
     );
 end;
+go
 
 if not exists (select * from sys.tables where name = 'puesto' and schema_id = schema_id('usuarios'))
 begin
@@ -61,6 +43,7 @@ begin
 		primary key (id_puesto)
     );
 end;
+go
 
 if not exists (select * from sys.tables where name = 'departamento' and schema_id = schema_id('usuarios'))
 begin
@@ -69,6 +52,7 @@ begin
 		primary key (id_departamento)
     );
 end;
+go
 
 if not exists (select * from sys.tables where name = 'empleados' and schema_id = schema_id('usuarios'))
 begin
@@ -92,46 +76,56 @@ begin
         foreign key (departamento_actual) references usuarios.departamento (id_departamento)
     );
 end;
+go
 
 if not exists (select * from sys.tables where name='historico_puesto' and schema_id = schema_id('usuarios'))
-create table usuarios.historico_puesto (
-    cedula int not null,
-    FechaInicio date NOT NULL,
-    FechaFin date NULL,
-    NombrePuesto varchar(180) NOT NULL,
-    Departamento varchar(180) NOT NULL,
-	foreign key (cedula) references usuarios.empleados (cedula),
-	foreign key (NombrePuesto) references usuarios.puesto (id_puesto),
-	foreign key (Departamento) references usuarios.departamento (id_departamento)
-);
+begin
+	create table usuarios.historico_puesto (
+		cedula int not null,
+		FechaInicio date NOT NULL,
+		FechaFin date NULL,
+		NombrePuesto varchar(180) NOT NULL,
+		Departamento varchar(180) NOT NULL,
+		foreign key (cedula) references usuarios.empleados (cedula),
+		foreign key (NombrePuesto) references usuarios.puesto (id_puesto),
+		foreign key (Departamento) references usuarios.departamento (id_departamento)
+	);
+end;
+go
 
 if not exists (select * from sys.tables where name='historico_salarios' and schema_id = schema_id('usuarios'))
-create table usuarios.historico_salarios (
-    cedula int not null,
-    FechaInicio date NOT NULL,
-    FechaFin date NULL,
-    NombrePuesto varchar(180) NOT NULL,
-    Departamento varchar(180) NOT NULL,
-	monto int not null,
-	foreign key (cedula) references usuarios.empleados (cedula),
-	foreign key (NombrePuesto) references usuarios.puesto (id_puesto),
-	foreign key (Departamento) references usuarios.departamento (id_departamento)
-);
+begin
+	create table usuarios.historico_salarios (
+		cedula int not null,
+		FechaInicio date NOT NULL,
+		FechaFin date NULL,
+		NombrePuesto varchar(180) NOT NULL,
+		Departamento varchar(180) NOT NULL,
+		monto int not null,
+		foreign key (cedula) references usuarios.empleados (cedula),
+		foreign key (NombrePuesto) references usuarios.puesto (id_puesto),
+		foreign key (Departamento) references usuarios.departamento (id_departamento)
+	);
+end;
+go
 
 if not exists (select * from sys.tables where name='plantilla' and schema_id = schema_id('usuarios'))
-create table usuarios.plantilla (
-		IdPlanilla int identity  (1,1) primary key,
-		cedula int not null,
-		mes varchar (180) not null,
-		año int not null,
-		fecha_pago date not null,
-		h_normales int not null,
-		h_extras int not null,
-		total_salario int not null,
-		departamento varchar (180) not null,
-		foreign key (cedula) references usuarios.empleados (cedula),
-		foreign key (departamento) references usuarios.departamento (id_departamento)
-);
+begin
+	create table usuarios.plantilla (
+			IdPlanilla int identity  (1,1) primary key,
+			cedula int not null,
+			mes varchar (180) not null,
+			año int not null,
+			fecha_pago date not null,
+			h_normales int not null,
+			h_extras int not null,
+			total_salario int not null,
+			departamento varchar (180) not null,
+			foreign key (cedula) references usuarios.empleados (cedula),
+			foreign key (departamento) references usuarios.departamento (id_departamento)
+	);
+end;
+go
  --
 
 -- modulo gestion_inventario
@@ -147,6 +141,7 @@ begin
         primary key (id_familia)
     );
 end;
+go
 
 -- Verificar y crear la tabla articulos si no existe
 if not exists (select * from sys.tables where name='articulos' and schema_id = schema_id('gestion_inventario'))
@@ -164,6 +159,8 @@ begin
         foreign key (c_familia) references gestion_inventario.familia_articulos(id_familia)
     );
 end;
+go
+
 
 -- Verificar y crear la tabla bodegas si no existe
 if not exists (select * from sys.tables where name='bodegas' and schema_id = schema_id('gestion_inventario'))
@@ -177,6 +174,7 @@ begin
         primary key (c_bodega)
     );
 end;
+go
 
 -- Verificar y crear la tabla bodegas_familias si no existe
 if not exists (select * from sys.tables where name='bodegas_familias' and schema_id = schema_id('gestion_inventario'))
@@ -188,6 +186,7 @@ begin
         foreign key (id_familia) references gestion_inventario.familia_articulos(id_familia)
     );
 end;
+go
 
 -- Verificar y crear la tabla inventario si no existe
 if not exists (select * from sys.tables where name='inventario' and schema_id = schema_id('gestion_inventario'))
@@ -200,6 +199,7 @@ begin
         foreign key (c_articulo) references gestion_inventario.articulos(c_articulo)
     );
 end;
+go
 
 -- Verificar y crear la tabla movimientos_inventario si no existe
 if not exists (select * from sys.tables where name='movimientos_inventario' and schema_id = schema_id('gestion_inventario'))
@@ -216,6 +216,7 @@ begin
         foreign key (bodega_destino) references gestion_inventario.bodegas(c_bodega)
     );
 end;
+go
 
 -- Verificar y crear la tabla detalle_movimiento si no existe
 if not exists (select * from sys.tables where name='detalle_movimiento' and schema_id = schema_id('gestion_inventario'))
@@ -229,6 +230,8 @@ begin
         foreign key (c_articulo) references gestion_inventario.articulos(c_articulo)
     );
 end;
+go
+
 --
 -- Modulo de clientes
 if not exists (select * from sys.tables where name='cliente' and schema_id = schema_id('clientes'))
@@ -243,6 +246,7 @@ begin
         primary key (cedula)
     );
 end;
+go
 
 -- Modulo de cotizaciones
 if not exists (select * from sys.tables where name='cotizaciones' and schema_id = schema_id('cotizaciones'))
@@ -266,6 +270,7 @@ begin
         foreign key (cliente) references clientes.cliente (cedula)
     );
 end;
+go
 
 if not exists (select * from sys.tables where name='lista_articulos_cotizacion' and schema_id = schema_id('cotizaciones'))
 begin
@@ -278,6 +283,7 @@ begin
         foreign key (c_producto) references gestion_inventario.articulos(c_articulo)
     );
 end;
+go
 
 if not exists (select * from sys.tables where name='tareas' and schema_id = schema_id('cotizaciones'))
 begin
@@ -293,6 +299,7 @@ begin
         foreign key (usuario) references usuarios.empleados(cedula)
     );
 end;
+go
 
 -- Modulo de facturación
 if not exists (select * from sys.tables where name='facturas' and schema_id = schema_id('facturación'))
@@ -313,6 +320,7 @@ begin
         foreign key (id_cotizacion) references cotizaciones.cotizaciones(id_cotizacion)
     );
 end;
+go
 
 if not exists (select * from sys.tables where name='lista_articulos_facturados' and schema_id = schema_id('facturación'))
 begin
@@ -326,6 +334,7 @@ begin
         foreign key (c_articulo) references gestion_inventario.articulos(c_articulo)
     );
 end;
+go
 
 -- Modulo de registro de casos
 if not exists (select * from sys.tables where name='casos' and schema_id = schema_id('registro_caso'))
@@ -350,6 +359,7 @@ begin
         foreign key (id_factura) references facturación.facturas(n_factura)
     );
 end;
+go
 
 if not exists (select * from sys.tables where name='tarea_casos' and schema_id = schema_id('registro_caso'))
 begin
@@ -364,4 +374,5 @@ begin
         foreign key (id_caso) references registro_caso.casos(id_caso)
     );
 end;
+go
 
