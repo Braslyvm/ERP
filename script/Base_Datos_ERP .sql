@@ -33,7 +33,7 @@ create table usuarios.departamento (
 		id_departamento varchar (180) not null primary key
 );
 create table usuarios.empleados (
-		cedula int not null primary key,
+		cedula int not null,
 		nombre_Completo varchar (200) not null,
 		Correo_Electronico varchar (180) not null,
 		género varchar (180) not null check (género IN ('Masculino', 'Femenino', 'Otro')),
@@ -46,6 +46,8 @@ create table usuarios.empleados (
 		puesto_actual varchar (180)not null,
 		departamento_actual varchar (180) not null,
 		rol varchar (180) not null,
+		primary key (cedula),
+		foreign key (rol) references usuarios.roles (nombre),
 		foreign key (puesto_actual) references usuarios.puesto (id_puesto),
 		foreign key (departamento_actual) references usuarios.departamento (id_departamento),
  );
@@ -245,7 +247,7 @@ create table registro_caso.casos (
     asunto varchar(180) not null,
     direccion varchar(180),
     descripcion varchar(1000),
-    estado varchar(180) not null check (prioridad in ('abierto','en progreso','cerrado')), 
+    estado varchar(180) not null check (estado in ('abierto','en progreso','cerrado')), 
     tipo_caso varchar(180) not null,
     prioridad varchar(180) not null check (prioridad in ('alta','media','baja')),
     fecha_creacion datetime not null default getdate(),
