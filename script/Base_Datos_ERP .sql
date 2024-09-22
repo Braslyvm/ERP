@@ -251,6 +251,7 @@ begin
     create table cotizaciones.cotizaciones (
         id_cotizacion int identity(1,1),
         cliente int not null,
+		empleado int not null,
         fecha_corizacion date not null,
         m_cierre varchar (180) not null,
         probabilidad int not null,
@@ -263,7 +264,8 @@ begin
         contra_quien nvarchar(255),
         monto_total int,
         primary key (id_cotizacion),
-        foreign key (cliente) references clientes.cliente (cedula)
+        foreign key (cliente) references clientes.cliente (cedula),
+		foreign key (empleado) references usuarios.empleados(cedula),
     );
 end;
 go
