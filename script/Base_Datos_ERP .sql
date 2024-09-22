@@ -223,7 +223,7 @@ create table facturación.facturas (
 	foreign key (id_empleado) references usuarios.empleados(cedula),
     foreign key (id_cotizacion) references cotizaciones.cotizaciones(id_cotizacion)
 );
-create table facturación.facturas_articulos (
+create table facturación.lista_articulos_facturados (
     n_factura int not null,
     c_articulo varchar(180) not null,
     cantidad int not null,
@@ -234,5 +234,40 @@ create table facturación.facturas_articulos (
 );
 --
 --modulo registro_caso
+
+create table registro_caso.casos (
+    id_caso int identity(1,1) ,
+    id_empleado int not null, 
+    id_cotizacion int not null, 
+    id_factura int not null, 
+    nombre_cuenta varchar(180) not null,
+    nombre_contacto varchar(180) not null,
+    asunto varchar(180) not null,
+    direccion varchar(180),
+    descripcion varchar(1000),
+    estado varchar(180) not null check (prioridad in ('abierto','en progreso','cerrado')), 
+    tipo_caso varchar(180) not null,
+    prioridad varchar(180) not null check (prioridad in ('alta','media','baja')),
+    fecha_creacion datetime not null default getdate(),
+	primary key (id_caso),
+    foreign key (id_empleado) references usuarios.empleados(cedula),
+    foreign key (id_cotizacion) references cotizaciones.cotizaciones(id_cotizacion),
+    foreign key (id_factura) references  facturación.facturas(n_factura) 
+);
+create table registro_caso.tarea_casos (
+    id_tarea int identity(1,1) ,
+    id_caso int not null,
+    id_empleado int not null,
+    fecha datetime not null default getdate(),
+    descripcion nvarchar(1000) not null, 
+	primary key (id_tarea),
+    foreign key (id_empleado) references usuarios.empleados(cedula),
+    foreign key (id_caso) references registro_caso.casos(id_caso) 
+);
+
+
+
+
+
 --
 
