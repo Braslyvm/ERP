@@ -58,6 +58,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/IngresoInventario.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5ncmVzb0ludmVudGFyaW8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/ManejoClientes.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFuZWpvQ2xpZW50ZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -68,6 +72,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/ModificarinfoUsuario.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTW9kaWZpY2FyaW5mb1VzdWFyaW8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/MovimientosInventario.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTW92aW1pZW50b3NJbnZlbnRhcmlvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/Planillas.cshtml]
