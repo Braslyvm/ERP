@@ -1,0 +1,107 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = proyecto1bases
+build_property.RootNamespace = proyecto1bases
+build_property.ProjectDir = C:\Users\coleg\OneDrive\Escritorio\PROYECTO1 BASES\proyecto1bases\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\coleg\OneDrive\Escritorio\PROYECTO1 BASES\proyecto1bases
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/coleg/OneDrive/Escritorio/PROYECTO1 BASES/proyecto1bases/Pages/articulos.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcYXJ0aWN1bG9zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/PROYECTO1 BASES/proyecto1bases/Pages/AsignarRol.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXNpZ25hclJvbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/PROYECTO1 BASES/proyecto1bases/Pages/CrearRoles.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3JlYXJSb2xlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/PROYECTO1 BASES/proyecto1bases/Pages/EditarArticulos.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdGFyQXJ0aWN1bG9zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/PROYECTO1 BASES/proyecto1bases/Pages/EliminarArticulos.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWxpbWluYXJBcnRpY3Vsb3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/PROYECTO1 BASES/proyecto1bases/Pages/EliminarUsuario.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWxpbWluYXJVc3VhcmlvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/PROYECTO1 BASES/proyecto1bases/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/PROYECTO1 BASES/proyecto1bases/Pages/GestionInventario.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VzdGlvbkludmVudGFyaW8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/PROYECTO1 BASES/proyecto1bases/Pages/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/PROYECTO1 BASES/proyecto1bases/Pages/ManejoClientes.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFuZWpvQ2xpZW50ZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/PROYECTO1 BASES/proyecto1bases/Pages/ManejoUsuarios.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFuZWpvVXN1YXJpb3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/PROYECTO1 BASES/proyecto1bases/Pages/ModificarinfoUsuario.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTW9kaWZpY2FyaW5mb1VzdWFyaW8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/PROYECTO1 BASES/proyecto1bases/Pages/Planillas.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGxhbmlsbGFzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/PROYECTO1 BASES/proyecto1bases/Pages/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/PROYECTO1 BASES/proyecto1bases/Pages/RegistroArticulos.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0cm9BcnRpY3Vsb3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/PROYECTO1 BASES/proyecto1bases/Pages/RegistroUsuario.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0cm9Vc3VhcmlvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/PROYECTO1 BASES/proyecto1bases/Pages/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/PROYECTO1 BASES/proyecto1bases/Pages/Ventas.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmVudGFzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/PROYECTO1 BASES/proyecto1bases/Pages/VisualizarInventario.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmlzdWFsaXphckludmVudGFyaW8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/PROYECTO1 BASES/proyecto1bases/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/PROYECTO1 BASES/proyecto1bases/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/PROYECTO1 BASES/proyecto1bases/Pages/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-5rkhcr2kvu
