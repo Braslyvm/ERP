@@ -142,7 +142,6 @@ begin
         descripcion varchar(255) not null,
         c_familia varchar(180) not null,
         peso int,
-        costo int,
         precio int,
         primary key (c_articulo),
         foreign key (c_familia) references gestion_inventario.familia_articulos(id_familia)
