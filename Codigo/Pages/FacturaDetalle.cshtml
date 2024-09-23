@@ -1,0 +1,113 @@
+@page
+@model proyecto1bases.Pages.FacturaDetalle
+@{
+    ViewData["Title"] = "Detalle de Factura";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4ff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 50px auto;
+        }
+        h1 {
+            font-size: 2rem;
+            color: #004085;
+            text-align: center;
+        }
+        .details {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+        }
+        table {
+            width: 100%;
+            margin-top: 10px;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f9fa;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #0026fd;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #e0a800;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Factura Detalle</h1>
+    <div class="details">
+        <p>Cliente: @Model.Cedula</p>
+        <p>Número: </p>
+        <p>Nombre del local: </p>
+        <p>Cédula Jurídica: </p>
+        <p>Teléfonos: </p>
+        <p>Cédula Cliente: </p>
+        <p>Nombre: </p>
+        <p>Cajero: </p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Artículo</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Bodega</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var articulo in Model.Articulos)
+            {
+              
+              
+              
+              
+              
+              
+            }
+        </tbody>
+    </table>
+    <p>Total: </p>
+    <button type="submit">Siguiente</button>
+    <a asp-page="CancelPage" class="btn btn-secondary" style="display: block; margin-top: 10px; text-align: center;">Cancelar</a>
+</div>
+
+</body>
+</html>
