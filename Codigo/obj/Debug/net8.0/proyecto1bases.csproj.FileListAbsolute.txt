@@ -28,3 +28,34 @@ C:\Users\coleg\OneDrive\Escritorio\PROYECTO1 BASES\proyecto1bases\obj\Debug\net8
 C:\Users\coleg\OneDrive\Escritorio\PROYECTO1 BASES\proyecto1bases\obj\Debug\net8.0\proyecto1bases.pdb
 C:\Users\coleg\OneDrive\Escritorio\PROYECTO1 BASES\proyecto1bases\obj\Debug\net8.0\proyecto1bases.genruntimeconfig.cache
 C:\Users\coleg\OneDrive\Escritorio\PROYECTO1 BASES\proyecto1bases\obj\Debug\net8.0\ref\proyecto1bases.dll
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\bin\Debug\net8.0\appsettings.json
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\bin\Debug\net8.0\proyecto1bases.staticwebassets.runtime.json
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\bin\Debug\net8.0\proyecto1bases.exe
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\bin\Debug\net8.0\proyecto1bases.deps.json
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\bin\Debug\net8.0\proyecto1bases.runtimeconfig.json
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\bin\Debug\net8.0\proyecto1bases.dll
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\bin\Debug\net8.0\proyecto1bases.pdb
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\proyecto1bases.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\proyecto1bases.AssemblyInfoInputs.cache
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\proyecto1bases.AssemblyInfo.cs
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\proyecto1bases.csproj.CoreCompileInputs.cache
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\proyecto1bases.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\proyecto1bases.RazorAssemblyInfo.cache
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\proyecto1bases.RazorAssemblyInfo.cs
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\proyecto1bases.sourcelink.json
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\staticwebassets\msbuild.proyecto1bases.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\staticwebassets\msbuild.build.proyecto1bases.props
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.proyecto1bases.props
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.proyecto1bases.props
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\scopedcss\bundle\proyecto1bases.styles.css
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\scopedcss\projectbundle\proyecto1bases.bundle.scp.css
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\proyecto1bases.dll
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\refint\proyecto1bases.dll
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\proyecto1bases.pdb
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\proyecto1bases.genruntimeconfig.cache
+C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo\obj\Debug\net8.0\ref\proyecto1bases.dll
