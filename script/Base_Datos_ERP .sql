@@ -198,7 +198,7 @@ begin
         fecha datetime not null default getdate(),
         usuario int not null, 
         bodega_origen varchar(180) not null, 
-        bodega_destino varchar(180) not null, 
+        bodega_destino varchar(180) null, 
         foreign key (usuario) references usuarios.empleados(cedula),
         foreign key (bodega_origen) references gestion_inventario.bodegas(c_bodega),
         foreign key (bodega_destino) references gestion_inventario.bodegas(c_bodega)
@@ -315,7 +315,7 @@ begin
         id_cotizacion int not null, 
         id_empleado int not null, 
         fecha_factura datetime not null default getdate(),
-        estado varchar(20) not null check (estado in ('creada','anulada')), 
+        estado varchar(20) not null check (estado in ('creada','anulada','aprobada')), 
         primary key (n_factura),
         foreign key (id_cliente) references clientes.cliente (cedula),
         foreign key (id_empleado) references usuarios.empleados(cedula),
