@@ -24,15 +24,6 @@ begin
 end;
 go
 
-if not exists (select * from sys.tables where name = 'puesto' and schema_id = schema_id('usuarios'))
-begin
-    create table usuarios.puesto (
-        id_puesto varchar (180) not null,
-		primary key (id_puesto)
-    );
-end;
-go
-
 if not exists (select * from sys.tables where name = 'departamento' and schema_id = schema_id('usuarios'))
 begin
     create table usuarios.departamento (
@@ -41,6 +32,19 @@ begin
     );
 end;
 go
+
+if not exists (select * from sys.tables where name = 'puesto' and schema_id = schema_id('usuarios'))
+begin
+    create table usuarios.puesto (
+        id_puesto varchar (180) not null,
+		id_departamento varchar (180) not null ,
+		primary key (id_puesto),
+		foreign key (id_departamento) references usuarios.departamento (id_departamento)
+    );
+end;
+go
+
+
 
 if not exists (select * from sys.tables where name = 'empleados' and schema_id = schema_id('usuarios'))
 begin
@@ -141,8 +145,8 @@ begin
         activo bit not null,
         descripcion varchar(255) not null,
         c_familia varchar(180) not null,
-        peso int,
-        precio int,
+        peso int not null,
+        precio int not null,
         primary key (c_articulo),
         foreign key (c_familia) references gestion_inventario.familia_articulos(id_familia)
     );
@@ -170,6 +174,7 @@ begin
     create table gestion_inventario.bodegas_familias (
         c_bodega varchar(180) not null,
         id_familia varchar(180) not null,
+		primary key (c_bodega,id_familia),
         foreign key (c_bodega) references gestion_inventario.bodegas(c_bodega),
         foreign key (id_familia) references gestion_inventario.familia_articulos(id_familia)
     );
@@ -183,6 +188,7 @@ begin
         c_bodega varchar(180) not null,
         c_articulo varchar(180) not null,
         cantidad int not null,
+		primary key (c_bodega,c_articulo), 
         foreign key (c_bodega) references gestion_inventario.bodegas(c_bodega),
         foreign key (c_articulo) references gestion_inventario.articulos(c_articulo)
     );
@@ -193,12 +199,13 @@ go
 if not exists (select * from sys.tables where name='movimientos_inventario' and schema_id = schema_id('gestion_inventario'))
 begin
     create table gestion_inventario.movimientos_inventario (
-        id_movimiento int identity(1,1) primary key,
+        id_movimiento int identity(1,1) ,
         tipo varchar(30) not null check (tipo in ('entrada','salida','movimiento')),
         fecha datetime not null default getdate(),
         usuario int not null, 
         bodega_origen varchar(180) not null, 
         bodega_destino varchar(180) null, 
+		primary key (id_movimiento),
         foreign key (usuario) references usuarios.empleados(cedula),
         foreign key (bodega_origen) references gestion_inventario.bodegas(c_bodega),
         foreign key (bodega_destino) references gestion_inventario.bodegas(c_bodega)
@@ -259,9 +266,9 @@ begin
         zona varchar (180) not null,
         sector varchar (180) not null,
         estado varchar (180) not null check (estado in ('abierta','aprobada','denegada')),
-        m_denegacion varchar(255),
-        contra_quien nvarchar(255),
-        monto_total int,
+        m_denegacion varchar(255) null,
+        contra_quien varchar(255) not null,
+        monto_total int not null,
         primary key (id_cotizacion),
         foreign key (cliente) references clientes.cliente (cedula),
 		foreign key (empleado) references usuarios.empleados(cedula),
@@ -287,13 +294,14 @@ go
 if not exists (select * from sys.tables where name='tareas' and schema_id = schema_id('cotizaciones'))
 begin
     create table cotizaciones.tareas (
-        id_tarea int identity(1,1) primary key,
+        id_tarea int identity(1,1) ,
         id_cotizacion int not null,
         descripcion varchar(255) not null,
         usuario int not null,
         fecha_inicio datetime not null default getdate(),
-        fecha_limite datetime,
+        fecha_limite datetime not null,
         estado varchar (180) not null check (estado in ('pendiente','en progreso','completada')),
+		primary key (id_tarea),
         foreign key (id_cotizacion) references cotizaciones.cotizaciones(id_cotizacion),
         foreign key (usuario) references usuarios.empleados(cedula)
     );
