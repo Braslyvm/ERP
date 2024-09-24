@@ -14,7 +14,7 @@ go
 create schema usuarios;
 go
 
--- M骴ulo de usuario
+-- M贸dulo de usuario
 if not exists (select * from sys.tables where name = 'roles' and schema_id = schema_id('usuarios'))
 begin
     create table usuarios.roles (
@@ -52,7 +52,7 @@ begin
         cedula int not null,
         nombre_Completo varchar (200) not null,
         Correo_Electronico varchar (180) not null,
-        g閚ero varchar (180) not null check (g閚ero IN ('Masculino', 'Femenino', 'Otro')),
+        g茅nero varchar (180) not null check (g茅nero IN ('Masculino', 'Femenino', 'Otro')),
         fecha_nacimiento date not null,
         edad as datediff(year, fecha_nacimiento, getdate()),
         lugar_residencia varchar (180) not null,
@@ -107,7 +107,7 @@ begin
 			IdPlanilla int identity  (1,1) primary key,
 			cedula int not null,
 			mes varchar (180) not null,
-			a駉 int not null,
+			a帽o int not null,
 			fecha_pago date not null,
 			h_normales int not null,
 			h_extras int not null,
@@ -262,7 +262,7 @@ begin
         m_cierre varchar (180) not null,
         probabilidad int not null,
         tipo varchar (180) not null,
-        descripci髇 varchar (180) not null,
+        descripci贸n varchar (180) not null,
         zona varchar (180) not null,
         sector varchar (180) not null,
         estado varchar (180) not null check (estado in ('abierta','aprobada','denegada')),
@@ -308,13 +308,13 @@ begin
 end;
 go
 
--- Modulo de facturaci髇
+-- Modulo de facturaci贸n
 
-create schema facturaci髇;
+create schema facturaci贸n;
 go
-if not exists (select * from sys.tables where name='facturas' and schema_id = schema_id('facturaci髇'))
+if not exists (select * from sys.tables where name='facturas' and schema_id = schema_id('facturaci贸n'))
 begin
-    create table facturaci髇.facturas (
+    create table facturaci贸n.facturas (
         n_factura int identity(1,1),
         nombre_local varchar(100) not null,
         cedula_juridica_local int not null,
@@ -333,9 +333,9 @@ begin
 end;
 go
 
-if not exists (select * from sys.tables where name='lista_articulos_facturados' and schema_id = schema_id('facturaci髇'))
+if not exists (select * from sys.tables where name='lista_articulos_facturados' and schema_id = schema_id('facturaci贸n'))
 begin
-    create table facturaci髇.lista_articulos_facturados (
+    create table facturaci贸n.lista_articulos_facturados (
 		n_lista int identity(1,1),
         n_factura int not null,
         c_articulo varchar(180) not null,
@@ -343,7 +343,7 @@ begin
         precio_unitario int not null,
         monto_total int not null,
 		primary key (n_lista),
-        foreign key (n_factura) references facturaci髇.facturas(n_factura),
+        foreign key (n_factura) references facturaci贸n.facturas(n_factura),
         foreign key (c_articulo) references gestion_inventario.articulos(c_articulo)
     );
 end;
@@ -373,7 +373,7 @@ begin
         primary key (id_caso),
         foreign key (id_empleado) references usuarios.empleados(cedula),
         foreign key (id_cotizacion) references cotizaciones.cotizaciones(id_cotizacion),
-        foreign key (id_factura) references facturaci髇.facturas(n_factura)
+        foreign key (id_factura) references facturaci贸n.facturas(n_factura)
     );
 end;
 go
