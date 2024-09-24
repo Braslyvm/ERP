@@ -46,4 +46,21 @@ public class GestionI {
      
 }
 
+public class Cliente {
+    public string CedulaJ{get; set;}
+
+     public string NombreC{get; set;}
+     
+      public string CorreoE{get; set;}
+      public string Telefono{get; set;}
+      public string celular{get; set;}
+      public string fax{get; set;}
+      public string zona{get; set;}
+      public string sector{get; set;}
+}
+/*editar craear y borrar bodegas
+Reportes de inventario 
+REPORTES CLIENTES
+
+*/
 }

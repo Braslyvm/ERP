@@ -34,8 +34,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdGFyQXJ0aWN1bG9zLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/EditarCliente.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdGFyQ2xpZW50ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/EliminarArticulos.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWxpbWluYXJBcnRpY3Vsb3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/EliminarCliente.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWxpbWluYXJDbGllbnRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/EliminarUsuario.cshtml]
@@ -44,6 +52,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/FacturaDetalle.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmFjdHVyYURldGFsbGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/Facturas.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmFjdHVyYXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/GestionarBodegas.cshtml]
@@ -74,6 +90,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTW9kaWZpY2FyaW5mb1VzdWFyaW8uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/MoverInventario.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTW92ZXJJbnZlbnRhcmlvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/MovimientosInventario.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTW92aW1pZW50b3NJbnZlbnRhcmlvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -84,6 +104,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/RegistrarClientes.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0cmFyQ2xpZW50ZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/RegistroArticulos.cshtml]
@@ -100,6 +124,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/Ventas.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmVudGFzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/VisualizarClientes.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmlzdWFsaXphckNsaWVudGVzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/VisualizarInventario.cshtml]

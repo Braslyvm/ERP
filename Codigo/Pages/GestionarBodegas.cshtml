@@ -1,0 +1,71 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Gestión de Inventarios";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif, sans-serif;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0; 
+        }
+        .container { 
+           width: 80%;
+           max-width: 600px;
+           padding: 20px;
+           background-color: #d0d3d3;
+           border-radius: 8px;
+        }
+        h1 {
+            font-size: 2rem;
+            color: #000000;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #1f45ad;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #ddd125;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>@ViewData["Title"]</h1>
+        <form method="get" action="/Articulos">
+            <button type="submit">Gestion de articulos</button>
+        </form>
+
+        <form method="get" action="/VisualizarInventario">
+            <button type="submit">Visualizar Inventario</button>
+        </form>
+        <form method="get" action="/GestionarBodegas">
+            <button type="submit">Gestionar Bodegas</button>
+        </form>
+        <form method="get" action="/MovimientosInventario">
+            <button type="submit">Gestion de Inventario</button>
+        </form>
+        <form method="get" action="/Reportes">
+            <button type="submit">Generar Reportes</button>
+        </form>
+    </div>
+</body>
+</html>
