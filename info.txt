@@ -1,0 +1,8 @@
+a. Nombre del curso:  Bases De Datos I 
+b. Número de semestre y año lectivo: II semestre del 2024
+c. Nombres de los Estudiantes: Brasly Villarebia Morales y Elder Leon Perez
+d. Número de carnets de los estudiantes: 2023105915 y 2023166120
+e. Número de proyecto programado : proyecto #!
+f. Fecha de entrega: 25/09/2024 23:56
+g. Estatus de la entrega (debe ser CONGRUENTE con la solución entregada):
+   Buena
