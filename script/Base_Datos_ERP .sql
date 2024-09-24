@@ -316,6 +316,7 @@ begin
         id_empleado int not null, 
         fecha_factura datetime not null default getdate(),
         estado varchar(20) not null check (estado in ('creada','anulada','aprobada')), 
+		motivo_anulacion varchar(200) null,
         primary key (n_factura),
         foreign key (id_cliente) references clientes.cliente (cedula),
         foreign key (id_empleado) references usuarios.empleados(cedula),
