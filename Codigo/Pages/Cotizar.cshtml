@@ -51,12 +51,21 @@
     <div class="container">
         <h1>@ViewData["Title"]</h1>
         
-        <form method="get" action="/Cotizar">
-            <button type="submit">cotizaciones</button>
+        <form method="get" action="/RegistrarCotizacion">
+            <button type="submit">Cotizar</button>
         </form>
-         <form method="get" action="/Facturas">
-     <button type="submit">Facturar</button>
- </form>
+         <form method="get" action="/EditarCotizacion">
+        <button type="submit">Editar Cotizacion</button>
+        </form>
+        <form method="get" action="/AsociarTarea">
+        <button type="submit">Tareas Cotizacion</button>
+        </form>
+        <form method="get" action="/FacturarCotizacion">
+        <button type="submit">Facturar Cotizacion</button>
+        </form>
+         <form method="get" action="/Reportecotizacion">
+        <button type="submit">Reportes Cotizacion</button>
+            </form>
     </div>
 </body>
 </html>

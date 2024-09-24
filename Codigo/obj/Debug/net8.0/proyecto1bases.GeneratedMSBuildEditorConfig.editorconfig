@@ -30,6 +30,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FuY2VsYXJGYWN0dXJhLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/ContinuarCotizacion.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udGludWFyQ290aXphY2lvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/Cotizar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ290aXphci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/CrearRoles.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3JlYXJSb2xlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -40,6 +48,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/EditarCliente.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdGFyQ2xpZW50ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/EditarCotizacion.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdGFyQ290aXphY2lvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/EditarCotizacion2.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdGFyQ290aXphY2lvbjIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/EliminarArticulos.cshtml]
@@ -112,6 +128,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/RegistrarClientes.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0cmFyQ2xpZW50ZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/RegistrarCotizacion.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0cmFyQ290aXphY2lvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/RegistroArticulos.cshtml]

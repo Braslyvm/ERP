@@ -45,7 +45,14 @@ public class GestionI {
     public int cantidad{get; set;}
      
 }
+public class Cotizacion {
+    public int id_cotizacion{get; set;}
 
+     public int cliente{get; set;}
+    
+    
+     
+}
 public class Cliente {
     public string CedulaJ{get; set;}
 
@@ -58,6 +65,7 @@ public class Cliente {
       public string zona{get; set;}
       public string sector{get; set;}
 }
+
 /*editar craear y borrar bodegas
 Reportes de inventario 
 REPORTES CLIENTES
