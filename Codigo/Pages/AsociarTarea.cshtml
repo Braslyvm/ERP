@@ -1,7 +1,7 @@
 @page
-@model proyecto1bases.Pages.Facturar
+@model proyecto1bases.Pages.TareaCotizacion
 @{
-    ViewData["Title"] = "Facturación";
+    ViewData["Title"] = "Asignar Tarea";
 }
 
 <!DOCTYPE html>
@@ -18,20 +18,18 @@
             padding: 0;
         }
        
+       
         h1 {
             font-size: 2rem;
             color: #004085;
             text-align: center;
         }
-       
-       
-       
         label {
             font-weight: bold;
             color: #343a40;
         }
         input[type="text"],
-        input[type="number"],
+        input[type="datetime-local"],
         select {
             width: 100%;
             padding: 10px;
@@ -94,10 +92,12 @@
     <h1>Facturación</h1>
 
     <form method="post">
-        <details>
+        
+                <details>
             <summary>Seleccione el cliente</summary>
             <ul>
-                @foreach (var cliente in Model.Clientes) {
+                @foreach (var cliente in Model.clientes)
+                {
                     <li>
                         <input type="radio" id="cliente_@cliente.CedulaJ" name="CedulaJ" value="@cliente.CedulaJ" required />
                         <label for="cliente_@cliente.CedulaJ"> @cliente.NombreC</label>
@@ -105,45 +105,33 @@
                 }
             </ul>
         </details>
+        <button type="submit"> Cargar informacion</button>
 
-        <div class="form-group">
-            <label>Artículos:</label>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Artículo</th>
-                        <th>Bodegas</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var articulo in Model.Articulos)
-                    {
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="ArticulosSeleccionados" value="@articulo.c_articulo" />
-                                @articulo.nombreA
-                            </td>
-                            <td>
-                                @foreach (var bodega in Model.Bodegas)
-                                { 
-                                    <details>
-                                        <summary>@bodega.NombreB</summary>
-                                        <div class="bodega-checkbox">
-                                            <input type="checkbox" name="Bodega_@articulo.c_articulo" value="@bodega.C_Bodega" />
-                                            <input type="number" name="Cantidad_@articulo.c_articulo" class="form-control" placeholder="Cantidad" min="0" />
-                                        </div>
-                                    </details>
-                                }
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+        <details>
+    <summary>Seleccione la cotizacion a editar del cliente</summary>
+    <ul>
+        @foreach (var cliente in Model.cotizaciones)
+        {
+            <li>
+                <input type="radio" id="cliente_@cliente.id_cotizacion" name="id_cotizacion" value="@cliente.id_cotizacion" required />
+                <label for="cliente_@cliente.id_cotizacion"> @cliente.id_cotizacion</label>
+            </li>
+        }
+    </ul>
+</details>                
+        <div>
+            <label for="Fecha">Fecha de inicio</label>
+            <input type="date" id="FechaI" name="FechaI" asp-for="FechaI" required />
+            
+            <label for="Fecha">Fecha de inicio</label>
+            <input type="date" id="FechaL" name="FechaL" asp-for="FechaL" required />
         </div>
+        <div>
+            <label for="Descripcion">Descripcion tarea</label>
+<input type="text" id="Descripcion" name="Descripcion" asp-for="descripcion" required />
 
-        <button type="submit">Siguiente</button>
-        <a asp-page="/CancelarFactura" class="btn btn-secondary">Cancelar</a>
 
+         <button type="submit">Guardar</button>
     </form>
 </div>
 

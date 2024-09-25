@@ -69,6 +69,10 @@ public class Cliente {
 /*editar craear y borrar bodegas
 Reportes de inventario 
 REPORTES CLIENTES
+reporte facturacion
+reporte cotizacion 
+pasar cotizacion a factura 
+interfaz login 
 
 */
 }
