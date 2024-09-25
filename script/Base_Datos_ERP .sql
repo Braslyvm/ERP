@@ -15,6 +15,9 @@ create schema usuarios;
 go
 
 -- Módulo de usuario
+-- Nombre de la tabla: roles
+-- Descripcion:	se almacenan los roles y permiso de los roles que tiene el usuario
+-- Llaver primaria: nombre 
 if not exists (select * from sys.tables where name = 'roles' and schema_id = schema_id('usuarios'))
 begin
     create table usuarios.roles (
@@ -28,6 +31,10 @@ begin
 end;
 go
 
+-- Nombre de la tabla: departamento
+-- Descripcion:	tabla donde se alamcena los departamentos de ls empresa 
+-- Llaver primaria: id_departamento
+
 if not exists (select * from sys.tables where name = 'departamento' and schema_id = schema_id('usuarios'))
 begin
     create table usuarios.departamento (
@@ -37,6 +44,10 @@ begin
 end;
 go
 
+-- Nombre de la tabla: puesto
+-- Descripcion: se crea puestos y se le asigna un departamento	
+-- Llaver primaria: id_puesto
+-- llave foranea: id_departamento
 if not exists (select * from sys.tables where name = 'puesto' and schema_id = schema_id('usuarios'))
 begin
     create table usuarios.puesto (
@@ -49,7 +60,10 @@ end;
 go
 
 
-
+-- Nombre de la tabla: empleados
+-- Descripcion: regostra la informaciocion de los empleados de la empresa	
+-- Llaver primaria: cedula
+-- llave foranea: rol,departamento_actual,puesto_actual
 if not exists (select * from sys.tables where name = 'empleados' and schema_id = schema_id('usuarios'))
 begin
     create table usuarios.empleados (
@@ -74,6 +88,9 @@ begin
 end;
 go
 
+-- Nombre de la tabla:logeo
+-- Descripcion:	sistema de logeo qu permite ingresar al usuario al sistema 
+-- llave foranea: cedula
 if not exists (select * from sys.tables where name = 'logeo' and schema_id = schema_id('usuarios'))
 begin
     create table usuarios.logeo (
@@ -85,6 +102,9 @@ end;
 go
 
 
+-- Nombre de la tabla: historico_puesto
+-- Descripcion:	alamcena el historia de los puestos del usuario 
+-- llave foranea: cedula, NombrePuesto, Departamento
 if not exists (select * from sys.tables where name='historico_puesto' and schema_id = schema_id('usuarios'))
 begin
 	create table usuarios.historico_puesto (
@@ -100,6 +120,9 @@ begin
 end;
 go
 
+-- Nombre de la tabla: historico_salarios
+-- Descripcion:	almacena el historial de salario de los empleados
+-- llave foranea: cedula, NombrePuesto, Departamento
 if not exists (select * from sys.tables where name='historico_salarios' and schema_id = schema_id('usuarios'))
 begin
 	create table usuarios.historico_salarios (
@@ -116,6 +139,10 @@ begin
 end;
 go
 
+-- Nombre de la tabla: plantilla
+-- Descripcion:	genera reportes de pago de plantilla donde se gusrda el monto que se pago a cada uno de los empleados en el mes
+-- Llaver primaria: IdPlanilla
+-- llave foranea: cedula departamento
 if not exists (select * from sys.tables where name='plantilla' and schema_id = schema_id('usuarios'))
 begin
 	create table usuarios.plantilla (
@@ -136,8 +163,13 @@ go
  --
 
 -- modulo gestion_inventario
+
 create schema gestion_inventario;
 go
+-- Nombre de la tabla: familia_articulos
+-- Descripcion: crea y gurada las familias de los productos 
+-- Llaver primaria: id_familia
+
 -- Verificar y crear la tabla familia_articulos si no existe
 if not exists (select * from sys.tables where name='familia_articulos' and schema_id = schema_id('gestion_inventario'))
 begin
@@ -151,6 +183,10 @@ begin
 end;
 go
 
+-- Nombre de la tabla:articulos
+-- Descripcion:	almacena la informacion de los articulos de la tienda
+-- Llaver primaria: c_articulo
+-- llave foranea: c_familia
 -- Verificar y crear la tabla articulos si no existe
 if not exists (select * from sys.tables where name='articulos' and schema_id = schema_id('gestion_inventario'))
 begin
@@ -168,7 +204,9 @@ begin
 end;
 go
 
-
+-- Nombre de la tabla: bodegas
+-- Descripcion: lugares espesificos en donde se almacenan los productos por tipo de familia 
+-- Llaver primaria: c_bodega
 -- Verificar y crear la tabla bodegas si no existe
 if not exists (select * from sys.tables where name='bodegas' and schema_id = schema_id('gestion_inventario'))
 begin
@@ -182,7 +220,10 @@ begin
     );
 end;
 go
-
+-- Nombre de la tabla: bodegas_familias
+-- Descripcion:	lista de familias de producto que se encuentran en una bodega
+-- Llaver primaria: c_bodega,id_familia
+-- llave foranea: c_bodega,id_familia
 -- Verificar y crear la tabla bodegas_familias si no existe
 if not exists (select * from sys.tables where name='bodegas_familias' and schema_id = schema_id('gestion_inventario'))
 begin
@@ -196,6 +237,10 @@ begin
 end;
 go
 
+-- Nombre de la tabla: inventario
+-- Descripcion:	muestra la cantidad de productos de un articulo y en que bodega se localiza
+-- Llaver primaria: c_bodega,c_articulo
+-- llave foranea: c_bodega,c_articulo
 -- Verificar y crear la tabla inventario si no existe
 if not exists (select * from sys.tables where name='inventario' and schema_id = schema_id('gestion_inventario'))
 begin
@@ -210,6 +255,10 @@ begin
 end;
 go
 
+-- Nombre de la tabla:movimientos_inventario
+-- Descripcion:	historial de movimientos que se hace en el inventario como restar mercansia o aumentar mercancia
+-- Llaver primaria: id_movimiento
+-- llave foranea: usuario, bodega_origen , bodega_destino
 -- Verificar y crear la tabla movimientos_inventario si no existe
 if not exists (select * from sys.tables where name='movimientos_inventario' and schema_id = schema_id('gestion_inventario'))
 begin
@@ -228,6 +277,10 @@ begin
 end;
 go
 
+-- Nombre de la tabla:
+-- Descripcion:	detalles espesificos de los movimientos del inventario
+-- Llaver primaria: id_detalle
+-- llave foranea: id_movimiento , id_movimiento
 -- Verificar y crear la tabla detalle_movimiento si no existe
 if not exists (select * from sys.tables where name='detalle_movimiento' and schema_id = schema_id('gestion_inventario'))
 begin
@@ -247,6 +300,11 @@ go
 create schema clientes;
 go
 
+-- Nombre de la tabla: sector
+-- Descripcion:	sectores de trabajo del cliente 
+-- Llaver primaria: sector_nombre
+
+
 if not exists (select * from sys.tables where name='sector' and schema_id = schema_id('clientes'))
 begin
     create table clientes.sector (
@@ -255,6 +313,10 @@ begin
     );
 end;
 go
+
+-- Nombre de la tabla:zona
+-- Descripcion:	zona de ubicacion del cliente 
+-- Llaver primaria: zona_nombre
 
 if not exists (select * from sys.tables where name='zona' and schema_id = schema_id('clientes'))
 begin
@@ -265,7 +327,10 @@ begin
 end;
 go
 
-
+-- Nombre de la tabla:cliente
+-- Descripcion:	guerda los clientes que a teniado la tienda 
+-- Llaver primaria: cedula
+-- llave foranea: sector, zona
 
 if not exists (select * from sys.tables where name='cliente' and schema_id = schema_id('clientes'))
 begin
@@ -292,6 +357,10 @@ go
 create schema cotizaciones;
 go
 
+-- Nombre de la tabla: cotizaciones
+-- Descripcion:	cotizaciones de una lista de productos que quiere el cliente 
+-- Llaver primaria: id_cotizacion
+-- llave foranea: cliente, empleado ,sector, zona
 if not exists (select * from sys.tables where name='cotizaciones' and schema_id = schema_id('cotizaciones'))
 begin
     create table cotizaciones.cotizaciones (
@@ -318,6 +387,10 @@ begin
 end;
 go
 
+-- Nombre de la tabla: lista_articulos_cotizacion
+-- Descripcion:	lista de los qrticulos que cotizo el cliente 
+-- Llaver primaria: id_lista
+-- llave foranea: id_cotizacion, c_producto
 if not exists (select * from sys.tables where name='lista_articulos_cotizacion' and schema_id = schema_id('cotizaciones'))
 begin
     create table cotizaciones.lista_articulos_cotizacion (
@@ -333,6 +406,10 @@ begin
 end;
 go
 
+-- Nombre de la tabla:tareas
+-- Descripcion:	es la lista de cotizaciones que se le asigna a un empleado
+-- Llaver primaria: id_tarea
+-- llave foranea: id_cotizacion,usuario
 if not exists (select * from sys.tables where name='tareas' and schema_id = schema_id('cotizaciones'))
 begin
     create table cotizaciones.tareas (
@@ -354,10 +431,15 @@ go
 
 create schema facturación;
 go
+
+-- Nombre de la tabla: facturas
+-- Descripcion:	es el comprobante de compra que se le da al cliente 
+-- Llaver primaria: n_factura
+-- llave foranea: id_cliente, id_empleado, id_cotizacion
 if not exists (select * from sys.tables where name='facturas' and schema_id = schema_id('facturación'))
 begin
     create table facturación.facturas (
-        n_factura int identity(1,1),
+        n_factura int identity(1,1), 
         nombre_local varchar(100) not null,
         cedula_juridica_local int not null,
         telefono_local int not null,
@@ -374,6 +456,11 @@ begin
     );
 end;
 go
+
+-- Nombre de la tabla: lista_articulos_facturados
+-- Descripcion:	son las listas de articulos que se le asignan a la factura 
+-- Llaver primaria: n_lista
+-- llave foranea: n_factura, c_articulo
 
 if not exists (select * from sys.tables where name='lista_articulos_facturados' and schema_id = schema_id('facturación'))
 begin
@@ -396,12 +483,17 @@ create schema registro_caso;
 go
 
 -- Modulo de registro de casos
+
+-- Nombre de la tabla: registro_caso
+-- Descripcion:	son los caso que se le asocian a una facturacion o a una cotizacion 
+-- Llaver primaria: id_caso
+-- llave foranea: id_empleado, id_cotizacion, id_factura
 if not exists (select * from sys.tables where name='casos' and schema_id = schema_id('registro_caso'))
 begin
     create table registro_caso.casos (
         id_caso int identity(1,1),
-        id_empleado int not null, 
-        id_cotizacion int not null, 
+        id_empleado int null, 
+        id_cotizacion int null, 
         id_factura int not null, 
         nombre_cuenta varchar(180) not null,
         nombre_contacto varchar(180) not null,
@@ -420,6 +512,10 @@ begin
 end;
 go
 
+-- Nombre de la tabla: tarea_casos
+-- Descripcion:	son las tarea asociaadas a los casos que registran quin reliaza la tarea 
+-- Llaver primaria: id_tarea
+-- llave foranea: id_empleado, id_caso
 if not exists (select * from sys.tables where name='tarea_casos' and schema_id = schema_id('registro_caso'))
 begin
     create table registro_caso.tarea_casos (
