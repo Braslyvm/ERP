@@ -19,6 +19,10 @@ if not exists (select * from sys.tables where name = 'roles' and schema_id = sch
 begin
     create table usuarios.roles (
         nombre varchar (180) not null,
+		vendedor bit  null,
+		edición bit  null, 
+		visualización bit  null,
+		reportería bit  null,
 		primary key (nombre)
     );
 end;
@@ -69,6 +73,17 @@ begin
     );
 end;
 go
+
+if not exists (select * from sys.tables where name = 'logeo' and schema_id = schema_id('usuarios'))
+begin
+    create table usuarios.logeo (
+        cedula int not null,
+		Contraseña varchar (180) not null,
+        foreign key (cedula) references usuarios.empleados (cedula),
+    );
+end;
+go
+
 
 if not exists (select * from sys.tables where name='historico_puesto' and schema_id = schema_id('usuarios'))
 begin
@@ -231,6 +246,27 @@ go
 -- Modulo de clientes
 create schema clientes;
 go
+
+if not exists (select * from sys.tables where name='sector' and schema_id = schema_id('clientes'))
+begin
+    create table clientes.sector (
+		sector_nombre varchar (180) not null, 
+        primary key (sector_nombre)
+    );
+end;
+go
+
+if not exists (select * from sys.tables where name='zona' and schema_id = schema_id('clientes'))
+begin
+    create table clientes.zona (
+		zona_nombre varchar (180) not null, 
+        primary key (zona_nombre)
+    );
+end;
+go
+
+
+
 if not exists (select * from sys.tables where name='cliente' and schema_id = schema_id('clientes'))
 begin
     create table clientes.cliente (
@@ -242,10 +278,14 @@ begin
         fax varchar (180) not null,
 		zona varchar (180) not null, 
 		sector varchar (180) not null, 
-        primary key (cedula)
+        primary key (cedula),
+		foreign key (sector) references clientes.sector(sector_nombre),
+		foreign key (zona) references clientes.zona(zona_nombre),
     );
 end;
 go
+
+
 
 -- Modulo de cotizaciones
 
@@ -261,7 +301,7 @@ begin
         fecha_corizacion date not null,
         m_cierre varchar (180) not null,
         probabilidad int not null,
-        tipo varchar (180) not null,
+        tipo varchar (180) not null check (tipo in ('Cotización de Venta','Cotización de Servicio')),
         descripción varchar (180) not null,
         zona varchar (180) not null,
         sector varchar (180) not null,
@@ -272,6 +312,8 @@ begin
         primary key (id_cotizacion),
         foreign key (cliente) references clientes.cliente (cedula),
 		foreign key (empleado) references usuarios.empleados(cedula),
+		foreign key (sector) references clientes.sector(sector),
+		foreign key (zona) references clientes.zona(zona_nombre),
     );
 end;
 go
