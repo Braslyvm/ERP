@@ -312,7 +312,7 @@ begin
         primary key (id_cotizacion),
         foreign key (cliente) references clientes.cliente (cedula),
 		foreign key (empleado) references usuarios.empleados(cedula),
-		foreign key (sector) references clientes.sector(sector),
+		foreign key (sector) references clientes.sector(sector_nombre),
 		foreign key (zona) references clientes.zona(zona_nombre),
     );
 end;
