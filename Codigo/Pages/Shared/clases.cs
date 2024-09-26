@@ -32,9 +32,16 @@ public class Articulo {
      
 }
 public class Bodega {
-    public string C_Bodega{get; set;}
+    public int C_Bodega{get; set;}
 
      public string NombreB{get; set;}
+
+     public string Ubicacion {get; set;}
+
+    public int c_toneladas {get; set;}
+    public int e_cubico {get; set;}
+
+     
      
 }
 public class GestionI {

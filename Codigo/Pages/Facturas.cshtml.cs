@@ -39,8 +39,8 @@ namespace proyecto1bases.Pages
         {
             // Datos de prueba
             Clientes.Add(new Cliente { NombreC = "Juan Pérez", CedulaJ = "30123456789" });
-            Bodegas.Add(new Bodega { C_Bodega = "1", NombreB = "Bodega A" });
-            Bodegas.Add(new Bodega { C_Bodega = "2", NombreB = "Bodega B" });
+            Bodegas.Add(new Bodega { C_Bodega = 1, NombreB = "Bodega A" });
+            Bodegas.Add(new Bodega { C_Bodega = 2, NombreB = "Bodega B" });
 
             Articulos.Add(new Articulo { c_articulo = "1", nombreA = "Monitor 24\"" });
             Articulos.Add(new Articulo { c_articulo = "2", nombreA = "Teclado Mecánico" });

@@ -18,6 +18,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\coleg\OneDrive\Escritorio\ERP\Codigo
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/Administrativo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5pc3RyYXRpdm8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/articulos.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcYXJ0aWN1bG9zLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -30,6 +34,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXNvY2lhclRhcmVhLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/Bodegas.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9kZWdhcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/CancelarFactura.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FuY2VsYXJGYWN0dXJhLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -40,6 +48,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/Cotizar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ290aXphci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/CrearBodega.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3JlYXJCb2RlZ2EuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/CrearRoles.cshtml]
@@ -136,6 +148,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/RegistrarCotizacion.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0cmFyQ290aXphY2lvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/RegistrarSector.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0cmFyU2VjdG9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/RegistrarZona.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0cmFyWm9uYS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/RegistroArticulos.cshtml]

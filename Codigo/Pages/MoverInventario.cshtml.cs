@@ -40,12 +40,12 @@ namespace proyecto1bases.Pages
             
                         bodegas = new List<Bodega>();
                     articulos = new List<Articulo>();
-                 bodegas = new List<Bodega>
-            {
-                new Bodega { C_Bodega = "B001", NombreB = "Bodega Central" },
-                new Bodega { C_Bodega = "B002", NombreB = "Bodega Norte" },
-                new Bodega { C_Bodega = "B003", NombreB = "Bodega Sur" }
-            };
+                 bodegas = new List<Bodega>();
+          
+          
+          
+          
+          
 
             // Llenado de datos falsos para artículos
             articulos = new List<Articulo>
