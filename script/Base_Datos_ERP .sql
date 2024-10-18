@@ -23,13 +23,63 @@ begin
     create table usuarios.roles (
         nombre varchar (180) not null,
 		vendedor bit  null,
-		edición bit  null, 
-		visualización bit  null,
-		reportería bit  null,
 		primary key (nombre)
     );
 end;
 go
+
+if not exists (select * from sys.tables where name = 'roles' and schema_id = schema_id('usuarios'))
+begin
+    create table usuarios.roles (
+        nombre varchar (180) not null,
+		vendedor bit  null,
+		primary key (nombre)
+    );
+end;
+go
+
+if not exists (select * from sys.tables where name = 'roles' and schema_id = schema_id('usuarios'))
+begin
+    create table usuarios.roles (
+        nombre varchar (180) not null,
+		vendedor bit  null,
+		primary key (nombre)
+    );
+end;
+go
+
+if not exists (select * from sys.tables where name = 'roles' and schema_id = schema_id('usuarios'))
+begin
+    create table usuarios.roles (
+        nombre varchar (180) not null,
+		vendedor bit  null,
+		primary key (nombre)
+    );
+end;
+go
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 -- Nombre de la tabla: departamento
 -- Descripcion:	tabla donde se alamcena los departamentos de ls empresa 
@@ -113,6 +163,7 @@ begin
 		FechaFin date NULL,
 		NombrePuesto varchar(180) NOT NULL,
 		Departamento varchar(180) NOT NULL,
+		primary key (cedula,FechaInicio,FechaFin),
 		foreign key (cedula) references usuarios.empleados (cedula),
 		foreign key (NombrePuesto) references usuarios.puesto (id_puesto),
 		foreign key (Departamento) references usuarios.departamento (id_departamento)
@@ -132,6 +183,7 @@ begin
 		NombrePuesto varchar(180) NOT NULL,
 		Departamento varchar(180) NOT NULL,
 		monto int not null,
+		primary key (cedula,FechaInicio,FechaFin),
 		foreign key (cedula) references usuarios.empleados (cedula),
 		foreign key (NombrePuesto) references usuarios.puesto (id_puesto),
 		foreign key (Departamento) references usuarios.departamento (id_departamento)
@@ -267,7 +319,7 @@ begin
         tipo varchar(30) not null check (tipo in ('entrada','salida','movimiento')),
         fecha datetime not null default getdate(),
         usuario int not null, 
-        bodega_origen varchar(180) not null, 
+        bodega_origen varchar(180) null, 
         bodega_destino varchar(180) null, 
 		primary key (id_movimiento),
         foreign key (usuario) references usuarios.empleados(cedula),
