@@ -1,11 +1,11 @@
 -- creacion de la basa de datos
-if not exists (select * from sys.databases where name = 'Planificador_recorsos_empresariales')
+if not exists (select * from sys.databases where name = 'Planificador_recursos_empresariales')
 begin
-    create database Planificador_recorsos_empresariales;
+    create database Planificador_recursos_empresariales;
 end;
 go
 
-use Planificador_recorsos_empresariales
+use Planificador_recursos_empresariales
 go
 
 
@@ -22,63 +22,117 @@ if not exists (select * from sys.tables where name = 'roles' and schema_id = sch
 begin
     create table usuarios.roles (
         nombre varchar (180) not null,
-		vendedor bit  null,
 		primary key (nombre)
     );
 end;
 go
 
-if not exists (select * from sys.tables where name = 'roles' and schema_id = schema_id('usuarios'))
+if not exists (select * from sys.tables where name = 'PermisisosMInventario' and schema_id = schema_id('usuarios'))
 begin
-    create table usuarios.roles (
+    create table usuarios.PermisisosMInventario (
         nombre varchar (180) not null,
-		vendedor bit  null,
-		primary key (nombre)
+		edición bit  null, 
+		visualización bit  null,
+		reportes bit  null,
+		primary key (nombre),
+		foreign key (nombre) references usuarios.roles (nombre)
+
     );
 end;
 go
 
-if not exists (select * from sys.tables where name = 'roles' and schema_id = schema_id('usuarios'))
+if not exists (select * from sys.tables where name = 'PermisisosMUsuarioa' and schema_id = schema_id('usuarios'))
 begin
-    create table usuarios.roles (
+    create table usuarios.PermisisosMUsuarioa (
         nombre varchar (180) not null,
-		vendedor bit  null,
-		primary key (nombre)
+		edición bit  null, 
+		visualización bit  null,
+		reportes bit  null,
+		primary key (nombre),
+		foreign key (nombre) references usuarios.roles (nombre)
     );
 end;
 go
 
-if not exists (select * from sys.tables where name = 'roles' and schema_id = schema_id('usuarios'))
+if not exists (select * from sys.tables where name = 'PermisisosMCotizacion' and schema_id = schema_id('usuarios'))
 begin
-    create table usuarios.roles (
+    create table usuarios.PermisisosMCotizacion (
         nombre varchar (180) not null,
-		vendedor bit  null,
-		primary key (nombre)
+		edición bit  null, 
+		visualización bit  null,
+		reportes bit  null,
+		primary key (nombre),
+		foreign key (nombre) references usuarios.roles (nombre)
+    );
+end;
+go
+
+if not exists (select * from sys.tables where name = 'PermisisosMFacturas' and schema_id = schema_id('usuarios'))
+begin
+    create table usuarios.PermisisosMFacturas (
+        nombre varchar (180) not null,
+		edición bit  null, 
+		visualización bit  null,
+		reportes bit  null,
+		primary key (nombre),
+		foreign key (nombre) references usuarios.roles (nombre)
     );
 end;
 go
 
 
+if not exists (select * from sys.tables where name = 'PermisisosMVentas' and schema_id = schema_id('usuarios'))
+begin
+    create table usuarios.PermisisosMVentas (
+        nombre varchar (180) not null,
+		edición bit  null, 
+		visualización bit  null,
+		reportes bit  null,
+		primary key (nombre),
+		foreign key (nombre) references usuarios.roles (nombre)
+    );
+end;
+go
 
 
+if not exists (select * from sys.tables where name = 'PermisisosMCliente' and schema_id = schema_id('usuarios'))
+begin
+    create table usuarios.PermisisosMCliente (
+        nombre varchar (180) not null,
+		edición bit  null, 
+		visualización bit  null,
+		reportes bit  null,
+		primary key (nombre),
+		foreign key (nombre) references usuarios.roles (nombre)
+    );
+end;
+go
 
+if not exists (select * from sys.tables where name = 'PermisisosMReportes' and schema_id = schema_id('usuarios'))
+begin
+    create table usuarios.PermisisosMReportes (
+        nombre varchar (180) not null,
+		edición bit  null, 
+		visualización bit  null,
+		reportes bit  null,
+		primary key (nombre),
+		foreign key (nombre) references usuarios.roles (nombre)
+    );
+end;
+go
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+if not exists (select * from sys.tables where name = 'PermisisosMCaso' and schema_id = schema_id('usuarios'))
+begin
+    create table usuarios.PermisisosMCaso (
+        nombre varchar (180) not null,
+		edición bit  null, 
+		visualización bit  null,
+		reportes bit  null,
+		primary key (nombre),
+		foreign key (nombre) references usuarios.roles (nombre)
+    );
+end;
+go
 
 
 -- Nombre de la tabla: departamento
@@ -120,6 +174,7 @@ begin
         cedula int not null,
         nombre_Completo varchar (200) not null,
         Correo_Electronico varchar (180) not null,
+		contraseña varbinary(max) not null,
         género varchar (180) not null check (género IN ('Masculino', 'Femenino', 'Otro')),
         fecha_nacimiento date not null,
         edad as datediff(year, fecha_nacimiento, getdate()),
@@ -160,7 +215,7 @@ begin
 	create table usuarios.historico_puesto (
 		cedula int not null,
 		FechaInicio date NOT NULL,
-		FechaFin date NULL,
+		FechaFin date NOT NULL,
 		NombrePuesto varchar(180) NOT NULL,
 		Departamento varchar(180) NOT NULL,
 		primary key (cedula,FechaInicio,FechaFin),
@@ -179,7 +234,7 @@ begin
 	create table usuarios.historico_salarios (
 		cedula int not null,
 		FechaInicio date NOT NULL,
-		FechaFin date NULL,
+		FechaFin date NOT NULL,
 		NombrePuesto varchar(180) NOT NULL,
 		Departamento varchar(180) NOT NULL,
 		monto int not null,
