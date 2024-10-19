@@ -1,7 +1,7 @@
 @page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Gestión de Inventarios";
 }
 
 <!DOCTYPE html>
@@ -15,29 +15,22 @@
             font-family: 'Times New Roman', Times, serif, sans-serif;
             background-color: #fdfdfd;
             margin: 0;
-            padding: 0;
-           
+            padding: 0; 
         }
-
-        /* contenedor de info */
-        .container {
-            width: 80%;
-            max-width: 600px;
-            padding: 20px;
-            background-color: #dce2e6;
-            border-radius: 8px;   
-
+        .container { 
+           width: 80%;
+           max-width: 600px;
+           padding: 20px;
+           background-color: #d0d3d3;
+           border-radius: 8px;
+        }
         h1 {
             font-size: 2rem;
             color: #000000;
-          
-          
         }
-
         form {
             margin-bottom: 20px;
         }
-
         button {
             width: 100%;
             padding: 12px;
@@ -49,7 +42,6 @@
             font-size: 1rem;
             transition: background-color 0.3s ease;
         }
-
         button:hover {
             background-color: #ddd125;
         }
@@ -57,25 +49,22 @@
 </head>
 <body>
     <div class="container">
-        <h1>Usuarios</h1>
+        <h1>@ViewData["Title"]</h1>
+        <form method="get" action=/Articulos/articulos>
+            <button type="submit">Gestion de articulos</button>
+        </form>
 
-        <form method="get" action="/RegistroUsuario">
-            <button type="submit">Registrar Usuario</button>
+        <form method="get" action=/reportes/VisualizarInventario>
+            <button type="submit">Visualizar Inventario</button>
         </form>
-        <form method="get" action="/Planillas">
-    <button type="submit">Planillas</button>
-</form>
-         <form method="get" action="/EliminarUsuario">
-     <button type="submit">Elinar usuario</button>
-         </form>
-        <form method="get" action="/ModificarinfoUsuario">
-            <button type="submit">Modificar informacion de usuario</button>
+       
+       
+       
+        <form method="get" action=/Inventario/MovimientosInventario>
+            <button type="submit">Gestion de Inventario</button>
         </form>
-        <form method="get" action="/CrearRoles">
-            <button type="submit">Crear roles</button>
-        </form>
-        <form method="get" action="/AsignarRol">
-        <button type="submit">Asignar roles</button>
+        <form method="get" action=/reportes/Reportes>
+            <button type="submit">Generar Reportes</button>
         </form>
     </div>
 </body>

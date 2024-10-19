@@ -112,6 +112,7 @@ begin
         return null;
     return hashbytes('sha2_256', @contraseña);
 end;
+go
 
 create procedure insertar_empleado
     @cedula int,
@@ -324,3 +325,26 @@ begin
         departamento = @departamento;
 end;
 go
+
+
+
+--------------------------------ver articulos por bodega----------------------------------
+
+CREATE PROCEDURE gestion_inventario.ObtenerArticulosPorBodega
+
+AS
+BEGIN
+    SELECT 
+        a.c_articulo AS ID_Articulo,
+        a.nombre AS Nombre_Articulo,
+        b.nombre AS Nombre_Bodega,
+        i.cantidad AS Stock
+    FROM 
+        inventario i
+    INNER JOIN 
+        articulos a ON i.c_articulo = a.c_articulo
+    INNER JOIN 
+        bodegas b ON i.c_bodega = b.c_bodega
+END;
+
+--------------------------------Crear cotizacion----------------------------------

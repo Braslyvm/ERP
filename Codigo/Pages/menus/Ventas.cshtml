@@ -1,7 +1,7 @@
 @page
 @model IndexModel
 @{
-    ViewData["Title"] = "Gestión de Inventarios";
+    ViewData["Title"] = "Gestión de Ventas";
 }
 
 <!DOCTYPE html>
@@ -21,7 +21,7 @@
            width: 80%;
            max-width: 600px;
            padding: 20px;
-           background-color: #d0d3d3;
+           background-color: #d4d4d4;
            border-radius: 8px;
         }
         h1 {
@@ -50,22 +50,13 @@
 <body>
     <div class="container">
         <h1>@ViewData["Title"]</h1>
-        <form method="get" action="/Articulos">
-            <button type="submit">Gestion de articulos</button>
+        
+        <form method="get" action=/cotizacion/Cotizar>
+            <button type="submit">cotizaciones</button>
         </form>
-
-        <form method="get" action="/VisualizarInventario">
-            <button type="submit">Visualizar Inventario</button>
-        </form>
-       
-       
-       
-        <form method="get" action="/MovimientosInventario">
-            <button type="submit">Gestion de Inventario</button>
-        </form>
-        <form method="get" action="/Reportes">
-            <button type="submit">Generar Reportes</button>
-        </form>
+         <form method="get" action=/Facturas/Facturas>
+     <button type="submit">Facturar</button>
+ </form>
     </div>
 </body>
 </html>
