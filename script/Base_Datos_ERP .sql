@@ -172,7 +172,9 @@ if not exists (select * from sys.tables where name = 'empleados' and schema_id =
 begin
     create table usuarios.empleados (
         cedula int not null,
-        nombre_Completo varchar (200) not null,
+        nombre varchar (200) not null,
+		apellido1 varchar (200) not null,
+		apellido2 varchar (200) not null,
         Correo_Electronico varchar (180) not null,
 		contraseña varbinary(max) not null,
         género varchar (180) not null check (género IN ('Masculino', 'Femenino', 'Otro')),
@@ -258,8 +260,9 @@ begin
 			mes varchar (180) not null,
 			año int not null,
 			fecha_pago date not null,
+			salario_actual int not null,
 			h_normales int not null,
-			h_extras int not null,
+			h_extras int null,
 			total_salario int not null,
 			departamento varchar (180) not null,
 			foreign key (cedula) references usuarios.empleados (cedula),
