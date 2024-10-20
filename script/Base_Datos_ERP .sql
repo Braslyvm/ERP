@@ -374,15 +374,14 @@ if not exists (select * from sys.tables where name='movimientos_inventario' and 
 begin
     create table gestion_inventario.movimientos_inventario (
         id_movimiento int identity(1,1) ,
+		n_factura int null,
         tipo varchar(30) not null check (tipo in ('entrada','salida','movimiento')),
         fecha datetime not null default getdate(),
         usuario int not null, 
-        bodega_origen varchar(180) null, 
-        bodega_destino varchar(180) null, 
 		primary key (id_movimiento),
         foreign key (usuario) references usuarios.empleados(cedula),
-        foreign key (bodega_origen) references gestion_inventario.bodegas(c_bodega),
-        foreign key (bodega_destino) references gestion_inventario.bodegas(c_bodega)
+		foreign key (n_factura) references facturación.facturas(n_factura)
+
     );
 end;
 go
@@ -399,8 +398,12 @@ begin
         id_movimiento int not null,
         c_articulo varchar(180) not null,
         cantidad int not null,
+		bodega_origen varchar(180) null, 
+        bodega_destino varchar(180) null, 
         foreign key (id_movimiento) references gestion_inventario.movimientos_inventario(id_movimiento),
-        foreign key (c_articulo) references gestion_inventario.articulos(c_articulo)
+        foreign key (c_articulo) references gestion_inventario.articulos(c_articulo),
+		foreign key (bodega_origen) references gestion_inventario.bodegas(c_bodega),
+        foreign key (bodega_destino) references gestion_inventario.bodegas(c_bodega)
     );
 end;
 go
