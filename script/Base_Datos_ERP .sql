@@ -500,6 +500,12 @@ go
 create schema facturación;
 go
 
+if not exists (select * from sys.tables where name='Local' and schema_id = schema_id('facturación'))
+ create table facturación.Local (
+		nombre_local varchar(100) not null,
+        cedula_juridica_local int not null primary key,
+        telefono_local int not null);
+
 -- Nombre de la tabla: facturas
 -- Descripcion:	es el comprobante de compra que se le da al cliente 
 -- Llaver primaria: n_factura
@@ -507,18 +513,18 @@ go
 if not exists (select * from sys.tables where name='facturas' and schema_id = schema_id('facturación'))
 begin
     create table facturación.facturas (
-        n_factura int identity(1,1), 
-        nombre_local varchar(100) not null,
-        cedula_juridica_local int not null,
-        telefono_local int not null,
+        n_factura int identity(1,1),
+		cedula_juridica_local int not null,
         id_cliente int not null,
-        id_cotizacion int not null, 
+        id_cotizacion int  null, 
         id_empleado int not null, 
         fecha_factura datetime not null default getdate(),
         estado varchar(20) not null check (estado in ('creada','anulada','aprobada')), 
 		motivo_anulacion varchar(200) null,
+		Total int null,
         primary key (n_factura),
         foreign key (id_cliente) references clientes.cliente (cedula),
+		 foreign key (cedula_juridica_local) references facturación.Local(cedula_juridica_local),
         foreign key (id_empleado) references usuarios.empleados(cedula),
         foreign key (id_cotizacion) references cotizaciones.cotizaciones(id_cotizacion)
     );
@@ -642,4 +648,21 @@ begin
     );
 end;
 go
-
+if not exists (select * from sys.tables where name='plantilla' and schema_id = schema_id('usuarios'))
+begin
+	create table usuarios.plantilla (
+			cedula int not null,
+			mes varchar (180) not null,
+			año int not null,
+			fecha_pago date not null,
+			salario_actual int not null,
+			h_normales int not null,
+			h_extras int null,
+			total_salario int not null,
+			departamento varchar (180) not null,
+			primary key (cedula,mes,año),
+			foreign key (cedula) references usuarios.empleados (cedula),
+			foreign key (departamento) references usuarios.departamento (id_departamento)
+	);
+end;
+go

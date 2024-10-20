@@ -420,7 +420,7 @@ begin
         where c_bodega = @c_bodega and c_articulo = @c_articulo;
 
         return 1; 
-    end
+    end  
     return 0; 
 end;
 go
@@ -650,3 +650,33 @@ begin
     end catch
 end;
 go
+
+
+--------------------------------------Registro factura-------------------------------------------------------
+
+create procedure facturación.insertar_Factura
+@cedula_juridica_local int, 
+@id_cliente int, 
+@id_cotizacion int , 
+@id_empleado int ,
+@fecha_factura datetime,
+@estado varchar(20), 
+@motivo_anulacion varchar(200),
+@Total int null
+ @mensaje nvarchar(200) output
+
+as
+begin
+    begin try
+        insert into cotizaciones.cotizaciones (cliente, empleado, fecha_corizacion, m_cierre, probabilidad, tipo, descripción, zona, sector, estado, m_denegacion, contra_quien, monto_total)
+        values (@cliente, @empleado, @fecha_corizacion, @m_cierre, @probabilidad, @tipo, @descripcion, @zona, @sector, @estado, @m_denegacion, @contra_quien, @monto_total);
+        
+        set @mensaje = 'Cotización insertada exitosamente.';
+    end try
+    begin catch
+        set @mensaje = 'Error al insertar la cotización.';
+    end catch
+end;
+go
+
+--------v--------------------------------------------------------------------------------
