@@ -9,8 +9,6 @@ use Planificador_recursos_empresariales
 go
 
 
-
-
 create schema usuarios;
 go
 
@@ -365,49 +363,6 @@ begin
 end;
 go
 
--- Nombre de la tabla:movimientos_inventario
--- Descripcion:	historial de movimientos que se hace en el inventario como restar mercansia o aumentar mercancia
--- Llaver primaria: id_movimiento
--- llave foranea: usuario, bodega_origen , bodega_destino
--- Verificar y crear la tabla movimientos_inventario si no existe
-if not exists (select * from sys.tables where name='movimientos_inventario' and schema_id = schema_id('gestion_inventario'))
-begin
-    create table gestion_inventario.movimientos_inventario (
-        id_movimiento int identity(1,1) ,
-		n_factura int null,
-        tipo varchar(30) not null check (tipo in ('entrada','salida','movimiento')),
-        fecha datetime not null default getdate(),
-        usuario int not null, 
-		primary key (id_movimiento),
-        foreign key (usuario) references usuarios.empleados(cedula),
-		foreign key (n_factura) references facturación.facturas(n_factura)
-
-    );
-end;
-go
-
--- Nombre de la tabla:
--- Descripcion:	detalles espesificos de los movimientos del inventario
--- Llaver primaria: id_detalle
--- llave foranea: id_movimiento , id_movimiento
--- Verificar y crear la tabla detalle_movimiento si no existe
-if not exists (select * from sys.tables where name='detalle_movimiento' and schema_id = schema_id('gestion_inventario'))
-begin
-    create table gestion_inventario.detalle_moviminto (
-        id_detalle int identity(1,1) primary key,
-        id_movimiento int not null,
-        c_articulo varchar(180) not null,
-        cantidad int not null,
-		bodega_origen varchar(180) null, 
-        bodega_destino varchar(180) null, 
-        foreign key (id_movimiento) references gestion_inventario.movimientos_inventario(id_movimiento),
-        foreign key (c_articulo) references gestion_inventario.articulos(c_articulo),
-		foreign key (bodega_origen) references gestion_inventario.bodegas(c_bodega),
-        foreign key (bodega_destino) references gestion_inventario.bodegas(c_bodega)
-    );
-end;
-go
-
 --
 -- Modulo de clientes
 create schema clientes;
@@ -590,6 +545,50 @@ begin
     );
 end;
 go
+
+-- Nombre de la tabla:movimientos_inventario
+-- Descripcion:	historial de movimientos que se hace en el inventario como restar mercansia o aumentar mercancia
+-- Llaver primaria: id_movimiento
+-- llave foranea: usuario, bodega_origen , bodega_destino
+-- Verificar y crear la tabla movimientos_inventario si no existe
+if not exists (select * from sys.tables where name='movimientos_inventario' and schema_id = schema_id('gestion_inventario'))
+begin
+    create table gestion_inventario.movimientos_inventario (
+        id_movimiento int identity(1,1) ,
+		n_factura int null,
+        tipo varchar(30) not null check (tipo in ('entrada','salida','movimiento')),
+        fecha datetime not null default getdate(),
+        usuario int not null, 
+		primary key (id_movimiento),
+        foreign key (usuario) references usuarios.empleados(cedula),
+		foreign key (n_factura) references facturación.facturas(n_factura)
+
+    );
+end;
+go
+
+-- Nombre de la tabla:
+-- Descripcion:	detalles espesificos de los movimientos del inventario
+-- Llaver primaria: id_detalle
+-- llave foranea: id_movimiento , id_movimiento
+-- Verificar y crear la tabla detalle_movimiento si no existe
+if not exists (select * from sys.tables where name='detalle_movimiento' and schema_id = schema_id('gestion_inventario'))
+begin
+    create table gestion_inventario.detalle_moviminto (
+        id_detalle int identity(1,1) primary key,
+        id_movimiento int not null,
+        c_articulo varchar(180) not null,
+        cantidad int not null,
+		bodega_origen varchar(180) null, 
+        bodega_destino varchar(180) null, 
+        foreign key (id_movimiento) references gestion_inventario.movimientos_inventario(id_movimiento),
+        foreign key (c_articulo) references gestion_inventario.articulos(c_articulo),
+		foreign key (bodega_origen) references gestion_inventario.bodegas(c_bodega),
+        foreign key (bodega_destino) references gestion_inventario.bodegas(c_bodega)
+    );
+end;
+go
+
 
 
 create schema registro_caso;
