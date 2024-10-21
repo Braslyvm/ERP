@@ -20,6 +20,7 @@ if not exists (select * from sys.tables where name = 'roles' and schema_id = sch
 begin
     create table usuarios.roles (
         nombre varchar (180) not null,
+		vendedor bit not null,
 		primary key (nombre)
     );
 end;
@@ -27,10 +28,10 @@ go
 
 if not exists (select * from sys.tables where name = 'PermisisosMInventario' and schema_id = schema_id('usuarios'))
 begin
-    create table usuarios.PermisisosMInventario (
+    create table usuarios.PermisosMInventario (
         nombre varchar (180) not null,
-		edición bit  null, 
-		visualización bit  null,
+		edicion bit  null, 
+		visualizacion bit  null,
 		reportes bit  null,
 		primary key (nombre),
 		foreign key (nombre) references usuarios.roles (nombre)
@@ -41,10 +42,10 @@ go
 
 if not exists (select * from sys.tables where name = 'PermisisosMUsuarioa' and schema_id = schema_id('usuarios'))
 begin
-    create table usuarios.PermisisosMUsuarioa (
+    create table usuarios.PermisosMUsuarios (
         nombre varchar (180) not null,
-		edición bit  null, 
-		visualización bit  null,
+		edicion bit  null, 
+		visualizacion bit  null,
 		reportes bit  null,
 		primary key (nombre),
 		foreign key (nombre) references usuarios.roles (nombre)
@@ -54,10 +55,10 @@ go
 
 if not exists (select * from sys.tables where name = 'PermisisosMCotizacion' and schema_id = schema_id('usuarios'))
 begin
-    create table usuarios.PermisisosMCotizacion (
+    create table usuarios.PermisosMCotizacion (
         nombre varchar (180) not null,
-		edición bit  null, 
-		visualización bit  null,
+		edicion bit  null, 
+		visualizacion bit  null,
 		reportes bit  null,
 		primary key (nombre),
 		foreign key (nombre) references usuarios.roles (nombre)
@@ -67,10 +68,10 @@ go
 
 if not exists (select * from sys.tables where name = 'PermisisosMFacturas' and schema_id = schema_id('usuarios'))
 begin
-    create table usuarios.PermisisosMFacturas (
+    create table usuarios.PermisosMFacturas (
         nombre varchar (180) not null,
-		edición bit  null, 
-		visualización bit  null,
+		edicion bit  null, 
+		visualizacion bit  null,
 		reportes bit  null,
 		primary key (nombre),
 		foreign key (nombre) references usuarios.roles (nombre)
@@ -81,10 +82,10 @@ go
 
 if not exists (select * from sys.tables where name = 'PermisisosMVentas' and schema_id = schema_id('usuarios'))
 begin
-    create table usuarios.PermisisosMVentas (
+    create table usuarios.PermisosMVentas (
         nombre varchar (180) not null,
-		edición bit  null, 
-		visualización bit  null,
+		edicion bit  null, 
+		visualizacion bit  null,
 		reportes bit  null,
 		primary key (nombre),
 		foreign key (nombre) references usuarios.roles (nombre)
@@ -95,10 +96,10 @@ go
 
 if not exists (select * from sys.tables where name = 'PermisisosMCliente' and schema_id = schema_id('usuarios'))
 begin
-    create table usuarios.PermisisosMCliente (
+    create table usuarios.PermisosMClientes (
         nombre varchar (180) not null,
-		edición bit  null, 
-		visualización bit  null,
+		edicion bit  null, 
+		visualizacion bit  null,
 		reportes bit  null,
 		primary key (nombre),
 		foreign key (nombre) references usuarios.roles (nombre)
@@ -108,10 +109,10 @@ go
 
 if not exists (select * from sys.tables where name = 'PermisisosMReportes' and schema_id = schema_id('usuarios'))
 begin
-    create table usuarios.PermisisosMReportes (
+    create table usuarios.PermisosMReportes (
         nombre varchar (180) not null,
-		edición bit  null, 
-		visualización bit  null,
+		edicion bit  null, 
+		visualizacion bit  null,
 		reportes bit  null,
 		primary key (nombre),
 		foreign key (nombre) references usuarios.roles (nombre)
@@ -121,10 +122,10 @@ go
 
 if not exists (select * from sys.tables where name = 'PermisisosMCaso' and schema_id = schema_id('usuarios'))
 begin
-    create table usuarios.PermisisosMCaso (
+    create table usuarios.PermisosMCaso (
         nombre varchar (180) not null,
-		edición bit  null, 
-		visualización bit  null,
+		edicion bit  null, 
+		visualizacion bit  null,
 		reportes bit  null,
 		primary key (nombre),
 		foreign key (nombre) references usuarios.roles (nombre)

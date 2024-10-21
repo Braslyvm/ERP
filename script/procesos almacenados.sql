@@ -3,18 +3,18 @@ use Planificador_recursos_empresariales
 go
 
 --------------Crear Rol -------------------------------
-create procedure CrearRol(@nombre varchar (180) )
+create procedure CrearRol(@nombre varchar (180) , @vendedor bit)
 as 
 begin	
-	insert into usuarios.roles(nombre)
-	values (@nombre)
+	insert into usuarios.roles(nombre , vendedor)
+	values (@nombre,@vendedor)
 end 
 go
 
 -- Procedimiento para insertar permisos en el módulo de Inventario
 create procedure usuarios.InsertarPermisosInventario
 (
-    @nombre nvarchar(50),
+    @nombre varchar (180),
     @edicion bit,
     @visualizacion bit,
     @reportes bit
@@ -28,7 +28,7 @@ go
 
 -- Procedimiento para insertar permisos en el módulo de Usuarios
 create procedure usuarios.InsertarPermisosUsuarios(
-    @nombre nvarchar(50),
+    @nombre varchar (180),
     @edicion bit,
     @visualizacion bit,
     @reportes bit
@@ -42,21 +42,21 @@ go
 
 -- Procedimiento para insertar permisos en el módulo de Cotizaciones
 create procedure usuarios.InsertarPermisosCotizaciones(
-    @nombre nvarchar(50),
+    @nombre varchar (180),
     @edicion bit,
     @visualizacion bit,
     @reportes bit
 )
 as
 begin
-    insert into usuarios.PermisosMCotizaciones (nombre, edicion, visualizacion, reportes)
+    insert into usuarios.PermisosMCotizacion (nombre, edicion, visualizacion, reportes)
     values (@nombre, @edicion, @visualizacion, @reportes);
 end
 go
 
 -- Procedimiento para insertar permisos en el módulo de Facturas
 create procedure usuarios.InsertarPermisosFacturas(
-    @nombre nvarchar(50),
+    @nombre varchar (180),
     @edicion bit,
     @visualizacion bit,
     @reportes bit
@@ -70,7 +70,7 @@ go
 
 -- Procedimiento para insertar permisos en el módulo de Ventas
 create procedure usuarios.InsertarPermisosVentas(
-    @nombre nvarchar(50),
+    @nombre varchar (180),
     @edicion bit,
     @visualizacion bit,
     @reportes bit
@@ -84,7 +84,7 @@ go
 
 -- Procedimiento para insertar permisos en el módulo de Clientes
 create procedure usuarios.InsertarPermisosClientes(
-    @nombre nvarchar(50),
+    @nombre varchar (180),
     @edicion bit,
     @visualizacion bit,
     @reportes bit
@@ -98,7 +98,7 @@ go
 
 -- Procedimiento para insertar permisos en el módulo de Reportes
 create procedure usuarios.InsertarPermisosReportes(
-    @nombre nvarchar(50),
+    @nombre varchar (180),
     @edicion bit,
     @visualizacion bit,
     @reportes bit
@@ -122,7 +122,7 @@ begin
 end;
 go
 
-create procedure insertar_empleado
+create procedure usuarios.insertar_empleado
     @cedula int,
     @nombre varchar(200),
     @apellido1 varchar(200),
@@ -151,9 +151,10 @@ begin
         set @mensaje = 'error al insertar el empleado';
     end catch
 end;
+go
 
 -------------------modificar empleado -------------------------
-create procedure actualizar_empleado
+create procedure usuarios.actualizar_empleado
     @cedula int,
     @nombre varchar(200) = null,
     @apellido1 varchar(200) = null,
@@ -197,16 +198,16 @@ begin
         set @mensaje = 'error al actualizar el empleado';
     end catch
 end;
-
+go
 ------------------------inicio seccion----------------------
-create function dbo.InicioValido (@Correo varchar(200), @contraseña varchar(200))
+create function dbo.InicioValido (@Cedula int, @contraseña varchar(200))
 returns bit         
 as
 begin
     declare @resultado bit = 0; 
     if exists (
         select 1 from usuarios.empleados
-        where correo_electronico = @Correo and contraseña = dbo.encryptar(@contraseña)
+        where cedula = @Cedula and contraseña = dbo.encryptar(@contraseña)
     ) 
     begin
         set @resultado = 1;
@@ -220,7 +221,7 @@ go
 --------------------------------------rol por usuario ---------------------------------------------
 create view roles_por_usuario as
 select 
-    concat(e.nombre, ' ', e.apellido_1, ' ', e.apellido_2) as nombre_completo,
+    concat(e.nombre, ' ', e.apellido1, ' ', e.apellido2) as nombre_completo,
     e.rol
 from 
     usuarios.empleados e;
@@ -231,14 +232,12 @@ go
 create view usuarios.usuarios_por_rol as
 select 
     r.nombre as nombre_rol,
-    concat(e.nombre, ' ', e.apellido_1, ' ', e.apellido_2) as nombre_completo
+    concat(e.nombre, ' ', e.apellido1, ' ', e.apellido2) as nombre_completo
 from 
     usuarios.roles r
 left join 
     usuarios.empleados e on e.rol = r.nombre;
 go
-
-
 
 --------------------------------------calcular salario -------------------------------------
 create function usuarios.calcularsalario (
@@ -265,7 +264,7 @@ begin
     end
     return @total;
 end;
-
+go
 
 --------------------------------insertar plantilla ----------------------
 create procedure usuarios.insertar_plantilla
@@ -282,7 +281,7 @@ as
 begin
     begin try
         insert into usuarios.plantilla (cedula, mes, año, fecha_pago, h_normales, salario_actual, h_extras, total_salario, departamento)
-        values ( @cedula, @mes, @año, @fecha_pago, @h_normales, @salario_actual, @h_extras,usuarios.calcularsalario(h_normales,h_extras,salario_actual) , @departamento);
+        values ( @cedula, @mes, @año, @fecha_pago, @h_normales, @salario_actual, @h_extras,usuarios.calcularsalario(@h_normales,@h_extras,@salario_actual) , @departamento);
   
         set @mensaje = 'registro de plantilla insertado exitosamente.';
     end try
@@ -290,17 +289,17 @@ begin
         set @mensaje = 'error al insertar en plantilla: ' + error_message();
     end catch
 end;
-
+go
 
 
 --------------------------------------plantilla por mes --------------------------------------------------
 create procedure usuarios.PlanillaMes(@mes varchar(180))
 as
 begin
-    select cedula, concat(nombre, ' ', apellido1, ' ', apellido2) as nombre_completo,departamento, 
-        h_normales, h_extras, salario_actual, salario_calculado
-    from 
-        usuarios.plantilla
+    select a.cedula, concat(e.nombre, ' ', e.apellido1, ' ', e.apellido2) as nombre_completo,departamento, 
+        a.h_normales, a.h_extras, a.salario_actual, a.total_salario
+    from usuarios.plantilla a
+	inner join usuarios.empleados e on a.cedula = e.cedula
     where 
         mes = @mes;
 end;
@@ -311,10 +310,10 @@ go
 create procedure usuarios.planillaAño(@año int)
 as
 begin
-    select cedula, concat(nombre, ' ', apellido1, ' ', apellido2) as nombre_completo,departamento, 
-        h_normales, h_extras, salario_actual, salario_calculado
-    from 
-        usuarios.plantilla
+    select a.cedula, concat(e.nombre, ' ', e.apellido1, ' ', e.apellido2) as nombre_completo,departamento, 
+        a.h_normales, a.h_extras, a.salario_actual, a.total_salario
+    from usuarios.plantilla a
+	inner join usuarios.empleados e on a.cedula = e.cedula
     where 
         año = @año;
 end;
@@ -325,10 +324,10 @@ go
 create procedure usuarios.mostrar_planilla_por_departamento(@departamento varchar(180))
 as
 begin
-    select cedula, concat(nombre, ' ', apellido1, ' ', apellido2) as nombre_completo,departamento, 
-        h_normales, h_extras, salario_actual, salario_calculado
-    from 
-        usuarios.plantilla
+    select a.cedula, concat(e.nombre, ' ', e.apellido1, ' ', e.apellido2) as nombre_completo,departamento, 
+        a.h_normales, a.h_extras, a.salario_actual, a.total_salario
+    from usuarios.plantilla a
+	inner join usuarios.empleados e on a.cedula = e.cedula
     where 
         departamento = @departamento;
 end;
@@ -354,6 +353,7 @@ BEGIN
     INNER JOIN 
         bodegas b ON i.c_bodega = b.c_bodega
 END;
+go
 ---------------------------------Insertar cliente -------------------------
 create procedure clientes.insertar_cliente (
     @cedula int,
@@ -404,46 +404,31 @@ end;
 go
 -------------------------Restar Inventario -----------------------------
 
-create function gestion_inventario.restar_inventario (
+create procedure gestion_inventario.restar_inventario
     @c_bodega varchar(180),
     @c_articulo varchar(180),
     @cantidad int
-)
-returns bit
 as
 begin
-
-    if (select gestion_inventario.cantidad_disponible(@c_bodega, @c_articulo, @cantidad)) = 1
-    begin
-        update gestion_inventario.inventario
-        set cantidad = cantidad - @cantidad
-        where c_bodega = @c_bodega and c_articulo = @c_articulo;
-
-        return 1; 
-    end  
-    return 0; 
+    update gestion_inventario.inventario
+    set cantidad = cantidad - @cantidad
+    where c_bodega = @c_bodega and c_articulo = @c_articulo;
 end;
 go
-
 -------------------------------sumar inventario ----------------------------------
 
-create function gestion_inventario.suma_inventario (
+create procedure gestion_inventario.suma_inventario
     @c_bodega varchar(180),
     @c_articulo varchar(180),
     @cantidad int
-)
-returns bit
+
 as
 begin
-    declare @resultado bit;
-
     update gestion_inventario.inventario
     set cantidad = cantidad + @cantidad
     where c_bodega = @c_bodega and c_articulo = @c_articulo;
-	return 1
 end;
 go
-
 
 
 ----------------------------------Crear movimiento bodega----------------------------------------
@@ -495,39 +480,27 @@ begin
     declare @aprovacion bit;
     if @tipo_movimiento = 'entrada'
     begin
-        set @aprovacion = gestion_inventario.suma_inventario(@c_bodega_destino, @c_articulo, @cantidad);
-        if (@aprovacion != 1)
-            return 'El ingreso falló';
+        EXEC gestion_inventario.suma_inventario @c_bodega_destino, @c_articulo, @cantidad ;
     end
     else if @tipo_movimiento = 'salida'
     begin
-        set @aprovacion = gestion_inventario.restar_inventario(@c_bodega_origen, @c_articulo, @cantidad);
+        set @aprovacion =  gestion_inventario.cantidad_disponible(@c_bodega_origen, @c_articulo, @cantidad);
 		if (@aprovacion != 1)
 			return 'La salida fallo'
+		EXEC gestion_inventario.restar_inventario @c_bodega_origen, @c_articulo, @cantidad;
     end
     else if @tipo_movimiento = 'movimiento'
     begin
-        set @aprovacion = gestion_inventario.restar_inventario(@c_bodega_origen, @c_articulo, @cantidad);
+        set @aprovacion = gestion_inventario.cantidad_disponible(@c_bodega_origen, @c_articulo, @cantidad);
 		if (@aprovacion != 1)
 			return 'La salida fallo'
-        set @aprovacion = gestion_inventario.suma_inventario(@c_bodega_destino, @c_articulo, @cantidad);
-		if (@aprovacion != 1)
-			return 'El ingreso fallo'
+		EXEC gestion_inventario.restar_inventario @c_bodega_origen, @c_articulo, @cantidad;
+        EXEC gestion_inventario.suma_inventario @c_bodega_destino, @c_articulo, @cantidad;
+
     end
 	return 'el movimiento se realizo correctamente'
 end;
 go
-
-
-
-
-
-
-
-
-
-
-
 
 
 --------------------------------Crear cotizacion----------------------------------
@@ -650,6 +623,247 @@ begin
     end catch
 end;
 go
+---------------------------------------Validar Permiso -------------------------
+create function dbo.Validar_Permiso( 
+	@cedula int,
+	@modulo varchar (180),
+	@tipo varchar (180)
+)
+returns bit
+as 
+begin 
+	declare @rol varchar (180);
+	declare @funca bit ;
+	set @funca = 0
+
+    select @rol = e.rol
+    from usuarios.empleados AS e
+    where e.cedula = @cedula;
+
+	if @modulo = 'Inventario'
+	begin
+		if @tipo = 'Edicion'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMInventario as p_I ON r.nombre = p_I.nombre
+			where p_I.edicion = 1
+			return @funca;
+		end
+		else if @tipo = 'Visualizacion'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMInventario as p_I ON r.nombre = p_I.nombre
+			where p_I.visualizacion = 1
+			return @funca;
+		end
+		else if @tipo = 'Reportes'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMInventario as p_I ON r.nombre = p_I.nombre
+			where p_I.reportes = 1
+			return @funca;
+		end
+    end
+	else if @modulo = 'Usuario'
+	begin
+		if @tipo = 'Edicion'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMUsuarios as p_U ON r.nombre = p_U.nombre
+			where p_U.edicion = 1
+			return @funca;
+		end
+		else if @tipo = 'Visualizacion'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMUsuarios as p_U ON r.nombre = p_U.nombre
+			where p_U.visualizacion = 1
+			return @funca;
+		end
+		else if @tipo = 'Reportes'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMUsuarios as p_U ON r.nombre = p_U.nombre
+			where p_U.reportes = 1
+			return @funca;
+		end
+	end 
+	else if @modulo = 'Cotizacion'
+	begin
+		if @tipo = 'Edicion'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMCotizacion as p_C ON r.nombre = p_C.nombre
+			where p_C.edicion = 1
+			return @funca;
+		end
+		else if @tipo = 'Visualizacion'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMCotizacion as p_C ON r.nombre = p_C.nombre
+			where p_C.visualizacion = 1
+			return @funca;
+		end
+		else if @tipo = 'Reportes'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMCotizacion as p_C ON r.nombre = p_C.nombre
+			where p_C.reportes = 1
+			return @funca;
+		end
+	end 
+	else if @modulo = 'Facturacion'
+	begin
+		if @tipo = 'Edicion'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMFacturas as p_F ON r.nombre = p_F.nombre
+			where p_F.edicion = 1
+			return @funca;
+		end
+		else if @tipo = 'Visualizacion'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMFacturas as p_F ON r.nombre = p_F.nombre
+			where p_F.visualizacion = 1
+			return @funca;
+		end
+		else if @tipo = 'Reportes'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMFacturas as p_F ON r.nombre = p_F.nombre
+			where p_F.reportes = 1
+			return @funca;
+		end
+	end 
+	else if @modulo = 'Ventas'
+	begin
+		if @tipo = 'Edicion'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMVentas as p_V ON r.nombre = p_V.nombre
+			where p_V.edicion = 1
+			return @funca;
+		end
+		else if @tipo = 'Visualizacion'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMVentas as p_V ON r.nombre = p_V.nombre
+			where p_V.visualizacion = 1
+			return @funca;
+		end
+		else if @tipo = 'Reportes'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMVentas as p_V ON r.nombre = p_V.nombre
+			where p_V.reportes = 1
+			return @funca;
+		end
+	end 
+	else if @modulo = 'Clientes'
+	begin
+		if @tipo = 'Edicion'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMClientes as p_C ON r.nombre = p_C.nombre
+			where p_C.edicion = 1
+			return @funca;
+		end
+		else if @tipo = 'Visualizacion'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMClientes as p_C ON r.nombre = p_C.nombre
+			where p_C.visualizacion = 1
+			return @funca;
+		end
+		else if @tipo = 'Reportes'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMClientes as p_C ON r.nombre = p_C.nombre
+			where p_C.reportes = 1
+			return @funca;
+		end
+	end 
+	else if @modulo = 'Caso'
+	begin
+		if @tipo = 'Edicion'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMCaso as p_C ON r.nombre = p_C.nombre
+			where p_C.edicion = 1
+			return @funca;
+		end
+		else if @tipo = 'Visualizacion'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMCaso as p_C ON r.nombre = p_C.nombre
+			where p_C.visualizacion = 1
+			return @funca;
+		end
+		else if @tipo = 'Reportes'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMCaso as p_C ON r.nombre = p_C.nombre
+			where p_C.reportes = 1
+			return @funca;
+		end
+	end 
+
+	else if @modulo = 'Reportes'
+	begin
+		if @tipo = 'Edicion'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMReportes as p_R ON r.nombre = p_R.nombre
+			where p_R.edicion = 1
+			return @funca;
+		end
+		else if @tipo = 'Visualizacion'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMReportes as p_R ON r.nombre = p_R.nombre
+			where p_R.visualizacion = 1
+			return @funca;
+		end
+		else if @tipo = 'Reportes'
+		begin
+			select @funca = 1
+			from usuarios.roles  r
+			inner join usuarios.PermisosMReportes as p_R ON r.nombre = p_R.nombre
+			where p_R.reportes = 1
+			return @funca;
+		end
+	end 
+	select @funca = 1
+	from usuarios.roles  r
+	where r.vendedor = 1
+	return @funca
+end
+go
+
 
 
 --------------------------------------Registro factura-------------------------------------------------------
