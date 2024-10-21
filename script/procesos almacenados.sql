@@ -974,35 +974,63 @@ END;
 GO
 
 ----------------------------------- anular factura-----------------------------
-CREATE PROCEDURE facturación.insertar_Factura
-    @cedula_juridica_local INT, 
-    @id_cliente INT, 
-    @id_cotizacion INT,  
+CREATE PROCEDURE facturación.AnularFactura
+	@n_factura int,	
     @id_empleado INT,
-    @fecha_factura DATETIME,
-    @estado VARCHAR(20), 
     @motivo_anulacion VARCHAR(200),
-    @Total INT = NULL,        
     @mensaje NVARCHAR(200) OUTPUT
 AS
 BEGIN
     BEGIN TRY
-        -- Insertar la factura
-        INSERT INTO facturación.facturas(cedula_juridica_local, id_cliente, id_cotizacion, id_empleado, fecha_factura, estado, motivo_anulacion, Total)
-        VALUES (@cedula_juridica_local, @id_cliente, @id_cotizacion, @id_empleado, @fecha_factura, @estado, @motivo_anulacion, @Total);
+	 -- Crear movimiento al insertar la factura
         
-        -- Crear movimiento al insertar la factura
-        DECLARE @n_factura INT = SCOPE_IDENTITY();
-        DECLARE @tipo VARCHAR(30) = 'salida'
+        DECLARE @tipo VARCHAR(30) = 'entrada';
         DECLARE @usuario INT = @id_empleado;
+		
 
         --Nuevo movimiento
-        EXEC gestion_inventario.insertar_movimiento @n_factura, @tipo, @usuario, @mensaje;
+        EXEC gestion_inventario.insertar_movimiento @n_factura, @tipo, @usuario,@mensaje ;
+		DECLARE @id_movimiento int = SCOPE_IDENTITY();
 
-        SET @mensaje = 'Factura insertada exitosamente y movimiento registrado.';
+		---mod estado y motivo
+		UPDATE facturación.facturas
+        SET estado = 'anulada', motivo_anulacion = @motivo_anulacion
+        WHERE n_factura = @n_factura;
+
+
+		DECLARE @c_articulo VARCHAR(180);
+        DECLARE @cantidad INT;
+        DECLARE @c_bodega VARCHAR(180);
+
+        DECLARE producto_cursor CURSOR FOR
+        SELECT lf.c_articulo, lf.cantidad, dm.bodega_origen
+        FROM lista_articulos_facturados LF
+        JOIN gestion_inventario.detalle_moviminto dm ON dm.c_articulo = lf.c_articulo and dm.cantidad=lf.cantidad
+        WHERE lf.n_factura = @n_factura;
+
+        OPEN producto_cursor;
+        FETCH NEXT FROM producto_cursor INTO @c_articulo, @cantidad, @c_bodega;
+
+        WHILE @@FETCH_STATUS = 0
+        BEGIN
+           
+            EXEC gestion_inventario.suma_inventario @c_bodega, @c_articulo, @cantidad;
+			EXEC gestion_inventario.insertar_detalle_movimiento @id_movimiento, @c_articulo, @cantidad, null, @c_bodega,@mensaje ;
+
+            FETCH NEXT FROM producto_cursor INTO @c_articulo, @cantidad, @c_bodega;
+        END
+
+        CLOSE producto_cursor;
+        DEALLOCATE producto_cursor;
+
+        
+        SET @mensaje = 'Factura anulada exitosamente y movimiento registrado.';
     END TRY
     BEGIN CATCH
-        SET @mensaje = 'Error al insertar la factura: ' + ERROR_MESSAGE();
+        SET @mensaje = 'Error al anular la factura: ' + ERROR_MESSAGE();
     END CATCH
 END;
 GO
+
+
+
