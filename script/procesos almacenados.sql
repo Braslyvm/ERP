@@ -662,21 +662,40 @@ create procedure facturación.insertar_Factura
 @fecha_factura datetime,
 @estado varchar(20), 
 @motivo_anulacion varchar(200),
-@Total int null
- @mensaje nvarchar(200) output
+@Total int = null,        
+@mensaje nvarchar(200) output
 
 as
 begin
     begin try
-        insert into cotizaciones.cotizaciones (cliente, empleado, fecha_corizacion, m_cierre, probabilidad, tipo, descripción, zona, sector, estado, m_denegacion, contra_quien, monto_total)
-        values (@cliente, @empleado, @fecha_corizacion, @m_cierre, @probabilidad, @tipo, @descripcion, @zona, @sector, @estado, @m_denegacion, @contra_quien, @monto_total);
+        insert into facturación.facturas(cedula_juridica_local,id_cliente,id_cotizacion,id_empleado,fecha_factura,estado,motivo_anulacion,Total)
+ VALUES (@cedula_juridica_local, @id_cliente, @id_cotizacion, @id_empleado, @fecha_factura, @estado, @motivo_anulacion, @Total);
         
-        set @mensaje = 'Cotización insertada exitosamente.';
+        set @mensaje = 'Factura insertada exitosamente.';
     end try
     begin catch
-        set @mensaje = 'Error al insertar la cotización.';
+        set @mensaje = 'Error al insertar la factura.';
     end catch
 end;
 go
 
---------v--------------------------------------------------------------------------------
+--------listar articulos --------------------------------------------------------------------------------
+create procedure facturación.LineasFactura
+    @id_cotizacion int,
+    @c_producto varchar(180),
+    @cantidad int,
+    @monto int,
+    @mensaje nvarchar(200) output
+as
+begin
+    begin try
+        insert into cotizaciones.lista_articulos_cotizacion (id_cotizacion, c_producto, cantidad, monto)
+        values (@id_cotizacion, @c_producto, @cantidad, @monto);
+        
+        set @mensaje = 'Artículo enlistado.';
+    end try
+    begin catch
+        set @mensaje = 'Error al insertar articulo.';
+    end catch
+end;
+go
