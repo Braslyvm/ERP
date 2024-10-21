@@ -1034,3 +1034,106 @@ GO
 
 
 
+-------------------funciones select 
+CREATE FUNCTION usuarios.ObtenerEmpleados()
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT 
+        cedula,
+        nombre,
+        apellido1,
+        apellido2,
+        Correo_Electronico,
+        género,
+        fecha_nacimiento,
+        edad,
+        lugar_residencia,
+        Telefono,
+        fecha_ingreso,
+        salario_actual,
+        puesto_actual,
+        departamento_actual,
+        rol
+    FROM usuarios.empleados
+);GO
+
+CREATE FUNCTION usuarios.Obtenerdepartamento()
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT 
+	id_departamento
+    FROM usuarios.departamento
+);GO
+
+
+
+
+CREATE FUNCTION usuarios.puesto()
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT 
+	id_puesto,
+	id_departamento
+    FROM usuarios.puesto
+);GO
+
+
+CREATE FUNCTION usuarios.contraseñas()
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT 
+	cedula,
+	Contraseña
+    FROM usuarios.logeo
+);GO
+
+CREATE FUNCTION usuarios.Hpuesto(@FechaI datetime, @fechaFin datetime )
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT 
+	cedula, 
+	FechaInicio, 
+	FechaFin,
+	NombrePuesto ,
+	Departamento
+    FROM usuarios.historico_puesto
+	WHERE FechaInicio >= @FechaI AND FechaFin <= @fechaFin
+);
+GO
+CREATE FUNCTION usuarios.HSalario(@FechaI datetime, @fechaFin datetime )
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT 
+	cedula, 
+	FechaInicio, 
+	FechaFin,
+	NombrePuesto,
+	Departamento,
+	monto
+
+    FROM usuarios.historico_salarios
+	WHERE FechaInicio >= @FechaI AND FechaFin <= @fechaFin
+);
+GO
+
+
+
+
+
+
+
+
+
+select * from usuarios.HSalario(null,null);

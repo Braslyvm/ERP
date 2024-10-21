@@ -113,11 +113,18 @@
             <label for="Cedula">Cédula</label>
             <input type="int" id="Cedula" name="Cedula" asp-for="Cedula" required maxlength="9" minlength="9" />
 
+             <label for="contraseña">contraseña:</label>
+            <input type="int" id="contraseña" name="contraseña" asp-for="contraseña" required />
+
             <label for="FechaNacimiento">Fecha de Nacimiento:</label>
             <input type="date" id="FechaNacimiento" name="FechaNacimiento" asp-for="FechaNacimiento" required min="1850-01-01" />
 
             <label for="LugarResidencia">Lugar de Residencia:</label>
             <input type="text" id="LugarResidencia" name="LugarResidencia" asp-for="LugarResidencia" placeholder="Lugar de Residencia" required />
+
+            <label for="CorreoE">Correo electronico:</label>
+            <input type="text" id="CorreoE" name="CorreoE" asp-for="CorreoE"  required />
+
 
             <label for="Genero">Género:</label>
             <select id="Genero" name="Genero" asp-for="Genero" required>

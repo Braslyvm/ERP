@@ -185,7 +185,7 @@ begin
         salario_actual int not null,
         puesto_actual varchar (180) not null,
         departamento_actual varchar (180) not null,
-        rol varchar (180) not null,
+        rol varchar (180) null,
         primary key (cedula),
         foreign key (rol) references usuarios.roles (nombre),
         foreign key (puesto_actual) references usuarios.puesto (id_puesto),

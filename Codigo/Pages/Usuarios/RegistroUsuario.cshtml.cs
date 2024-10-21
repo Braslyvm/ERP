@@ -50,6 +50,10 @@ public string Apellido2 { get; set; }
 public string PuestoActual { get; set; }
 [BindProperty]
 public string DepartamentoActual { get; set; }
+[BindProperty]
+public string CorreoE { get; set; }
+[BindProperty]
+public int contraseña { get; set; }
 public List<Puesto> Puestos { get; set; }= new List<Puesto>();
  
 public List<Departamento> departamentos { get; set; }= new List<Departamento>(); 
@@ -58,17 +62,13 @@ public List<Departamento> departamentos { get; set; }= new List<Departamento>();
  public async Task<IActionResult> OnGetAsync()
  {
     Puestos = new List<Puesto>
-        {
-            new Puesto { IDpueto = 1, PuestoT = "Administrador" },
-            new Puesto { IDpueto = 2, PuestoT = "Vendedor" },
-            new Puesto { IDpueto = 3, PuestoT = "Contador" }
-        };
-         departamentos = new List<Departamento>
-            {
-                new Departamento { IDdepartamento = 1, NombreD = "Recursos Humanos" },
-                new Departamento { IDdepartamento = 2, NombreD = "Contaduría" },
-                new Departamento { IDdepartamento = 3, NombreD = "Ventas" }
-            };
+        
+    departamentos = new List<Departamento>
+           
+       
+       
+    
+           
     
     
 
