@@ -866,50 +866,143 @@ go
 
 
 
---------------------------------------Registro factura-------------------------------------------------------
-
-create procedure facturación.insertar_Factura
-@cedula_juridica_local int, 
-@id_cliente int, 
-@id_cotizacion int , 
-@id_empleado int ,
-@fecha_factura datetime,
-@estado varchar(20), 
-@motivo_anulacion varchar(200),
-@Total int = null,        
-@mensaje nvarchar(200) output
-
-as
-begin
-    begin try
-        insert into facturación.facturas(cedula_juridica_local,id_cliente,id_cotizacion,id_empleado,fecha_factura,estado,motivo_anulacion,Total)
- VALUES (@cedula_juridica_local, @id_cliente, @id_cotizacion, @id_empleado, @fecha_factura, @estado, @motivo_anulacion, @Total);
+----------------------------------- Insertar Factura -----------------------------------
+CREATE PROCEDURE facturación.insertar_Factura
+    @cedula_juridica_local INT, 
+    @id_cliente INT, 
+    @id_cotizacion INT, 
+    @id_empleado INT,
+    @fecha_factura DATETIME,
+    @estado VARCHAR(20), 
+    @motivo_anulacion VARCHAR(200),
+    @Total INT = NULL,        
+    @mensaje NVARCHAR(200) OUTPUT
+AS
+BEGIN
+    BEGIN TRY
+        -- Insertar la factura
+        INSERT INTO facturación.facturas(cedula_juridica_local, id_cliente, id_cotizacion, id_empleado, fecha_factura, estado, motivo_anulacion, Total)
+        VALUES (@cedula_juridica_local, @id_cliente, @id_cotizacion, @id_empleado, @fecha_factura, @estado, @motivo_anulacion, @Total);
         
-        set @mensaje = 'Factura insertada exitosamente.';
-    end try
-    begin catch
-        set @mensaje = 'Error al insertar la factura.';
-    end catch
-end;
-go
+        -- Crear movimiento al insertar la factura
+        DECLARE @n_factura INT = SCOPE_IDENTITY();
+        DECLARE @tipo VARCHAR(30) = 'salida'
+        DECLARE @usuario INT = @id_empleado;
 
---------listar articulos --------------------------------------------------------------------------------
-create procedure facturación.LineasFactura
-    @id_cotizacion int,
-    @c_producto varchar(180),
-    @cantidad int,
-    @monto int,
-    @mensaje nvarchar(200) output
-as
-begin
-    begin try
-        insert into cotizaciones.lista_articulos_cotizacion (id_cotizacion, c_producto, cantidad, monto)
-        values (@id_cotizacion, @c_producto, @cantidad, @monto);
+        --Nuevo movimiento
+        EXEC gestion_inventario.insertar_movimiento @n_factura, @tipo, @usuario, @mensaje;
+
+        SET @mensaje = 'Factura insertada exitosamente y movimiento registrado.';
+    END TRY
+    BEGIN CATCH
+        SET @mensaje = 'Error al insertar la factura: ' + ERROR_MESSAGE();
+    END CATCH
+END;
+GO
+
+----------------------------------- Insertar Línea de Factura -----------------------------------
+CREATE PROCEDURE facturación.LineasFactura
+    @n_factura INT,
+    @c_articulo VARCHAR(180),
+    @cantidad INT,
+    @precio_unitario INT,
+    @monto_total INT,
+    @mensaje NVARCHAR(200) OUTPUT
+AS
+BEGIN
+    BEGIN TRY
+  
+        DECLARE @disponible INT;
+        DECLARE @bodega VARCHAR(180);
+        DECLARE @id_movimiento INT;
+
+       
+        SELECT TOP 1 @disponible = cantidad, @bodega = c_bodega
+        FROM gestion_inventario.inventario
+        WHERE c_articulo = @c_articulo;
+
+        IF @disponible < @cantidad
+        BEGIN
+            SET @mensaje = 'Error: No hay suficiente inventario para el artículo ' + @c_articulo + '.';
+            RETURN; 
+        END
+
+        -- Insertar en la lista 
+        INSERT INTO facturación.lista_articulos_facturados(n_factura, c_articulo, cantidad, precio_unitario, monto_total)
+        VALUES (@n_factura, @c_articulo, @cantidad, @precio_unitario, @monto_total);
+
+        --  total de la factura
+        UPDATE facturación.facturas
+        SET Total = facturación.CalcularTotalFactura(@n_factura)
+        WHERE n_factura = @n_factura;
+
+        -- Restar cantidad
+        EXEC gestion_inventario.restar_inventario @bodega, @c_articulo, @cantidad;
+
+        -- movimiento 
+        SELECT TOP 1 @id_movimiento = id_movimiento
+        FROM gestion_inventario.movimientos_inventario
+        ORDER BY fecha; 
+
+        EXEC gestion_inventario.insertar_detalle_movimiento @id_movimiento, @c_articulo, @cantidad, @bodega, NULL, @mensaje;
+
+        -- Realizar movimient0revisar si se debe incluiir
+        SET @mensaje = 'Artículo enlistado y cantidad restada del inventario, movimiento registrado.';
+    END TRY
+    BEGIN CATCH
+        SET @mensaje = 'Error al insertar artículo: ' + ERROR_MESSAGE();
+    END CATCH
+END;
+GO
+----------------------------------- Calcular Total Factura -----------------------------------
+CREATE PROCEDURE facturación.CalcularTotalFactura
+    @n_factura INT,
+    @Total DECIMAL(10, 2) OUTPUT
+AS
+BEGIN
+    BEGIN TRY
+        SELECT @Total = SUM(monto_total)
+        FROM facturación.lista_articulos_facturados
+        WHERE n_factura = @n_factura;
+        IF @Total IS NULL
+            SET @Total = 0;
+    END TRY
+    BEGIN CATCH
+        SET @Total = 0; 
+    END CATCH
+END;
+GO
+
+----------------------------------- anular factura-----------------------------
+CREATE PROCEDURE facturación.insertar_Factura
+    @cedula_juridica_local INT, 
+    @id_cliente INT, 
+    @id_cotizacion INT,  
+    @id_empleado INT,
+    @fecha_factura DATETIME,
+    @estado VARCHAR(20), 
+    @motivo_anulacion VARCHAR(200),
+    @Total INT = NULL,        
+    @mensaje NVARCHAR(200) OUTPUT
+AS
+BEGIN
+    BEGIN TRY
+        -- Insertar la factura
+        INSERT INTO facturación.facturas(cedula_juridica_local, id_cliente, id_cotizacion, id_empleado, fecha_factura, estado, motivo_anulacion, Total)
+        VALUES (@cedula_juridica_local, @id_cliente, @id_cotizacion, @id_empleado, @fecha_factura, @estado, @motivo_anulacion, @Total);
         
-        set @mensaje = 'Artículo enlistado.';
-    end try
-    begin catch
-        set @mensaje = 'Error al insertar articulo.';
-    end catch
-end;
-go
+        -- Crear movimiento al insertar la factura
+        DECLARE @n_factura INT = SCOPE_IDENTITY();
+        DECLARE @tipo VARCHAR(30) = 'salida'
+        DECLARE @usuario INT = @id_empleado;
+
+        --Nuevo movimiento
+        EXEC gestion_inventario.insertar_movimiento @n_factura, @tipo, @usuario, @mensaje;
+
+        SET @mensaje = 'Factura insertada exitosamente y movimiento registrado.';
+    END TRY
+    BEGIN CATCH
+        SET @mensaje = 'Error al insertar la factura: ' + ERROR_MESSAGE();
+    END CATCH
+END;
+GO
