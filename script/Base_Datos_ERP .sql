@@ -80,19 +80,6 @@ end;
 go
 
 
-if not exists (select * from sys.tables where name = 'PermisisosMVentas' and schema_id = schema_id('usuarios'))
-begin
-    create table usuarios.PermisosMVentas (
-        nombre varchar (180) not null,
-		edicion bit  null, 
-		visualizacion bit  null,
-		reportes bit  null,
-		primary key (nombre),
-		foreign key (nombre) references usuarios.roles (nombre)
-    );
-end;
-go
-
 
 if not exists (select * from sys.tables where name = 'PermisisosMCliente' and schema_id = schema_id('usuarios'))
 begin

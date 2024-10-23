@@ -1,7 +1,7 @@
 
 use Planificador_recursos_empresariales
 go
-
+)
 --------------Crear Rol -------------------------------
 create procedure CrearRol(@nombre varchar (180) , @vendedor bit)
 as 
@@ -68,19 +68,6 @@ begin
 end
 go
 
--- Procedimiento para insertar permisos en el módulo de Ventas
-create procedure usuarios.InsertarPermisosVentas(
-    @nombre varchar (180),
-    @edicion bit,
-    @visualizacion bit,
-    @reportes bit
-)
-as
-begin
-    insert into usuarios.PermisosMVentas (nombre, edicion, visualizacion, reportes)
-    values (@nombre, @edicion, @visualizacion, @reportes);
-end
-go
 
 -- Procedimiento para insertar permisos en el módulo de Clientes
 create procedure usuarios.InsertarPermisosClientes(
@@ -106,6 +93,20 @@ create procedure usuarios.InsertarPermisosReportes(
 as
 begin
     insert into usuarios.PermisosMReportes (nombre, edicion, visualizacion, reportes)
+    values (@nombre, @edicion, @visualizacion, @reportes);
+end
+go
+
+-- Procedimiento para insertar permisos en el módulo de Reportes
+create procedure usuarios.InsertarPermisosCasos(
+    @nombre varchar (180),
+    @edicion bit,
+    @visualizacion bit,
+    @reportes bit
+)
+as
+begin
+    insert into usuarios.PermisosMCaso (nombre, edicion, visualizacion, reportes)
     values (@nombre, @edicion, @visualizacion, @reportes);
 end
 go
@@ -210,12 +211,11 @@ begin
         where cedula = @Cedula and contraseña = dbo.encryptar(@contraseña)
     ) 
     begin
-        set @resultado = 1;
+        return 1;
     end
-    return @resultado; 
+    return 0 ; 
 end;
 go
-
 
 
 --------------------------------------rol por usuario ---------------------------------------------
@@ -1057,7 +1057,8 @@ RETURN
         departamento_actual,
         rol
     FROM usuarios.empleados
-);GO
+);
+GO
 
 CREATE FUNCTION usuarios.Obtenerdepartamento()
 RETURNS TABLE

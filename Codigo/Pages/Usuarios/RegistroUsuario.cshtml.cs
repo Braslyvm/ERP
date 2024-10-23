@@ -61,17 +61,6 @@ public List<Departamento> departamentos { get; set; }= new List<Departamento>();
  // Método que se ejecuta cuando se carga la página con una solicitud GET
  public async Task<IActionResult> OnGetAsync()
  {
-    Puestos = new List<Puesto>
-        
-    departamentos = new List<Departamento>
-           
-       
-       
-    
-           
-    
-    
-
      return Page();
  }
 

@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using proyecto1bases.Models;
-using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;

@@ -1,117 +1,229 @@
 @page
-@model  proyecto1bases.Pages.CrearRoles
+@model proyecto1bases.Pages.CrearRoles
 
 @{
-    ViewData["Title"] = "Gestión de Inventarios";
+    ViewData["Title"] = "Crear rol";
 }
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"]</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f4ff; 
-            margin: 0;
-            padding: 0; 
-        }
-        .container { 
-            width: 80%;
-            max-width: 400px;
-            padding: 20px;
-            background-color: #ffffff; 
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin: 50px auto;
-            text-align: center;
-        }
-        h1 {
-            font-size: 1.8rem;
-            color: #004085; 
-            margin-bottom: 20px;
-        }
-        p {
-            color: #6c757d;
-            margin-bottom: 20px;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin: 10px 0 5px;
-            font-weight: bold;
-            color: #343a40; 
-            text-align: left;
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ced4da; 
-            border-radius: 4px;
-            font-size: 1rem;
-            box-sizing: border-box;
-            transition: border-color 0.3s;
-        }
-        input:focus {
-            border-color: #80bdff; 
-            outline: none;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
-        input[type="checkbox"] {
-            margin-right: 10px;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #0026fd; 
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s ease;
-            margin-top: 20px;
-        }
-        button:hover {
-            background-color: #e0a800; 
-        }
-    </style>
+    <title>Crear Roles</title>
+    <link rel="stylesheet" href="~/css/index.css"> <!-- Enlace a tu CSS -->
 </head>
 <body>
     <div class="container">
-        <h1>Registro de nuevo rol</h1>
-        <p>Ingrese los siguientes datos según corresponde.</p>
+        <h1>@ViewData["Title"]
 
+        </h1>
+                @if (Model.roltrue)
+        {
+            <div class="alert">
+                <strong>Se creo el rol!</strong>
+            </div>
+        }
         <form method="post">
-            <div>
+            <div class="form-group">
                 <label for="NombreRol">Nombre del rol</label>
-                <input type="text" id="NombreRol" name="NombreRol"asp-for="NombreRol" required />
+                <input type="text" asp-for="NombreRol" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label for="PVenta">Permiso para vender</label>
+                <select id="PVenta" asp-for="PVenta" class="form-control" required>
+                    <option value="">Seleccione una opción</option>
+                    <option value="true">Sí</option>  
+                    <option value="false">No</option>   
+                </select>
+            </div>
+            
+            <h2>Modulo de Inventarios</h2>
+            <div class="form-group">
+                <label for="EInventario">Permiso de Edicion:</label>
+                <select id="EInventario" asp-for="EInventario" class="form-control" required>
+                    <option value="">Seleccione una opcion</option>
+                    <option value="true">Si</option>  
+                    <option value="false">No</option>   
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="VInventario">Permiso de Visualizacion:</label>
+                <select id="VInventario" asp-for="VInventario" class="form-control" required>
+                    <option value="">Seleccione una opcion</option>
+                    <option value="true">Si</option>  
+                    <option value="false">No</option>   
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="RInventario">Permiso de Reportes:</label>
+                <select id="RInventario" asp-for="RInventario" class="form-control" required>
+                    <option value="">Seleccione una opcion</option>
+                    <option value="true">Si</option>  
+                    <option value="false">No</option>   
+                </select>
             </div>
 
-            <div>
-                <label>Permisos:</label><br />
-              <input type="checkbox" id="vendedor" name="vendedor" asp-for="vendedor" />
-            <label for="vendedor">Vendedor</label><br />
-
-            <input type="checkbox" id="edición" name="edición" asp-for="edición" />
-            <label for="edición">Edición</label><br />
-
-            <input type="checkbox" id="visualización" name="visualización" asp-for="visualización" />
-            <label for="visualización">Visualización</label><br />
-
-            <input type="checkbox" id="reportería" name="reportería" asp-for="reportería" />
-            <label for="reportería">Reportería</label><br />
-
-              
-                <br />
+            <h2>Modulo de Usuarios</h2>
+            <div class="form-group">
+                <label for="EUsuarios">Permiso de Edicion:</label>
+                <select id="EUsuarios" asp-for="EUsuarios" class="form-control" required>
+                    <option value="">Seleccione una opcion</option>
+                    <option value="true">Si</option>  
+                    <option value="false">No</option>   
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="VUsuarios">Permiso de Visualizacion:</label>
+                <select id="VUsuarios" asp-for="VUsuarios" class="form-control" required>
+                    <option value="">Seleccione una opcion</option>
+                    <option value="true">Si</option>  
+                    <option value="false">No</option>   
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="RUsuarios">Permiso de Reportes:</label>
+                <select id="RUsuarios" asp-for="RUsuarios" class="form-control" required>
+                    <option value="">Seleccione una opcion</option>
+                    <option value="true">Si</option>  
+                    <option value="false">No</option>   
+                </select>
             </div>
 
-            <button type="submit">Guardar Rol</button>
+            <h2>Modulo de Cotizacion</h2>
+            <div class="form-group">
+                <label for="ECotizacion">Permiso de Edicion:</label>
+                <select id="ECotizacion" asp-for="ECotizacion" class="form-control" required>
+                    <option value="">Seleccione una opcion</option>
+                    <option value="true">Si</option>  
+                    <option value="false">No</option>   
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="VCotizacion">Permiso de Visualizacion:</label>
+                <select id="VCotizacion" asp-for="VCotizacion" class="form-control" required>
+                    <option value="">Seleccione una opcion</option>
+                    <option value="true">Si</option>  
+                    <option value="false">No</option>   
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="RCotizacion">Permiso de Reportes:</label>
+                <select id="RCotizacion" asp-for="RCotizacion" class="form-control" required>
+                    <option value="">Seleccione una opcion</option>
+                    <option value="true">Si</option>  
+                    <option value="false">No</option>   
+                </select>
+            </div>
+
+            <h2>Modulo de Factura</h2>
+            <div class="form-group">
+                <label for="EFactura">Permiso de Edicion:</label>
+                <select id="EFactura" asp-for="EFactura" class="form-control" required>
+                    <option value="">Seleccione una opcion</option>
+                    <option value="true">Si</option>  
+                    <option value="false">No</option>   
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="VFactura">Permiso de Visualizacion:</label>
+                <select id="VFactura" asp-for="VFactura" class="form-control" required>
+                    <option value="">Seleccione una opcion</option>
+                    <option value="true">Si</option>  
+                    <option value="false">No</option>   
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="RFactura">Permiso de Reportes:</label>
+                <select id="RFactura" asp-for="RFactura" class="form-control" required>
+                    <option value="">Seleccione una opcion</option>
+                    <option value="true">Si</option>  
+                    <option value="false">No</option>   
+                </select>
+            </div>
+
+            <h2>Modulo de Cliente</h2>
+            <div class="form-group">
+                <label for="ECliente">Permiso de Edicion:</label>
+                <select id="ECliente" asp-for="ECliente" class="form-control" required>
+                    <option value="">Seleccione una opcion</option>
+                    <option value="true">Si</option>  
+                    <option value="false">No</option>   
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="VCliente">Permiso de Visualizacion:</label>
+                <select id="VCliente" asp-for="VCliente" class="form-control" required>
+                    <option value="">Seleccione una opcion</option>
+                    <option value="true">Si</option>  
+                    <option value="false">No</option>   
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="RCliente">Permiso de Reportes:</label>
+                <select id="RCliente" asp-for="RCliente" class="form-control" required>
+                    <option value="">Seleccione una opcion</option>
+                    <option value="true">Si</option>  
+                    <option value="false">No</option>   
+                </select>
+            </div>
+
+            <h2>Modulo de Reporte</h2>
+            <div class="form-group">
+                <label for="EReporte">Permiso de Edicion:</label>
+                <select id="EReporte" asp-for="EReporte" class="form-control" required>
+                    <option value="">Seleccione una opcion</option>
+                    <option value="true">Si</option>  
+                    <option value="false">No</option>   
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="VReporte">Permiso de Visualizacion:</label>
+                <select id="VReporte" asp-for="VReporte" class="form-control" required>
+                    <option value="">Seleccione una opcion</option>
+                    <option value="true">Si</option>  
+                    <option value="false">No</option>   
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="RReporte">Permiso de Reportes:</label>
+                <select id="RReporte" asp-for="RReporte" class="form-control" required>
+                    <option value="">Seleccione una opcion</option>
+                    <option value="true">Si</option>  
+                    <option value="false">No</option>   
+                </select>
+            </div>
+
+            <h2>Modulo de Casos</h2>
+            <div class="form-group">
+                <label for="ECasos">Permiso de Edicion:</label>
+                <select id="ECasos" asp-for="ECasos" class="form-control" required>
+                    <option value="">Seleccione una opcion</option>
+                    <option value="true">Si</option>  
+                    <option value="false">No</option>   
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="VCasos">Permiso de Visualizacion:</label>
+                <select id="VCasos" asp-for="VCasos" class="form-control" required>
+                    <option value="">Seleccione una opcion</option>
+                    <option value="true">Si</option>  
+                    <option value="false">No</option>   
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="RCasos">Permiso de Reportes:</label>
+                <select id="RCasos" asp-for="RCasos" class="form-control" required>
+                    <option value="" disabled selected >Seleccione una opcion</option>
+                    <option value="true">Si</option>  
+                    <option value="false">No</option>   
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Crear</button>
         </form>
     </div>
+        <form method="get" action=/menus/ManejoUsuarios>
+            <button type="submit" class="boton-volver">Volver</button>
+        </form>
 </body>
 </html>
+
