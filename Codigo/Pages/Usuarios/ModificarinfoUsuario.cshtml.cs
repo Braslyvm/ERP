@@ -40,9 +40,9 @@ public List<Puesto> Puestos { get; set; }= new List<Puesto>();
  {
    Puestos = new List<Puesto>
     {
-        new Puesto { IDpueto = 1, PuestoT = "Administrador" },
-        new Puesto { IDpueto = 2, PuestoT = "Vendedor" },
-        new Puesto { IDpueto = 3, PuestoT = "Contador" }
+        
+        
+        
     };
    
    

@@ -1060,14 +1060,15 @@ RETURN
 );
 GO
 
-CREATE FUNCTION usuarios.Obtenerdepartamento()
+CREATE FUNCTION usuarios.puestos()
 RETURNS TABLE
 AS
 RETURN
 (
     SELECT 
+	id_puesto
 	id_departamento
-    FROM usuarios.departamento
+    FROM usuarios.puesto
 );GO
 
 
@@ -1138,3 +1139,5 @@ GO
 
 
 select * from usuarios.HSalario(null,null);
+
+SELECT  * FROM usuarios.puesto;

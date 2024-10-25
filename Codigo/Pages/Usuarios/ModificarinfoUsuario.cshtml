@@ -122,8 +122,8 @@
      <ul>
          @foreach (var puesto in Model.Puestos) {
              <li>
-                 <input type="radio" id="puesto_@puesto.IDpueto" name="PuestosSeleccionados" value="@puesto.IDpueto"/>
-                 <label for="puesto_@puesto.IDpueto">Puesto: @puesto.PuestoT</label>
+                 <input type="radio" id="puesto_@puesto.PuestoT" name="PuestosSeleccionados" value="@puesto.PuestoT"/>
+                 <label for="puesto_@puesto.PuestoT">Puesto: @puesto.PuestoT</label>
              </li>
          }
      </ul>

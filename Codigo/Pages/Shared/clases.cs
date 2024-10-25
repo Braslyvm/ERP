@@ -4,12 +4,7 @@ namespace proyecto1bases.Models{
  public class Puesto
  {
      public string PuestoT { get; set; }
-     public int IDpueto { get; set; }
- }
- public class Departamento
- {
-     public string NombreD { get; set; } 
-     public int IDdepartamento { get; set; }
+     public string Departamento { get; set; }
  }
  public class Empleado
 {
