@@ -65,35 +65,35 @@ namespace proyecto1bases.Pages
 
         // Lista de puestos
         public List<Puesto> Puestos { get; set; } = new List<Puesto>();
+            public List<Empleado> empleados { get; set; } = new List<Empleado>();
 
         // Método que se ejecuta cuando se carga la página 
         public async Task<IActionResult> OnGetAsync()
         {
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
 
-                // Consulta para obtener los puestos y departamentos
-                string sql = "SELECT id_puesto, id_departamento FROM usuarios.puesto;";
-                using (SqlCommand command = new SqlCommand(sql, connection))
-                {
-                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
-                    {
-                        // Leer los datos y agregar a la lista de puestos
-                        while (await reader.ReadAsync())
-                        {
-                            Puesto puesto = new Puesto
-                            {
-                                PuestoT = reader["id_puesto"].ToString(),
-                                Departamento = reader["id_departamento"].ToString()
-                            };
-
-                            Puestos.Add(puesto);
-                        }
-                    }
-                }
-            }
-
+            
+            
+            
+            
+            
             return Page(); 
         }
 
@@ -104,17 +104,17 @@ namespace proyecto1bases.Pages
             var puestoInfo = PuestoActual.Split(';');
         
         
-            var puesto = puestoInfo[0];        // Nombre del puesto
-            var departamento = puestoInfo[1];  // Nombre del departamento
+            var puesto = puestoInfo[0];       
+            var departamento = puestoInfo[1];  
             // Crear una conexión a la base de datos
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 // Crear un comando para ejecutar el procedimiento almacenado
-                using (SqlCommand command = new SqlCommand("usuarios.insertar_empleado", connection))
+                using (SqlCommand command = new SqlCommand("usuarios.actualizar_empleado", connection))
                 {
-                    command.CommandType = CommandType.StoredProcedure; // Definir el tipo de comando como procedimiento almacenado
+                    command.CommandType = CommandType.StoredProcedure; 
 
-                    // Agregar los parámetros de entrada al comando
+                 
                     command.Parameters.AddWithValue("@cedula", Cedula);
                     command.Parameters.AddWithValue("@nombre", Nombre);
                     command.Parameters.AddWithValue("@apellido1", Apellido1);
@@ -125,28 +125,14 @@ namespace proyecto1bases.Pages
                     command.Parameters.AddWithValue("@fecha_nacimiento", FechaNacimiento);
                     command.Parameters.AddWithValue("@lugar_residencia", LugarResidencia);
                     command.Parameters.AddWithValue("@telefono", Telefono);
-                    command.Parameters.AddWithValue("@fecha_ingreso", DateTime.Now); // Se puede ajustar según tu lógica
+                    command.Parameters.AddWithValue("@fecha_ingreso", DateTime.Now);
                     command.Parameters.AddWithValue("@salario_actual", SalarioActual);
                     command.Parameters.AddWithValue("@puesto_actual", puesto);
-                    command.Parameters.AddWithValue("@departamento_actual",departamento ); // Cambia esto según sea necesario
-                    command.Parameters.AddWithValue("@rol", "rol"); // Cambia esto según sea necesario
-                     // Imprimir todas las variables en consola
-            Console.WriteLine("Detalles del Registro:");
-            Console.WriteLine($"Cédula: {Cedula}");
-            Console.WriteLine($"Nombre: {Nombre}");
-            Console.WriteLine($"Apellido 1: {Apellido1}");
-            Console.WriteLine($"Apellido 2: {Apellido2}");
-            Console.WriteLine($"Correo Electrónico: {CorreoE}");
-            Console.WriteLine($"Contraseña: {Contraseña}");
-            Console.WriteLine($"Género: {Genero}");
-            Console.WriteLine($"Fecha de Nacimiento: {FechaNacimiento}");
-            Console.WriteLine($"Lugar de Residencia: {LugarResidencia}");
-            Console.WriteLine($"Teléfono: {Telefono}");
-            Console.WriteLine($"Salario Actual: {SalarioActual}");
-            Console.WriteLine($"Puesto Actual: {puesto}");
-            Console.WriteLine($"Departamento Actual: {departamento}");
+                    command.Parameters.AddWithValue("@departamento_actual",departamento );
+                    command.Parameters.AddWithValue("@rol", "rol"); 
+                    
 
-                    // Crear y agregar el parámetro de salida para el mensaje
+                  
                     SqlParameter mensajeParameter = new SqlParameter("@mensaje", SqlDbType.NVarChar, 200);
                     mensajeParameter.Direction = ParameterDirection.Output; // Definir el parámetro como salida
                     command.Parameters.Add(mensajeParameter);

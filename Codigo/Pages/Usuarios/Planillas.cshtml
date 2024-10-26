@@ -128,8 +128,8 @@
     <ul>
         @foreach (var empleado in Model.empleados) {
             <li>
-                <input type="radio" id="empleado@empleado.NombreE" name="Nombre" value="@empleado.Cedula" />
-                <label for="empleado@empleado.Cedula">@empleado.NombreE</label>
+                <input type="radio" id="empleado@empleado.Nombre" name="Nombre" value="@empleado.Cedula" />
+                <label for="empleado@empleado.Cedula">@empleado.Nombre</label>
             </li>
         }
     </ul>

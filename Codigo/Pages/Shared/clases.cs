@@ -8,8 +8,21 @@ namespace proyecto1bases.Models{
  }
  public class Empleado
 {
-    public string NombreE { get; set; } 
     public int Cedula { get; set; }
+    public string Nombre { get; set; }
+    public string Apellido1 { get; set; }
+    public string Apellido2 { get; set; }
+    public string CorreoElectronico { get; set; }
+    public string Genero { get; set; }
+    public DateTime FechaNacimiento { get; set; }
+    public int Edad { get; set; }
+    public string LugarResidencia { get; set; }
+    public string Telefono { get; set; }
+    public DateTime FechaIngreso { get; set; }
+    public decimal SalarioActual { get; set; }
+    public string PuestoActual { get; set; }
+    public string DepartamentoActual { get; set; }
+    public string Rol { get; set; }
 }
 public class Rol {
     public string nombrerol{get; set;}
