@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 public class inicio_secionModel : PageModel {
     [BindProperty]
-    public string contraseña { get; set; }
+    public string Contraseña { get; set; }
 
     [BindProperty]
     public int Identificacion { get; set; }
@@ -30,7 +30,7 @@ public class inicio_secionModel : PageModel {
             return Page();
         }
 
-        int resultadoValidacion = await ValidarUsuario(Identificacion, contraseña);
+        int resultadoValidacion = await ValidarUsuario(Identificacion, Contraseña);
 
         if (resultadoValidacion == 1) {
             await GuardarCedula(Identificacion); 
@@ -47,9 +47,9 @@ public class inicio_secionModel : PageModel {
         }
         using (var conexion = new SqlConnection(_connectionString)) {
             await conexion.OpenAsync();
-            using (var comando = new SqlCommand("SELECT dbo.InicioValido(@Cedula, @contraseña)", conexion)) {
+            using (var comando = new SqlCommand("SELECT dbo.InicioValido(@Cedula, @Contrasena)", conexion)) {
                 comando.Parameters.AddWithValue("@Cedula", identificacion);
-                comando.Parameters.AddWithValue("@contraseña", contraseña);
+                comando.Parameters.AddWithValue("@Contrasena", contraseña);
 
                 object result = await comando.ExecuteScalarAsync();
                 return (result != null) ? Convert.ToInt32(result) : 0;

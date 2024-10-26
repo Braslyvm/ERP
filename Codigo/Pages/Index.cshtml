@@ -17,11 +17,11 @@
         <form method="post"> 
             <div class="form-group">
                 <label for="Identificacion">Identificación</label>
-                <input type="number" asp-for="Identificacion" class="form-control" required  title="La identificación debe tener 9 dígitos" />
+                <input type="number" asp-for="Identificacion" class="form-control" required min="100000000" max="999999999" title="La identificación debe tener 9 dígitos" />
             </div>
             <div class="form-group">
-                <label for="contraseña">contraseña</label>
-                <input type="password" asp-for="contraseña" class="form-control" required />
+                <label for="Contraseña">Contraseña</label>
+                <input type="password" asp-for="Contraseña" class="form-control" required />
             </div>
             <button type="submit">Iniciar sesión</button>
             @if (!string.IsNullOrEmpty(Model.MensajeError)) {

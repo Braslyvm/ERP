@@ -241,18 +241,18 @@ go
 if not exists (select * from sys.tables where name='plantilla' and schema_id = schema_id('usuarios'))
 begin
 	create table usuarios.plantilla (
-			IdPlanilla int identity  (1,1) primary key,
-			cedula int not null,
-			mes varchar (180) not null,
-			año int not null,
-			fecha_pago date not null,
-			salario_actual int not null,
-			h_normales int not null,
-			h_extras int null,
-			total_salario int not null,
-			departamento varchar (180) not null,
-			foreign key (cedula) references usuarios.empleados (cedula),
-			foreign key (departamento) references usuarios.departamento (id_departamento)
+		cedula int not null,
+		mes varchar (180) not null,
+		año int not null,
+		fecha_pago date not null,
+		salario_actual int not null,
+		h_normales int not null,
+		h_extras int null,
+		total_salario int not null,
+		departamento varchar (180) not null,
+		primary key (cedula,mes,año),
+		foreign key (cedula) references usuarios.empleados (cedula),
+		foreign key (departamento) references usuarios.departamento (id_departamento)
 	);
 end;
 go
@@ -636,21 +636,5 @@ begin
     );
 end;
 go
-if not exists (select * from sys.tables where name='plantilla' and schema_id = schema_id('usuarios'))
-begin
-	create table usuarios.plantilla (
-			cedula int not null,
-			mes varchar (180) not null,
-			año int not null,
-			fecha_pago date not null,
-			salario_actual int not null,
-			h_normales int not null,
-			h_extras int null,
-			total_salario int not null,
-			departamento varchar (180) not null,
-			primary key (cedula,mes,año),
-			foreign key (cedula) references usuarios.empleados (cedula),
-			foreign key (departamento) references usuarios.departamento (id_departamento)
-	);
-end;
-go
+
+

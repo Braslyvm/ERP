@@ -3,7 +3,6 @@ use Planificador_recursos_empresariales
 go
 
 --------------Crear Rol -------------------------------
-
 create procedure CrearRol(@nombre varchar (180) , @vendedor bit)
 as 
 begin	
@@ -11,7 +10,6 @@ begin
 	values (@nombre,@vendedor)
 end 
 go
-
 
 -- Procedimiento para insertar permisos en el módulo de Inventario
 create procedure usuarios.InsertarPermisosInventario
@@ -112,6 +110,25 @@ begin
     values (@nombre, @edicion, @visualizacion, @reportes);
 end
 go
+
+--------------- retorna los usuarios----------------------
+
+create function dbo.usuarios ()
+returns table
+as 
+return (select cedula , nombre from  usuarios.empleados);
+go 
+
+
+
+--------------- retorna los roles ----------------------
+
+create function dbo.roles ()
+returns table
+as 
+return (select nombre from  usuarios.roles);
+go 
+
 
 -- inserte usuarios 
 
@@ -275,20 +292,27 @@ create procedure usuarios.insertar_plantilla
     @año int,
     @fecha_pago date,
     @h_normales int,
-    @salario_actual int,
     @h_extras int,
-    @departamento varchar(180),
     @mensaje nvarchar(200) output
 as
 begin
+	
     begin try
+        declare @departamento varchar(180);
+        declare @salario_actual int;
+
+        select @salario_actual = salario_actual, @departamento = departamento_actual
+        from usuarios.empleados
+        where cedula = @cedula;
+
+
         insert into usuarios.plantilla (cedula, mes, año, fecha_pago, h_normales, salario_actual, h_extras, total_salario, departamento)
         values ( @cedula, @mes, @año, @fecha_pago, @h_normales, @salario_actual, @h_extras,usuarios.calcularsalario(@h_normales,@h_extras,@salario_actual) , @departamento);
   
-        set @mensaje = 'registro de plantilla insertado exitosamente.';
+        set @mensaje = 'registro de plantilla insertado exitosamente';
     end try
     begin catch
-        set @mensaje = 'error al insertar en plantilla: ' + error_message();
+        set @mensaje = 'error al insertar en plantilla';
     end catch
 end;
 go
@@ -1105,9 +1129,3 @@ return
 go
 
 
-
-
-
-select * from usuarios.HSalario(null,null);
-
-SELECT  * FROM usuarios.puesto;
