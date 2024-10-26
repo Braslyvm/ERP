@@ -1,12 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using proyecto1bases.Models;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Data.SqlClient;
-using Microsoft.Data.SqlClient;
+using SqlConnection = Microsoft.Data.SqlClient.SqlConnection;
+using SqlCommand = Microsoft.Data.SqlClient.SqlCommand;
+using SqlDataReader = Microsoft.Data.SqlClient.SqlDataReader;
 
 namespace proyecto1bases.Pages
 {
@@ -25,20 +22,12 @@ namespace proyecto1bases.Pages
             _logger = logger;
         }
 
-<<<<<<< Updated upstream
- // Método que se ejecuta cuando se carga la página con una solicitud GET
- public async Task<IActionResult> OnGetAsync()
- {
-     return Page();
- }
-=======
         // Propiedades que se vinculan a los campos del formulario
         [BindProperty]
         public int Cedula { get; set; }
 
         [BindProperty]
         public string Nombre { get; set; }
->>>>>>> Stashed changes
 
         [BindProperty]
         public string Apellido1 { get; set; }
@@ -50,7 +39,7 @@ namespace proyecto1bases.Pages
         public string Genero { get; set; }
 
         [BindProperty]
-        public DateOnly FechaNacimiento { get; set; }
+        public DateTime FechaNacimiento { get; set; } 
 
         [BindProperty]
         public string LugarResidencia { get; set; }
@@ -76,34 +65,35 @@ namespace proyecto1bases.Pages
         // Método que se ejecuta cuando se carga la página con una solicitud GET
         public async Task<IActionResult> OnGetAsync()
         {
-            Puestos = new List<Puesto>();
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
 
-            
-            
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                string sql = "SELECT id_puesto, id_departamento FROM usuarios.puesto;";
+                using (SqlCommand command = new SqlCommand(sql, connection))
                 {
-                    await connection.OpenAsync();
-
-                    string sql = "SELECT id_puesto, id_departamento FROM usuarios.puesto;";
-                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
                     {
-                        using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                        while (await reader.ReadAsync())
                         {
-                            while (await reader.ReadAsync())
+                            Puesto puesto = new Puesto
                             {
-                                Puesto puesto = new Puesto
-                                {
-                                    PuestoT = reader["id_puesto"].ToString(),
-                                    Departamento = reader["id_departamento"].ToString()
-                                };
+                                PuestoT = reader["id_puesto"].ToString(),
+                                Departamento = reader["id_departamento"].ToString()
+                            };
 
-                                Puestos.Add(puesto);
-                            }
+                            Puestos.Add(puesto);
                         }
                     }
                 }
 
-               
+                // Logging de prueba
+                foreach (var puesto in Puestos)
+                {
+                    _logger.LogInformation($"ID Puesto: {puesto.PuestoT}, ID Departamento: {puesto.Departamento}");
+                }
+            }
+
             return Page();
         }
 

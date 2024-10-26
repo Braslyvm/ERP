@@ -1,8 +1,9 @@
 
 use Planificador_recursos_empresariales
 go
-)
+
 --------------Crear Rol -------------------------------
+
 create procedure CrearRol(@nombre varchar (180) , @vendedor bit)
 as 
 begin	
@@ -10,6 +11,7 @@ begin
 	values (@nombre,@vendedor)
 end 
 go
+
 
 -- Procedimiento para insertar permisos en el módulo de Inventario
 create procedure usuarios.InsertarPermisosInventario
@@ -1069,22 +1071,8 @@ RETURN
 	id_puesto
 	id_departamento
     FROM usuarios.puesto
-);GO
-
-
-
-
-CREATE FUNCTION usuarios.puesto()
-RETURNS TABLE
-AS
-RETURN
-(
-    SELECT 
-	id_puesto,
-	id_departamento
-    FROM usuarios.puesto
-);GO
-
+);
+go
 
 CREATE FUNCTION usuarios.contraseñas()
 RETURNS TABLE
@@ -1095,44 +1083,26 @@ RETURN
 	cedula,
 	Contraseña
     FROM usuarios.logeo
-);GO
-
-CREATE FUNCTION usuarios.Hpuesto(@FechaI datetime, @fechaFin datetime )
-RETURNS TABLE
-AS
-RETURN
-(
-    SELECT 
-	cedula, 
-	FechaInicio, 
-	FechaFin,
-	NombrePuesto ,
-	Departamento
-    FROM usuarios.historico_puesto
-	WHERE FechaInicio >= @FechaI AND FechaFin <= @fechaFin
 );
-GO
-CREATE FUNCTION usuarios.HSalario(@FechaI datetime, @fechaFin datetime )
-RETURNS TABLE
-AS
-RETURN
+
+go
+
+create function usuarios.hsalario(@fechai datetime, @fechafin datetime)
+returns table
+as
+return
 (
-    SELECT 
-	cedula, 
-	FechaInicio, 
-	FechaFin,
-	NombrePuesto,
-	Departamento,
-	monto
-
-    FROM usuarios.historico_salarios
-	WHERE FechaInicio >= @FechaI AND FechaFin <= @fechaFin
+    select 
+        cedula, 
+        fechainicio, 
+        fechafin,
+        nombrepuesto,
+        departamento,
+        monto
+    from usuarios.historico_salarios
+    where fechainicio >= @fechai and fechafin <= @fechafin
 );
-GO
-
-
-
-
+go
 
 
 
