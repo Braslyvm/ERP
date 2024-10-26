@@ -244,7 +244,7 @@ begin
 		cedula int not null,
 		mes varchar (180) not null,
 		año int not null,
-		fecha_pago date not null,
+		fecha_pago datetime not null,
 		salario_actual int not null,
 		h_normales int not null,
 		h_extras int null,

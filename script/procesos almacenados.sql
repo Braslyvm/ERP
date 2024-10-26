@@ -290,7 +290,7 @@ create procedure usuarios.insertar_plantilla
     @cedula int,
     @mes varchar(180),
     @año int,
-    @fecha_pago date,
+    @fecha_pago datetime,
     @h_normales int,
     @h_extras int,
     @mensaje nvarchar(200) output
@@ -304,8 +304,6 @@ begin
         select @salario_actual = salario_actual, @departamento = departamento_actual
         from usuarios.empleados
         where cedula = @cedula;
-
-
         insert into usuarios.plantilla (cedula, mes, año, fecha_pago, h_normales, salario_actual, h_extras, total_salario, departamento)
         values ( @cedula, @mes, @año, @fecha_pago, @h_normales, @salario_actual, @h_extras,usuarios.calcularsalario(@h_normales,@h_extras,@salario_actual) , @departamento);
   
@@ -484,7 +482,6 @@ create procedure gestion_inventario.insertar_detalle_movimiento (
 )
 as
 begin
-
     insert into gestion_inventario.detalle_movimiento (id_movimiento, c_articulo, cantidad, bodega_origen, bodega_destino)
     values (@id_movimiento, @c_articulo, @cantidad, @bodega_origen, @bodega_destino);
     set @mensaje = 'detalle de movimiento insertado.';

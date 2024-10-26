@@ -8,7 +8,7 @@ using System.Data;
 
 namespace proyecto1bases.Pages {
     public class AsignarRol : PageModel{
-        public bool funciono { get; set; } = false;
+        public bool funciono { get; set; } 
         [BindProperty]
          public List<(int Id, string nombre)> Empleados { get; set; } = new List<(int, string)>();        
          public List<string> roles { get; set; }= new List<string>();

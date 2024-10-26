@@ -38,6 +38,13 @@ namespace proyecto1bases.Pages
         public CrearRoles(IConfiguration configuration) {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
+
+        public async Task<IActionResult> OnGetAsync(bool? success){
+            
+            roltrue = success ?? false;
+            return Page();
+        }
+
         public async Task<IActionResult> OnPostAsync() {
 
             NombreRol = Request.Form["NombreRol"];
@@ -76,7 +83,7 @@ namespace proyecto1bases.Pages
             await PermisoReporte(NombreRol, EReporte, VReporte, RReporte);
             await PermisoCaso(NombreRol, ECasos, VCasos, RCasos);
             roltrue = true;
-            return Page(); 
+            return RedirectToPage(new { success = true });
     
         }
 

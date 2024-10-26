@@ -5,145 +5,84 @@
     ViewData["Title"] = "Gestión de Inventarios";
 }
 
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"]</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f4ff; 
-            margin: 0;
-            padding: 0; 
-        }
-        .container { 
-            width: 80%;
-            max-width: 600px;
-            padding: 20px;
-            background-color: #ffffff; 
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin: 50px auto;
-        }
-        h1 {
-            font-size: 2rem;
-            color: #004085; 
-            text-align: center;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin: 10px 0 5px;
-            font-weight: bold;
-            color: #343a40; 
-        }
-        input[type="text"],
-        input[type="int"],
-        input[type="date"],
-        select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ced4da; 
-            border-radius: 4px;
-            font-size: 1rem;
-            box-sizing: border-box;
-            transition: border-color 0.3s;
-        }
-        input:focus,
-        select:focus {
-            border-color: #80bdff; 
-            outline: none;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #0026fd; 
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s ease;
-            margin-top: 20px;
-        }
-        button:hover {
-            background-color: #e0a800; 
-        }
-        details {
-            margin-top: 20px;
-            background-color: #f8f9fa; 
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            padding: 10px;
-        }
-        summary {
-            font-weight: bold;
-            cursor: pointer;
-            color: #004085; 
-        }
-        ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-        li {
-            margin: 10px 0;
-        }
-    </style>
+    <title>Plantilla</title>
+    <link rel="stylesheet" href="~/css/index.css">
 </head>
 <body>
     <div class="container">
-        <h1>Registro de planilla</h1>
-        <p>Ingrese los siguientes datos según corresponde.</p>
+        <h2>Definir resultados</h2>
 
-        <form method="post">
-            <li>
-            <label for="Genero">Mes:</label>
-            <select id="Mes" name="Mes" asp-for="Mes" required>
-            <option value="">Seleccione un mes</option>
-            <option value="Enero">Enero</option>
-            <option value="Febrero">Febrero</option>
-             <option value="Marzo">Marzo</option>
-              <option value="Abril">Abril</option>
-                
-            <option value="Mayo">Mayo</option>
-            <option value="Junio">Junio</option>
-            <option value="Julio">Julio</option>
-            <option value="Agosto">Agosto</option>
-            <option value="Setiembre">Setiembre</option>
-            <option value="Octubre">Octubre</option>
-            <option value="Noviembre">Noviembre</option>
-            <option value="Diciembre">Diciembre</option>
-  
-
-
-</select>
-</li>
-<details open>
-    <summary>Seleccione el empleado</summary>
-    <ul>
-        @foreach (var empleado in Model.empleados) {
-            <li>
-                <input type="radio" id="empleado@empleado.Nombre" name="Nombre" value="@empleado.Cedula" />
-                <label for="empleado@empleado.Cedula">@empleado.Nombre</label>
-            </li>
+        @if (Model.funciono == 1)
+        {
+            <div class="alert">
+                <strong>¡Se asigno a plantilla !</strong>
+            </div>
         }
-    </ul>
-</details>
-</select>
-            <label for="Horas normales">Horas normales</label>
-            <input type="float" id="HorasN" name="HorasN" asp-for="HorasN" required />
-
-            <label for="Horas Extra">Horas Extra</label>
-            <input type="float" id="HorasE" name="HorasE" asp-for="HorasE" required />
-
-
-            <button type="submit">Guardar</button>
+        @if (Model.funciono == 2)
+        {
+            <div class="alert">
+                <strong>¡Este usaurio ya esta asigno a Plantilla!</strong>
+            </div>
+        }
+        <form method="post">
+            <div class="form-group">
+                <label for="Cedula">Empleado</label>
+                <select id="Cedula" asp-for="Cedula" class="form-control" required>
+                    <option value="">Seleccione una Empleado</option>
+                    @foreach (var Empleados in Model.Empleados)
+                    {
+                        <option value="@Empleados.Id"> @Empleados.nombre  </option>
+                    }
+                </select>
+            </div> 
+            <div class="form-group">
+                <label for="Mes">seleccione mes </label>
+                <select id="Mes" asp-for="Mes" class="form-control" required>
+                    <option value="">Seleccione una opción</option>
+                        <option value="">Seleccione un mes</option>
+                        <option value="Enero">Enero</option>
+                        <option value="Febrero">Febrero</option>
+                        <option value="Marzo">Marzo</option>
+                        <option value="Abril">Abril</option>
+                        <option value="Mayo">Mayo</option>
+                        <option value="Junio">Junio</option>
+                        <option value="Julio">Julio</option>
+                        <option value="Agosto">Agosto</option>
+                        <option value="Setiembre">Setiembre</option>
+                        <option value="Octubre">Octubre</option>
+                        <option value="Noviembre">Noviembre</option>
+                        <option value="Diciembre">Diciembre</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="año">Año:</label>
+                <input type="number" asp-for="Año" class="form-control" required min="2000" max="2100">
+            </div>
+            <div class="form-group">
+                <label for="horasN">Horas Normales:</label>
+                <input type="number" asp-for="HorasN" class="form-control"required min="0">
+            </div>
+            <div class="form-group">
+                <label for="horasE">Horas Extras:</label>
+                <input type="number" asp-for="HorasE" class="form-control"required min="0">
+            </div>
+            <div class="form-group">
+                <label for="fechaPago">Fecha de Pago:</label>
+                <input type="date" asp-for="fecha_pago" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Crear Plantilla</button>
         </form>
     </div>
+        <form method="get" action=/menus/ManejoUsuarios>
+            <button type="submit" class="boton-volver">Volver</button>
+        </form>
 </body>
 </html>
+
+
