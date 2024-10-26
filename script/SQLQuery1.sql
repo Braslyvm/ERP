@@ -25,8 +25,6 @@ EXEC usuarios.insertar_empleado
     @rol = 'rol',  -- el rol que solicitaste
     @mensaje = @mensaje OUTPUT;
 	
-	
-	
 
 
 
@@ -45,8 +43,6 @@ go
 EXEC usuarios.InsertarPermisosFacturas 'rol' , 1 , 1, 1
 go
 
-EXEC usuarios.InsertarPermisosVentas 'rol' , 1, 1, 1
-go
 
 EXEC usuarios.InsertarPermisosClientes 'rol' , 1, 1, 1
 go
