@@ -1,0 +1,40 @@
+@page
+@model proyecto1bases.Pages.EliminarCotizacion
+@{
+    ViewData["Title"] = "Facturación";
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/index.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Eliminar Cotización</h1>
+        @if (Model.funciono){
+            <div class="alert">
+                <strong>¡Se elimino la Cotizacion!</strong>
+            </div>
+        }
+        <form method="post">
+            <div class="form-group">
+                <label for="Cotizacion">Cotizacion:</label>
+                <select id="Cotizacion" asp-for="IdCotizacion" class="form-control" required>
+                    <option value="">Seleccione una Empleado</option>
+                    @foreach (var cotiza in Model.Cotizacion)
+                    {
+                        <option value="@cotiza"> @cotiza </option>
+                    }
+                </select>
+        </form>
+        <button type="submit" class="btn btn-primary">Eliminar Cotización</button>
+
+        <form method="get" action="/cotizacion/Cotizar">
+            <button type="submit" class="boton-volver">Volver</button>
+        </form>
+    </div>
+</body>
+</html>

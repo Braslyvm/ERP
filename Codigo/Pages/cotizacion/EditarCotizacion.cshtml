@@ -3,162 +3,117 @@
 @{
     ViewData["Title"] = "Facturación";
 }
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f4ff;
-            margin: 0;
-            padding: 0;
+    <link rel="stylesheet" href="~/css/index.css">
+    <script>
+        function toggleDenegacion(value) {
+            var denegacionField = document.getElementById('m_denegacion');
+            if (value === 'Denegado') {
+                denegacionField.style.display = 'block';
+            } else {
+                denegacionField.style.display = 'none';
+            }
         }
-       
-       
-       
-       
-       
-       
-       
-       
-       
-        h1 {
-            font-size: 2rem;
-            color: #004085;
-            text-align: center;
-        }
-        label {
-            font-weight: bold;
-            color: #343a40;
-        }
-        input[type="text"],
-        input[type="datetime-local"],
-        select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            font-size: 1rem;
-            box-sizing: border-box;
-            transition: border-color 0.3s;
-        }
-        input:focus,
-        select:focus {
-            border-color: #80bdff;
-            outline: none;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #0026fd;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s ease;
-            margin-top: 20px;
-        }
-        button:hover {
-            background-color: #e0a800;
-        }
-        table {
-            width: 100%;
-            margin-top: 10px;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #dee2e6;
-            text-align: left;
-        }
-        th {
-            background-color: #f8f9fa;
-        }
-        details {
-            margin-top: 5px;
-        }
-        .bodega-checkbox {
-            display: flex;
-            align-items: center;
-            margin: 5px 0;
-        }
-        .bodega-checkbox input {
-            margin-right: 8px;
-        }
-    </style>
+    </script>
 </head>
 <body>
-
-<div class="container">
-    <h1>Facturación</h1>
-
-    <form method="post">
-        <details>
-            <summary>Seleccione el cliente</summary>
-            <ul>
-                @foreach (var cliente in Model.clientes)
-                {
-                    <li>
-                        <input type="radio" id="cliente_@cliente.CedulaJ" name="CedulaJ" value="@cliente.CedulaJ" required />
-                        <label for="cliente_@cliente.CedulaJ"> @cliente.NombreC</label>
-                    </li>
-                }
-            </ul>
-        </details>
-        <button type="submit"> Cargar informacion</button>
-
-        <details>
-    <summary>Seleccione la cotizacion a editar del cliente</summary>
-    <ul>
-        @foreach (var cliente in Model.Cotizaciones)
+    <div class="container">
+        <h1>Editar Cotización</h1>
+        
+        @if (TempData["Mensaje"] != null)
         {
-            <li>
-                <input type="radio" id="cliente_@cliente.id_cotizacion" name="id_cotizacion" value="@cliente.id_cotizacion" required />
-                <label for="cliente_@cliente.id_cotizacion"> @cliente.id_cotizacion</label>
-            </li>
+            <div class="alert">
+                <strong>@TempData["Mensaje"]</strong>
+            </div>
         }
-    </ul>
-</details>
+        
+        <form method="post">
+            <div class="form-group">
+                <label for="Cotizacion">Cotizacion:</label>
+                <select id="Cotizacion" asp-for="IdCotizacion" class="form-control" required>
+                    <option value="">Seleccione una Cotizacion</option>
+                    @foreach (var cotiza in Model.Cotizacion)
+                    {
+                        <option value="@cotiza"> @cotiza </option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Mes">seleccione mes de cierre: </label>
+                <select id="Mes" asp-for="M_cierre" class="form-control" >
+                    <option value="">Seleccione una opción</option>
+                        <option value="">Seleccione un mes</option>
+                        <option value="Enero">Enero</option>
+                        <option value="Febrero">Febrero</option>
+                        <option value="Marzo">Marzo</option>
+                        <option value="Abril">Abril</option>
+                        <option value="Mayo">Mayo</option>
+                        <option value="Junio">Junio</option>
+                        <option value="Julio">Julio</option>
+                        <option value="Agosto">Agosto</option>
+                        <option value="Setiembre">Setiembre</option>
+                        <option value="Octubre">Octubre</option>
+                        <option value="Noviembre">Noviembre</option>
+                        <option value="Diciembre">Diciembre</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Probabilidad">Probabilidad de cierre:</label>
+                <select id="Probabilidad" name="Probabilidad" asp-for="Probabilidad" >
+                    <option value="">Seleccione un estado</option>
+                    <option value="0">0%</option>
+                    <option value="10">10%</option>
+                    <option value="20">20%</option>
+                    <option value="30">30%</option>
+                    <option value="40">40%</option>
+                    <option value="50">50%</option>
+                    <option value="60">60%</option>
+                    <option value="70">70%</option>
+                    <option value="80">80%</option>
+                    <option value="90">90%</option>
+                    <option value="100">100%</option>
+                </select>
+            </div>
 
-        <div>
-            <label for="Fecha">Fecha de ingreso</label>
-            <input type="datetime-local" id="Fecha" name="Fecha" asp-for="Fecha" required />
+            <div class="form-group">
+                <label for="seleccione el tipo de cotizacion">seleccione el tipo de cotizacion</label>
+                <select id="seleccione el tipo de cotizacion" asp-for="Tipo" class="form-control" >
+                        <option value="">Seleccione un mes</option>
+                        <option value="Cotización de Venta">Cotización de Venta</option>
+                        <option value="Cotización de Servicio">Cotización de Servicio</option>
+                </select>
+            </div>
 
-            <label for="FechaCierre">Fecha de cierre</label>
-            <input type="datetime-local" id="FechaCierre" name="FechaCierre" asp-for="FechaCierre" required />
+            <div class="form-group">
+                <label for="Estado">Estado:</label>
+                <select id="Estado" name="Estado" class="form-control" onchange="toggleDenegacion(this.value)" asp-for="Estado" >
+                    <option value="">Seleccione un estado</option>
+                    <option value="aprobado">Aprobado</option>
+                    <option value="denegada">Denegado</option>
+                </select>
+            </div>
 
-            <label for="Probabilidad">Probabilidad</label>
-            <select id="Probabilidad" name="Probabilidad" asp-for="Probabilidad" required>
-                <option value="">Seleccione un estado</option>
-                <option value="0">0%</option>
-                <option value="10">10%</option>
-                <option value="20">20%</option>
-                <option value="30">30%</option>
-                <option value="40">40%</option>
-                <option value="50">50%</option>
-                <option value="60">60%</option>
-                <option value="70">70%</option>
-                <option value="80">80%</option>
-                <option value="90">90%</option>
-                <option value="100">100%</option>
-            </select>
+            <div class="form-group" id="m_denegacion" style="display: @(Model.Estado == "Denegado" ? "block" : "none")">
+                <label for="m_denegacion">Motivo de denegación:</label>
+                <textarea id="m_denegacion" asp-for="M_denegacion" class="form-control">@Model.M_denegacion</textarea>
+            </div>
 
-            <label for="Tipo">Tipo de cotización</label>
-            <input type="text" id="Tipo" name="Tipo" asp-for="Tipo" required />
-        </div>
+            <div class="form-group">
+                <label for="Descripcion">Descripcion</label>
+                <textarea asp-for="Descripcion" class="form-control"></textarea>
+            </div>
 
-        <label for="Descripcion">Descripción</label>
-        <input type="text" id="Descripcion" name="Descripcion" asp-for="Descripcion" required />
+            <button type="submit" class="btn btn-primary">Actualizar Cotización</button>
+        </form>
 
-        <a asp-page="/EditarCotizacion2" class="btn btn-secondary">continuar</a>
-    </form>
-</div>
-
+        <form method="get" action="/cotizacion/Cotizar">
+            <button type="submit" class="boton-volver">Volver</button>
+        </form>
+    </div>
 </body>
 </html>

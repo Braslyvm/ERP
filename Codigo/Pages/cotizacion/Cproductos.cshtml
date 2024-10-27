@@ -1,0 +1,77 @@
+@page
+@model proyecto1bases.Pages.Cproductos
+@{
+    ViewData["Title"] = "Facturación";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/index.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Seleccionar Productos</h1>
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Mensaje"]
+        </div>
+    }
+    <form method="post" asp-page-handler="Agregar">
+    <div class="form-group">
+            <label for="Cotizacion">Cotización:</label>
+            <select asp-for="IdCotizacion" class="form-control" required>
+                <option value="">Seleccione una Cotización</option>
+                @foreach (var cotiza in Model.Cotizacion)
+                {
+                    <option value="@cotiza">@cotiza</option>
+                }
+            </select>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Producto</th>
+                <th>Bodega</th>
+                <th>Cantidad Existente</th>
+                <th>Cantidad a Comprar</th>
+                <th>Seleccionar</th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var producto in Model.productos)
+    {
+        <tr>
+            <td>@producto.codigo</td>
+            <td>@producto.producto</td>
+            <td>@producto.bodega</td>
+            <td>@producto.cantidad</td>
+            <td>
+                <input type="number" name="cantidades[@producto.codigo]" min="1" max="@producto.cantidad" class="form-control" />
+            </td>
+            <td>
+                <input type="checkbox" name="seleccionados" value="@producto.codigo" />
+                <input type="hidden" name="bodegas[@producto.codigo]" value="@producto.bodega" /> 
+            </td>
+        </tr>
+    }
+</tbody>
+    </table>
+    
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Enviar Selecciones</button>
+    </div>
+    
+</form>
+<form method="get" action="/cotizacion/Cotizar">
+            <button type="submit" class="boton-volver">Volver</button>
+</form>
+</div>
+</body>
+</html>
