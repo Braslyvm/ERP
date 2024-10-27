@@ -17,7 +17,7 @@ namespace proyecto1bases.Models{
     public DateTime FechaNacimiento { get; set; }
     public int Edad { get; set; }
     public string LugarResidencia { get; set; }
-    public string Telefono { get; set; }
+    public int Telefono { get; set; }
     public DateTime FechaIngreso { get; set; }
     public decimal SalarioActual { get; set; }
     public string PuestoActual { get; set; }
@@ -37,8 +37,24 @@ public class Articulo {
     public string nombreA{get; set;}
 
      public string c_articulo{get; set;}
+    public bool Activo { get; set; }
+    public string Descripcion { get; set; }
+    public string CFamilia { get; set; }
+    public decimal Peso { get; set; }
+    public int Precio { get; set; }
+    public int cantidad { get; set; }
+     public string c_bodega { get; set; } 
+   
+   
+
      
 }
+  public class Local 
+  {
+      public string nombre_local { get; set; }
+      public int cedula_juridica_local { get; set; }
+      public int telefono_local { get; set; }
+  }
 public class Bodega {
     public int C_Bodega{get; set;}
 
@@ -69,13 +85,14 @@ public class Cotizacion {
      
 }
 public class Cliente {
-    public string CedulaJ{get; set;}
+    public int CedulaJ{get; set;}
 
      public string NombreC{get; set;}
      
       public string CorreoE{get; set;}
-      public string Telefono{get; set;}
-      public string celular{get; set;}
+      public int Telefono{get; set;}
+      
+      public int celular{get; set;}
       public string fax{get; set;}
       public string zona{get; set;}
       public string sector{get; set;}

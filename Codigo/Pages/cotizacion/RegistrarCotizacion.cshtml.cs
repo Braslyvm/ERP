@@ -56,13 +56,13 @@ public Cotizar(IConfiguration configuration)
 }
 public async Task<IActionResult> OnGetAsync()
 {
-   
-     clientes.Add(new Cliente { NombreC = "Juan Pérez", CedulaJ = "30123456789" });
-  Bodegas.Add(new Bodega { C_Bodega = 1, NombreB = "Bodega A" });
-  Bodegas.Add(new Bodega { C_Bodega = 2, NombreB = "Bodega B" });
-  articulos.Add(new Articulo { c_articulo = "1", nombreA = "Monitor 24\"" });
-  articulos.Add(new Articulo { c_articulo = "2", nombreA = "Teclado Mecánico" });
-  articulos.Add(new Articulo { c_articulo = "3", nombreA = "Ratón Inalámbrico" });
+ 
+ 
+ 
+ 
+ 
+ 
+ 
     return Page();
 }
 // Método que se ejecuta cuando se envía el formulario con una solicitud POST

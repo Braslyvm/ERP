@@ -2,6 +2,11 @@
 use Planificador_recursos_empresariales
 go
 
+-------datos del negocio
+insert into facturación.Locales
+       (nombre_local, cedula_juridica_local, telefono_local)
+values 
+       ('ERP','123456789', '98765432')
 
 -- insertar registros en departamentos
 insert into usuarios.departamento (id_departamento) 
@@ -119,4 +124,26 @@ values
 ('B004', '008'),
 ('B004', '009'),
 ('B005', '005');
+insert into gestion_inventario.inventario (c_bodega, c_articulo, cantidad) 
+values
+('B001', '001', 500),
+('B001', '002', 200),
+('B001', '003', 100),
+('B001', '004', 150),
+('B002', '005', 250),
+('B002', '006', 50),
+('B003', '007', 300),
+('B003', '008', 400),
+('B004', '009', 500),
+('B004', '010', 350),
+('B005', '011', 200),
+('B005', '012', 150),
+('B001', '013', 600),
+('B001', '014', 450),
+('B002', '015', 700),
+('B002', '016', 500),
+('B003', '017', 100),
+('B003', '018', 120),
+('B004', '019', 80),
+('B004', '020', 150);
 

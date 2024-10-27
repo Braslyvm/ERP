@@ -445,7 +445,6 @@ create procedure gestion_inventario.suma_inventario
     @c_bodega varchar(180),
     @c_articulo varchar(180),
     @cantidad int
-
 as
 begin
     update gestion_inventario.inventario
@@ -525,7 +524,6 @@ begin
 end;
 go
 
-
 --------------------------------Crear cotizacion----------------------------------
 create procedure cotizaciones.insertar_cotizacion
     @cliente int,
@@ -555,7 +553,6 @@ begin
     end catch
 end;
 go
-
 
 --------------------------------modificar cotizacion----------------------------------
 create procedure cotizaciones.actualizar_cotizacion
@@ -624,7 +621,6 @@ end;
 go
 
 --------------------------------crear tarea de cotizacion ----------------------------------
-
 
 create procedure cotizaciones.insertar_tarea
     @id_cotizacion int,
@@ -852,7 +848,6 @@ begin
 			return @funca;
 		end
 	end 
-
 	else if @modulo = 'Reportes'
 	begin
 		if @tipo = 'Edicion'
@@ -930,6 +925,7 @@ CREATE PROCEDURE facturación.LineasFactura
     @cantidad INT,
     @precio_unitario INT,
     @monto_total INT,
+	@usuario int,
     @mensaje NVARCHAR(200) OUTPUT
 AS
 BEGIN
@@ -960,7 +956,7 @@ BEGIN
         WHERE n_factura = @n_factura;
 
         -- Restar cantidad
-        EXEC gestion_inventario.restar_inventario @bodega, @c_articulo, @cantidad;
+        EXEC gestion_inventario.gestionar_movimiento 'salida', @c_articulo,@bodega,null, @cantidad,@usuario;
 
         -- movimiento 
         SELECT TOP 1 @id_movimiento = id_movimiento
@@ -977,6 +973,7 @@ BEGIN
     END CATCH
 END;
 GO
+
 ----------------------------------- Calcular Total Factura -----------------------------------
 CREATE PROCEDURE facturación.CalcularTotalFactura
     @n_factura INT,
@@ -1054,16 +1051,98 @@ BEGIN
     END CATCH
 END;
 GO
+--------------Historiales de usuario salario----------------------------
 
+create procedure usuarios.Hsalarios
+@cedula int, 
+@FechaInicio date, 
+@monto int,
+@mensaje NVARCHAR(200) OUTPUT
+as 
+begin 
+	DECLARE @FechaFin DATETIME = GETDATE();
+	DECLARE @NombrePuesto varchar(180);
+	DECLARE @Departamento varchar(180);
 
+begin try 
+	 SET @NombrePuesto = usuarios.puestoActual(@cedula);
+	  SET @Departamento = usuarios.departamentoActual(@cedula);
+	 update usuarios.historico_salarios
+     set fechafin = @Fechafin
+     where cedula = @cedula and fechafin is null; 
+	
 
--------------------funciones select 
+	 insert into usuarios.historico_salarios(cedula, FechaInicio, FechaFin, NombrePuesto, Departamento,monto)
+     values (@cedula, @FechaInicio, NULL,@NombrePuesto, @Departamento,@monto);
+	 set @mensaje = 'Modificacion ingresada.';
+end try 
+begin catch 
+	set @mensaje = 'Modificacion no ingresada.';
+end catch 
+end;
+go
+
+create function usuarios.puestoactual(@cedula int)
+returns varchar(180) 
+as 
+begin 
+    declare @puesto_actual varchar(180);
+    
+    select top 1 @puesto_actual = puesto_actual 
+    from usuarios.empleados em 
+    where em.cedula = @cedula;
+
+    return @puesto_actual;
+end; 
+go
+create function usuarios.departamentoactual(@cedula int)
+returns varchar(180) 
+as 
+begin 
+    declare @departamento_actual varchar(180);
+    
+    select top 1 @departamento_actual = departamento_actual 
+    from usuarios.empleados em 
+    where em.cedula = @cedula;
+
+    return @departamento_actual;
+end; 
+go
+-------------------------Histyorisl puesotos
+create procedure usuarios.HPuestos
+@cedula int, 
+@FechaInicio date, 
+@mensaje NVARCHAR(200) OUTPUT
+as 
+begin 
+	DECLARE @FechaFin DATETIME = GETDATE();
+	DECLARE @NombrePuesto varchar(180);
+	DECLARE @Departamento varchar(180);
+
+begin try 
+	 SET @NombrePuesto = usuarios.puestoActual(@cedula);
+	  SET @Departamento = usuarios.departamentoActual(@cedula);
+	 update usuarios.historico_puesto
+     set fechafin = @Fechafin
+     where cedula = @cedula and fechafin is null; 
+	
+
+	 insert into usuarios.historico_puesto(cedula, FechaInicio, FechaFin, NombrePuesto, Departamento)
+     values (@cedula, @FechaInicio, NULL,@NombrePuesto, @Departamento);
+	 set @mensaje = 'Modificacion ingresada.';
+end try 
+begin catch 
+	set @mensaje = 'Modificacion no ingresada.';
+end catch 
+end;
+go
+-------------------funciones select -----------------------
 CREATE FUNCTION usuarios.ObtenerEmpleados()
 RETURNS TABLE
 AS
 RETURN
-(
-    SELECT 
+(		
+		SELECT 
         cedula,
         nombre,
         apellido1,
@@ -1082,6 +1161,8 @@ RETURN
     FROM usuarios.empleados
 );
 GO
+
+
 
 CREATE FUNCTION usuarios.puestos()
 RETURNS TABLE
@@ -1105,7 +1186,6 @@ RETURN
 	Contraseña
     FROM usuarios.logeo
 );
-
 go
 
 create function usuarios.hsalario(@fechai datetime, @fechafin datetime)
@@ -1126,3 +1206,95 @@ return
 go
 
 
+create function gestion_inventario.productos()
+returns table
+as
+return
+(
+    select 
+        ga.c_articulo,
+		ga.activo,
+
+        ga.c_familia,
+        ga.descripcion,
+        ga.nombre,
+        ga.peso,
+        ga.precio,
+        gi.c_bodega,
+        gi.cantidad
+    from 
+        gestion_inventario.articulos ga
+    join 
+        gestion_inventario.inventario gi on gi.c_articulo = ga.c_articulo
+);
+
+
+go
+create function clientes.ObtenerCliente()
+returns table
+as
+return
+(
+    select 
+     cedula,
+        nombre,
+        Correo_Electronico ,
+        Telefono ,
+        celular ,
+        fax ,
+		zona, 
+		sector
+    from  clientes.cliente
+   
+);
+go
+
+create function clientes.obtenerclientoporcedula (@cedula nvarchar(50))
+returns table
+as
+return
+(
+    select 
+        cedula,
+        nombre,
+        correo_electronico,
+        telefono,
+        celular,
+        fax,
+        zona,
+        sector
+    from clientes.cliente
+    where cedula = @cedula
+);
+go
+create function clientes.cantidades()
+returns table
+as
+return
+(
+    select 
+     cedula,
+        nombre,
+        Correo_Electronico ,
+        Telefono ,
+        celular ,
+        fax ,
+		zona, 
+		sector
+    from  clientes.cliente
+   
+);
+go
+create function facturación.ERP()
+returns table
+as
+return
+(
+    select 
+    nombre_local
+      ,cedula_juridica_local
+      ,telefono_local
+    from  facturación.Locales
+   
+);
+go

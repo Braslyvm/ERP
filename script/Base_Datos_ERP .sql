@@ -149,7 +149,6 @@ begin
 end;
 go
 
-
 -- Nombre de la tabla: empleados
 -- Descripcion: regostra la informaciocion de los empleados de la empresa	
 -- Llaver primaria: cedula
@@ -182,7 +181,7 @@ end;
 go
 
 -- Nombre de la tabla:logeo
--- Descripcion:	sistema de logeo qu permite ingresar al usuario al sistema 
+-- Descripcion:	sistema de logeo que permite ingresar al usuario al sistema 
 -- llave foranea: cedula
 if not exists (select * from sys.tables where name = 'logeo' and schema_id = schema_id('usuarios'))
 begin
@@ -194,19 +193,19 @@ begin
 end;
 go
 
-
 -- Nombre de la tabla: historico_puesto
 -- Descripcion:	alamcena el historia de los puestos del usuario 
 -- llave foranea: cedula, NombrePuesto, Departamento
 if not exists (select * from sys.tables where name='historico_puesto' and schema_id = schema_id('usuarios'))
 begin
 	create table usuarios.historico_puesto (
+	id INT IDENTITY(1,1) ,
 		cedula int not null,
 		FechaInicio date NOT NULL,
-		FechaFin date NOT NULL,
+		FechaFin date  NULL,
 		NombrePuesto varchar(180) NOT NULL,
 		Departamento varchar(180) NOT NULL,
-		primary key (cedula,FechaInicio,FechaFin),
+		primary key (cedula,FechaInicio,id),
 		foreign key (cedula) references usuarios.empleados (cedula),
 		foreign key (NombrePuesto) references usuarios.puesto (id_puesto),
 		foreign key (Departamento) references usuarios.departamento (id_departamento)
@@ -220,13 +219,15 @@ go
 if not exists (select * from sys.tables where name='historico_salarios' and schema_id = schema_id('usuarios'))
 begin
 	create table usuarios.historico_salarios (
+
+		 id INT IDENTITY(1,1) ,
 		cedula int not null,
 		FechaInicio date NOT NULL,
-		FechaFin date NOT NULL,
+		FechaFin date NULL ,
 		NombrePuesto varchar(180) NOT NULL,
 		Departamento varchar(180) NOT NULL,
 		monto int not null,
-		primary key (cedula,FechaInicio,FechaFin),
+		primary key (cedula,FechaInicio,id),
 		foreign key (cedula) references usuarios.empleados (cedula),
 		foreign key (NombrePuesto) references usuarios.puesto (id_puesto),
 		foreign key (Departamento) references usuarios.departamento (id_departamento)
@@ -391,14 +392,14 @@ go
 if not exists (select * from sys.tables where name='cliente' and schema_id = schema_id('clientes'))
 begin
     create table clientes.cliente (
-        cedula int not null,
-        nombre varchar (180) not null,
-        Correo_Electronico varchar (180) not null,
-        Telefono int not null,
-        celular int not null,
-        fax varchar (180) not null,
-		zona varchar (180) not null, 
-		sector varchar (180) not null, 
+    cedula int not null,
+    nombre varchar (180) not null,
+    Correo_Electronico varchar (180) not null,
+    Telefono int not null,
+    celular int not null,
+    fax varchar (180) not null,
+	zona varchar (180) not null, 
+	sector varchar (180) not null, 
         primary key (cedula),
 		foreign key (sector) references clientes.sector(sector_nombre),
 		foreign key (zona) references clientes.zona(zona_nombre),
@@ -488,8 +489,8 @@ go
 create schema facturación;
 go
 
-if not exists (select * from sys.tables where name='Local' and schema_id = schema_id('facturación'))
- create table facturación.Local (
+if not exists (select * from sys.tables where name='Locales' and schema_id = schema_id('facturación'))
+ create table facturación.Locales (
 		nombre_local varchar(100) not null,
         cedula_juridica_local int not null primary key,
         telefono_local int not null);
@@ -512,7 +513,7 @@ begin
 		Total int null,
         primary key (n_factura),
         foreign key (id_cliente) references clientes.cliente (cedula),
-		 foreign key (cedula_juridica_local) references facturación.Local(cedula_juridica_local),
+		 foreign key (cedula_juridica_local) references facturación.Locales(cedula_juridica_local),
         foreign key (id_empleado) references usuarios.empleados(cedula),
         foreign key (id_cotizacion) references cotizaciones.cotizaciones(id_cotizacion)
     );

@@ -40,7 +40,7 @@ EXEC usuarios.insertar_empleado
     @salario_actual = 1500,
     @puesto_actual = 'gerente',
     @departamento_actual = 'recursos humanos',
-    @rol = 'rol',  -- el rol que solicitaste
+    @rol = 'rol',  
     @mensaje = @mensaje OUTPUT;
 	
 	

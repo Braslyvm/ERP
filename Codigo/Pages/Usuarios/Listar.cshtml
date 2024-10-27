@@ -1,0 +1,72 @@
+@page
+@model proyecto1bases.Pages.ListarModel
+@{
+    ViewData["Title"] = "Registro de Usuarios";
+}
+
+<h2>Lista de Empleados</h2>
+
+@if (Model.Empleados.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Cédula</th>
+                <th>Nombre</th>
+                <th>Apellido 1</th>
+                <th>Apellido 2</th>
+                <th>Correo Electrónico</th>
+                <th>Género</th>
+                <th>Fecha de Nacimiento</th>
+                <th>Edad</th>
+                <th>Lugar de Residencia</th>
+                <th>Teléfono</th>
+                <th>Fecha de Ingreso</th>
+                <th>Salario Actual</th>
+                <th>Puesto Actual</th>
+                <th>Departamento Actual</th>
+                <th>Rol</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var empleado in Model.Empleados)
+            {
+                <tr>
+                    <td>@empleado.Cedula</td>
+                    <td>@empleado.Nombre</td>
+                    <td>@empleado.Apellido1</td>
+                    <td>@empleado.Apellido2</td>
+                    <td>@empleado.CorreoElectronico</td>
+                    <td>@empleado.Genero</td>
+                    <td>@empleado.FechaNacimiento.ToString("yyyy-MM-dd")</td>
+                    <td>@empleado.Edad</td>
+                    <td>@empleado.LugarResidencia</td>
+                    <td>@empleado.Telefono</td>
+                    <td>@empleado.FechaIngreso.ToString("yyyy-MM-dd")</td>
+                    <td>@empleado.SalarioActual</td>
+                    <td>@empleado.PuestoActual</td>
+                    <td>@empleado.DepartamentoActual</td>
+                    <td>@empleado.Rol</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No se encontraron empleados.</p>
+}
+
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div class="alert alert-success">
+        @Model.SuccessMessage
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @Model.ErrorMessage
+    </div>
+}

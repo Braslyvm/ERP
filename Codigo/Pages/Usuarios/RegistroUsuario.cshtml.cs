@@ -70,29 +70,50 @@ namespace proyecto1bases.Pages
         // Método que se ejecuta cuando se carga la página 
         public async Task<IActionResult> OnGetAsync()
         {
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            
-            
-            
+             using (SqlConnection connection = new SqlConnection(_connectionString))
+ {
+     await connection.OpenAsync();
+     // Consulta para obtener los puestos y departamentos
+     string sql = "SELECT id_puesto, id_departamento FROM usuarios.puesto;";
+     using (SqlCommand command = new SqlCommand(sql, connection))
+     {
+         using (SqlDataReader reader = await command.ExecuteReaderAsync())
+         {
+             // Leer los datos y agregar a la lista de puestos
+             while (await reader.ReadAsync())
+             {
+                 Puesto puesto = new Puesto
+                 {
+                     PuestoT = reader["id_puesto"].ToString(),
+                     Departamento = reader["id_departamento"].ToString()
+                 };
+                 Puestos.Add(puesto);
+             }
+         }
+     }
+ }
+             using (SqlConnection connection = new SqlConnection(_connectionString))
+ {
+     await connection.OpenAsync();
+     // Consulta para obtener los puestos y departamentos
+     string sql = "SELECT id_puesto, id_departamento FROM usuarios.puesto;";
+     using (SqlCommand command = new SqlCommand(sql, connection))
+     {
+         using (SqlDataReader reader = await command.ExecuteReaderAsync())
+         {
+             // Leer los datos y agregar a la lista de puestos
+             while (await reader.ReadAsync())
+             {
+                 Puesto puesto = new Puesto
+                 {
+                     PuestoT = reader["id_puesto"].ToString(),
+                     Departamento = reader["id_departamento"].ToString()
+                 };
+                 Puestos.Add(puesto);
+             }
+         }
+     }
+ }
             
             return Page(); 
         }
@@ -110,7 +131,7 @@ namespace proyecto1bases.Pages
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 // Crear un comando para ejecutar el procedimiento almacenado
-                using (SqlCommand command = new SqlCommand("usuarios.actualizar_empleado", connection))
+                using (SqlCommand command = new SqlCommand("usuarios.insertar_empleado", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure; 
 
@@ -130,9 +151,7 @@ namespace proyecto1bases.Pages
                     command.Parameters.AddWithValue("@puesto_actual", puesto);
                     command.Parameters.AddWithValue("@departamento_actual",departamento );
                     command.Parameters.AddWithValue("@rol", "rol"); 
-                    
 
-                  
                     SqlParameter mensajeParameter = new SqlParameter("@mensaje", SqlDbType.NVarChar, 200);
                     mensajeParameter.Direction = ParameterDirection.Output; // Definir el parámetro como salida
                     command.Parameters.Add(mensajeParameter);
@@ -149,10 +168,60 @@ namespace proyecto1bases.Pages
                           SuccessMessage = mensaje; // Asigna el mensaje de éxito aquí
                         //ErrorMessage = "Ocurrió un error al registrar el usuario. Intente nuevamente."; // Mostrar mensaje al usuario
                     }
-                }
-            
-
-            return RedirectToPage();; // Redirigir a la página principal después de la inserción
+            }
+                if (SalarioActual != 0)  {
+                 using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    using (SqlCommand command = new SqlCommand("usuarios.Hsalarios", connection))
+                 {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@cedula", Cedula);
+                command.Parameters.AddWithValue("@FechaInicio", DateTime.Now);
+                command.Parameters.AddWithValue("@monto", SalarioActual);
+                  Console.WriteLine("Cédula: " + Cedula);
+            Console.WriteLine("Fecha de Inicio: " + DateTime.Now);
+            Console.WriteLine("Salario Actual: " + SalarioActual);
+                
+                 SqlParameter mensajeParameter = new SqlParameter("@mensaje", SqlDbType.NVarChar, 200)
+            {
+            Direction = ParameterDirection.Output
+            };
+            command.Parameters.Add(mensajeParameter);
+                  await connection.OpenAsync();
+            await command.ExecuteNonQueryAsync();
+            string mensaje = mensajeParameter.Value.ToString();
+            _logger.LogInformation(mensaje);
+            SuccessMessage = mensaje;
+                 }
         }
+     
     }
-}
+               if (PuestoActual != null){
+       using (SqlConnection connection = new SqlConnection(_connectionString))
+       {
+           using (SqlCommand command = new SqlCommand("usuarios.HPuestos", connection))
+        {
+       command.CommandType = CommandType.StoredProcedure;
+       command.Parameters.AddWithValue("@cedula", Cedula);
+       command.Parameters.AddWithValue("@FechaInicio", DateTime.Now);
+       
+
+
+
+       
+        SqlParameter mensajeParameter = new SqlParameter("@mensaje", SqlDbType.NVarChar, 200)
+   {
+   Direction = ParameterDirection.Output
+   };
+   command.Parameters.Add(mensajeParameter);
+         await connection.OpenAsync();
+   await command.ExecuteNonQueryAsync();
+   string mensaje = mensajeParameter.Value.ToString();
+   _logger.LogInformation(mensaje);
+   SuccessMessage = mensaje;
+        }
+}}
+            return RedirectToPage(); // Redirigir a la página principal después de la inserción
+        
+    }
+}}
