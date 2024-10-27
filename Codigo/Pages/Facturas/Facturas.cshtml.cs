@@ -100,10 +100,11 @@ namespace proyecto1bases.Pages
                 }
             }
 
-            // Procesa los artículos y la facturación aquí
-            // (Implementa la lógica de facturación según sea necesario)
+           
+           
 
             return RedirectToPage("FacturaDetalle", new { clienteId = CedulaJ, articulos = string.Join(",", articulosSeleccionadosConCantidad.Select(a => $"{a.ArticuloId}:{a.Cantidad}")) });
         }
     }
+    
 }

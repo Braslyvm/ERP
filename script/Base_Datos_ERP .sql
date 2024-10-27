@@ -569,7 +569,7 @@ go
 -- Verificar y crear la tabla detalle_movimiento si no existe
 if not exists (select * from sys.tables where name='detalle_movimiento' and schema_id = schema_id('gestion_inventario'))
 begin
-    create table gestion_inventario.detalle_moviminto (
+    create table gestion_inventario.detalle_movimiento (
         id_detalle int identity(1,1) primary key,
         id_movimiento int not null,
         c_articulo varchar(180) not null,

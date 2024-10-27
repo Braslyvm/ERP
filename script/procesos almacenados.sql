@@ -975,113 +975,182 @@ go
 
 
 ----------------------------------- Insertar Factura -----------------------------------
-CREATE PROCEDURE facturación.insertar_Factura
-    @cedula_juridica_local INT, 
-    @id_cliente INT, 
-    @id_cotizacion INT, 
-    @id_empleado INT,
-    @fecha_factura DATETIME,
-    @estado VARCHAR(20), 
-    @motivo_anulacion VARCHAR(200),
-    @Total INT = NULL,        
-    @mensaje NVARCHAR(200) OUTPUT
-AS
-BEGIN
-    BEGIN TRY
-        -- Insertar la factura
-        INSERT INTO facturación.facturas(cedula_juridica_local, id_cliente, id_cotizacion, id_empleado, fecha_factura, estado, motivo_anulacion, Total)
-        VALUES (@cedula_juridica_local, @id_cliente, @id_cotizacion, @id_empleado, @fecha_factura, @estado, @motivo_anulacion, @Total);
+-- crear función para obtener la última factura
+create function facturación.obtenerultimafactura()
+returns int
+as
+begin
+    declare @ultimafactura int;
+
+    select @ultimafactura = max(n_factura)
+    from facturación.facturas;
+
+    return @ultimafactura;
+end;
+go
+
+-- crear procedimiento para calcular el total de la factura
+create procedure facturación.calculartotalfactura
+    @n_factura int,
+    @total decimal(10, 2) output
+as
+begin
+    begin try
+        select @total = sum(monto_total)
+        from facturación.lista_articulos_facturados
+        where n_factura = @n_factura;
+
+        if @total is null
+            set @total = 0;
+    end try
+    begin catch
+        set @total = 0; 
+    end catch
+end;
+go
+
+-- crear procedimiento para insertar una factura
+create  procedure facturación.insertar_factura
+    @cedula_juridica_local int, 
+    @id_cliente int, 
+    @id_cotizacion int, 
+    @id_empleado int,
+    @fecha_factura datetime,
+    @estado varchar(20), 
+    @motivo_anulacion varchar(200),
+    @total int = null,        
+    @mensaje nvarchar(200) output
+as
+begin
+    begin try
+        -- insertar la factura
+        insert into facturación.facturas(cedula_juridica_local, id_cliente, id_cotizacion, id_empleado, fecha_factura, estado, motivo_anulacion, total)
+        values (@cedula_juridica_local, @id_cliente, @id_cotizacion, @id_empleado, @fecha_factura, @estado, @motivo_anulacion, @total);
         
-        -- Crear movimiento al insertar la factura
-        DECLARE @n_factura INT = SCOPE_IDENTITY();
-        DECLARE @tipo VARCHAR(30) = 'salida'
-        DECLARE @usuario INT = @id_empleado;
+        -- crear movimiento al insertar la factura
+        declare @n_factura int = scope_identity();
+        declare @tipo varchar(30) = 'salida';
+        declare @usuario int = @id_empleado;
 
-        --Nuevo movimiento
-        EXEC gestion_inventario.insertar_movimiento @n_factura, @tipo, @usuario, @mensaje;
+        -- nuevo movimiento
+        exec gestion_inventario.insertar_movimiento @n_factura, @tipo, @usuario, @mensaje;
 
-        SET @mensaje = 'Factura insertada exitosamente y movimiento registrado.';
-    END TRY
-    BEGIN CATCH
-        SET @mensaje = 'Error al insertar la factura: ' + ERROR_MESSAGE();
-    END CATCH
-END;
-GO
+        set @mensaje = 'factura insertada exitosamente y movimiento registrado.';
+    end try
+    begin catch
+        set @mensaje = 'error al insertar la factura: ' + error_message();
+    end catch
+end;
+go
 
------------------------------------ Insertar Línea de Factura -----------------------------------
-CREATE PROCEDURE facturación.LineasFactura
-    @n_factura INT,
-    @c_articulo VARCHAR(180),
-    @cantidad INT,
-    @precio_unitario INT,
-    @monto_total INT,
-	@usuario int,
-    @mensaje NVARCHAR(200) OUTPUT
-AS
-BEGIN
-    BEGIN TRY
-  
-        DECLARE @disponible INT;
-        DECLARE @bodega VARCHAR(180);
-        DECLARE @id_movimiento INT;
+---------------------------------------
+create function gestion_inventario.obtenerultimoidmovimiento()
+returns int
+as
+begin
+    declare @ultimoidmovimiento int;
 
-       
-        SELECT TOP 1 @disponible = cantidad, @bodega = c_bodega
-        FROM gestion_inventario.inventario
-        WHERE c_articulo = @c_articulo;
+    select @ultimoidmovimiento = max(id_movimiento)
+    from gestion_inventario.movimientos_inventario;
 
-        IF @disponible < @cantidad
-        BEGIN
-            SET @mensaje = 'Error: No hay suficiente inventario para el artículo ' + @c_articulo + '.';
-            RETURN; 
-        END
+    return @ultimoidmovimiento;
+end;
+go
 
-        -- Insertar en la lista 
-        INSERT INTO facturación.lista_articulos_facturados(n_factura, c_articulo, cantidad, precio_unitario, monto_total)
-        VALUES (@n_factura, @c_articulo, @cantidad, @precio_unitario, @monto_total);
+-- Crear procedimiento para insertar líneas de factura
+-- crear procedimiento para insertar líneas de factura
+create procedure facturación.lineasfactura
+    @c_articulo varchar(180),
+    @cantidad int,
+    @precio_unitario int,
+    @monto_total int,
+    @usuario int,
+    @mensaje nvarchar(200) output
+as
+begin
+    begin try
+        declare @bodega varchar(180);
+        declare @id_movimiento int; 
+        declare @n_factura int = facturación.obtenerultimafactura();
 
-        --  total de la factura
-        UPDATE facturación.facturas
-        SET Total = facturación.CalcularTotalFactura(@n_factura)
-        WHERE n_factura = @n_factura;
+        -- llamar a la función para obtener la bodega con cantidad suficiente
+        set @bodega = gestion_inventario.abodega(@c_articulo, @cantidad);
 
-        -- Restar cantidad
-        EXEC gestion_inventario.gestionar_movimiento 'salida', @c_articulo,@bodega,null, @cantidad,@usuario;
+        -- verificar si se encontró una bodega adecuada
+        if @bodega = 'no hay suficiente cantidad en ninguna bodega.'
+        begin
+            set @mensaje = @bodega;
+            return;
+        end
+        
+        -- insertar en la lista de artículos facturados
+        insert into facturación.lista_articulos_facturados(n_factura, c_articulo, cantidad, precio_unitario, monto_total)
+        values (@n_factura, @c_articulo, @cantidad, @precio_unitario, @monto_total);
 
-        -- movimiento 
-        SELECT TOP 1 @id_movimiento = id_movimiento
-        FROM gestion_inventario.movimientos_inventario
-        ORDER BY fecha; 
+        -- calcular y actualizar el total de la factura
+        declare @totalfactura decimal(10, 2);
+        exec facturación.calculartotalfactura @n_factura, @totalfactura output;
 
-        EXEC gestion_inventario.insertar_detalle_movimiento @id_movimiento, @c_articulo, @cantidad, @bodega, NULL, @mensaje;
+        update facturación.facturas
+        set total = @totalfactura
+        where n_factura = @n_factura;
+        
+        -- restar la cantidad del inventario en la bodega seleccionada
+        update gestion_inventario.inventario
+        set cantidad = cantidad - @cantidad
+        where c_articulo = @c_articulo and c_bodega = @bodega;
 
-        -- Realizar movimient0revisar si se debe incluiir
-        SET @mensaje = 'Artículo enlistado y cantidad restada del inventario, movimiento registrado.';
-    END TRY
-    BEGIN CATCH
-        SET @mensaje = 'Error al insertar artículo: ' + ERROR_MESSAGE();
-    END CATCH
-END;
-GO
+        -- registrar el movimiento
+        exec gestion_inventario.gestionar_movimiento 'salida', @c_articulo, @bodega, null, @cantidad, @usuario;
 
------------------------------------ Calcular Total Factura -----------------------------------
-CREATE PROCEDURE facturación.CalcularTotalFactura
-    @n_factura INT,
-    @Total DECIMAL(10, 2) OUTPUT
-AS
-BEGIN
-    BEGIN TRY
-        SELECT @Total = SUM(monto_total)
-        FROM facturación.lista_articulos_facturados
-        WHERE n_factura = @n_factura;
-        IF @Total IS NULL
-            SET @Total = 0;
-    END TRY
-    BEGIN CATCH
-        SET @Total = 0; 
-    END CATCH
-END;
-GO
+        -- obtener el último id de movimiento
+        set @id_movimiento = gestion_inventario.obtenerultimoidmovimiento();
+        print 'el último id de movimiento es: ' + cast(@id_movimiento as varchar(10));
+
+        -- insertar el detalle del movimiento directamente aquí   exec gestion_inventario.insertar_detalle_movimiento @id_movimiento, @c_articulo, @cantidad, @bodega, null, @mensaje;
+        insert into gestion_inventario.detalle_movimiento (id_movimiento, c_articulo, cantidad, bodega_origen,bodega_destino)
+        values (@id_movimiento, @c_articulo, @cantidad, @bodega, null); -- ajusta 'otra_columna' según tus necesidades
+
+        -- mensaje final
+        set @mensaje = 'artículo enlistado y cantidad restada del inventario, movimiento registrado.';
+    end try
+    begin catch
+        -- manejo de errores
+        set @mensaje = 'error: ' + error_message();
+    end catch
+end;
+go
+
+
+-- función para obtener la bodega con suficiente cantidad
+create function gestion_inventario.abodega (
+    @c_articulo varchar(180),
+    @cantidad_minima int
+)
+returns varchar(180)
+as
+begin
+    declare @bodega varchar(180);
+
+    -- buscar la primera bodega con suficiente cantidad de artículo
+    select top 1 @bodega = c_bodega
+    from gestion_inventario.inventario
+    where c_articulo = @c_articulo and cantidad >= @cantidad_minima
+    order by cantidad desc;
+
+    -- si no se encuentra, devolver mensaje
+    if @bodega is null
+        set @bodega = 'no hay suficiente cantidad en ninguna bodega.';
+
+    return @bodega;
+end;
+go
+
+
+
+
+
+
 
 ----------------------------------- anular factura-----------------------------
 CREATE PROCEDURE facturación.AnularFactura
