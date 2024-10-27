@@ -1,0 +1,42 @@
+@page
+@model proyecto1bases.Pages.borrarTarea
+@{
+    ViewData["Title"] = "Eliminar Tarea";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminar Tarea</title>
+    <link rel="stylesheet" href="~/css/index.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Eliminar Tarea</h2>
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+        <form method="post">
+            <div class="form-group">
+                <label for="IdTarea">Tarea</label>
+                <select id="IdTarea" asp-for="IdTarea" class="form-control" required>
+                    <option value="">Seleccione una Tarea</option>
+                    @foreach (var tarea in Model.Tareas)
+                    {
+                        <option value="@tarea">@tarea</option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-danger">Eliminar Tarea</button>
+        </form>
+    </div>
+    <form method="get" action=/cotizacion/Cotizar>
+            <button type="submit" class="boton-volver">Volver</button>
+    </form>
+</body>
+</html>

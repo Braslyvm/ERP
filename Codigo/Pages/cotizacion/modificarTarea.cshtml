@@ -1,0 +1,69 @@
+@page
+@model proyecto1bases.Pages.modificarTarea
+@{
+    ViewData["Title"] = "Asignar Tarea";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar tarea</title>
+    <link rel="stylesheet" href="~/css/index.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Modificar tarea</h2>
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+        <form method="post">
+            <div class="form-group">
+                <label for="IdTarea">Tarea</label>
+                <select id="IdTarea" asp-for="IdTarea" class="form-control" required>
+                    <option value="">Seleccione una Tarea</option>
+                    @foreach (var tarea in Model.Tareas)
+                    {
+                        <option value="@tarea">@tarea</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Cedula">Empleado</label>
+                <select id="Cedula" asp-for="Cedula" class="form-control" >
+                    <option value="">Seleccione una Empleado</option>
+                    @foreach (var Empleados in Model.Empleados)
+                    {
+                        <option value="@Empleados.Id"> @Empleados.nombre </option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Descripcion">Descripción</label>
+                <textarea asp-for="Descripcion" class="form-control" ></textarea>
+            </div>
+            <div class="form-group">
+                <label for="FechaLimite">Fecha Limite:</label>
+                <input type="date" asp-for="FechaLimite" class="form-control" >
+            </div>
+            <div class="form-group">
+                <label for="Estado">Estado:</label>
+                <select id="Estado" asp-for="Estado" class="form-control" >
+                    <option value="">Seleccione el estado</option>
+                    <option value="pendiente">Pendiente</option>
+                    <option value="en progreso">En progreso</option>
+                    <option value="completada">Completada</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Actualizar tarea</button>
+        </form>
+    </div>
+    <form method="get" action=/cotizacion/Cotizar>
+            <button type="submit" class="boton-volver">Volver</button>
+    </form>
+</body>
+</html>

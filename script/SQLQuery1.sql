@@ -59,3 +59,10 @@ SELECT * FROM usuarios.empleados
 SELECT * FROM usuarios.PermisosMInventario
 
 EXEC usuarios.InsertarPermisosCasos 'werg', 1, 0, 1;
+
+
+SELECT * FROM cotizaciones.cotizaciones
+
+SELECT * FROM cotizaciones.lista_articulos_cotizacion
+
+SELECT * FROM cotizaciones.tareas

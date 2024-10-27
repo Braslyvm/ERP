@@ -524,27 +524,28 @@ begin
 end;
 go
 
+
 --------------------------------Crear cotizacion----------------------------------
 create procedure cotizaciones.insertar_cotizacion
     @cliente int,
     @empleado int,
-    @fecha_corizacion date,
     @m_cierre varchar(180),
     @probabilidad int,
     @tipo varchar(180),
     @descripcion varchar(180),
-    @zona varchar(180),
-    @sector varchar(180),
-    @estado varchar(180),
-    @m_denegacion varchar(255) = null,
-    @contra_quien varchar(255),
-    @monto_total int,
     @mensaje nvarchar(200) output
 as
 begin
     begin try
-        insert into cotizaciones.cotizaciones (cliente, empleado, fecha_corizacion, m_cierre, probabilidad, tipo, descripción, zona, sector, estado, m_denegacion, contra_quien, monto_total)
-        values (@cliente, @empleado, @fecha_corizacion, @m_cierre, @probabilidad, @tipo, @descripcion, @zona, @sector, @estado, @m_denegacion, @contra_quien, @monto_total);
+		declare @zona varchar(180);
+        declare @sector varchar(180);
+
+        select @zona = zona, @sector = sector
+        from clientes.cliente
+        where cedula = @cliente;
+
+        insert into cotizaciones.cotizaciones (cliente, empleado, fecha_corizacion, m_cierre, probabilidad, tipo, descripción, zona, sector, estado)
+        values (@cliente, @empleado, GETDATE() , @m_cierre, @probabilidad, @tipo, @descripcion, @zona, @sector, 'abierta');
         
         set @mensaje = 'Cotización insertada exitosamente.';
     end try
@@ -554,63 +555,103 @@ begin
 end;
 go
 
---------------------------------modificar cotizacion----------------------------------
+
+--------------- retorna los Clientes----------------------
+
+create function dbo.clientes ()
+returns table
+as 
+return (select cedula , nombre from  clientes.cliente );
+go 
+
+--------------- retorna los cotizacio----------------------
+
+create function dbo.cotizaciones()
+returns table
+as 
+return (select id_cotizacion  from  cotizaciones.cotizaciones );
+go 
+
+----------------------------------actualizar------------------------------------
+
 create procedure cotizaciones.actualizar_cotizacion
     @id_cotizacion int,
-    @cliente int = null,
-    @empleado int = null,
-    @fecha_corizacion date = null,
     @m_cierre varchar(180) = null,
     @probabilidad int = null,
     @tipo varchar(180) = null,
-    @descripcion varchar(180) = null,
-    @zona varchar(180) = null,
-    @sector varchar(180) = null,
     @estado varchar(180) = null,
     @m_denegacion varchar(255) = null,
-    @contra_quien varchar(255) = null,
-    @monto_total int = null,
+	@contra_quien varchar(255) null,
     @mensaje nvarchar(200) output
 as
 begin
     begin try
         update cotizaciones.cotizaciones
         set 
-            cliente = coalesce(@cliente, cliente),
-            empleado = coalesce(@empleado, empleado),
-            fecha_corizacion = coalesce(@fecha_corizacion, fecha_corizacion),
             m_cierre = coalesce(@m_cierre, m_cierre),
             probabilidad = coalesce(@probabilidad, probabilidad),
             tipo = coalesce(@tipo, tipo),
-            descripción = coalesce(@descripcion, descripción),
-            zona = coalesce(@zona, zona),
-            sector = coalesce(@sector, sector),
             estado = coalesce(@estado, estado),
             m_denegacion = coalesce(@m_denegacion, m_denegacion),
-            contra_quien = coalesce(@contra_quien, contra_quien),
-            monto_total = coalesce(@monto_total, monto_total)
+			contra_quien = coalesce(@contra_quien, contra_quien)
         where id_cotizacion = @id_cotizacion;
-        
-        set @mensaje = 'Cotización actualizada.';
+
+        set @mensaje = 'cotización actualizada.';
     end try
     begin catch
-        set @mensaje = 'Error al actualizar la cotización.';
+        set @mensaje = 'error al actualizar la cotización.';
     end catch
 end;
 go
+
+
+-- Procedimiento almacenado para eliminar cotización y sus asociados
+create procedure cotizaciones.eliminar_cotizacion
+    @id_cotizacion int
+as
+begin
+    set nocount on;
+    delete from cotizaciones.tareas
+    where id_cotizacion = @id_cotizacion;
+    delete from cotizaciones.lista_articulos_cotizacion
+    where id_cotizacion = @id_cotizacion;
+    delete from cotizaciones.cotizaciones
+    where id_cotizacion = @id_cotizacion;
+end;
+go
+
+
+
+-------------Articulos-----------------------
+create function dbo.Articulos ()
+returns table
+as 
+return (select a.c_articulo as codigo , a.nombre as nombre  , b.c_bodega as bodega , cantidad
+from gestion_inventario.inventario i
+inner join gestion_inventario.articulos as a on  a.c_articulo = i.c_articulo
+inner join gestion_inventario.bodegas as b on b.c_bodega = i.c_bodega
+where cantidad > 0);
+go 
+
+
 
 --------------------------------enlistar productos de cotizacion cotizacion----------------------------------
 create procedure cotizaciones.insertar_articulo_cotizacion
     @id_cotizacion int,
     @c_producto varchar(180),
     @cantidad int,
-    @monto int,
+	@c_Bodega varchar(180),
     @mensaje nvarchar(200) output
 as
 begin
     begin try
-        insert into cotizaciones.lista_articulos_cotizacion (id_cotizacion, c_producto, cantidad, monto)
-        values (@id_cotizacion, @c_producto, @cantidad, @monto);
+		declare @monto int;
+        select @monto = @cantidad * precio
+        from gestion_inventario.articulos
+        where  c_articulo = @c_producto;
+
+        insert into cotizaciones.lista_articulos_cotizacion (id_cotizacion, c_producto, cantidad, monto,c_bodega)
+        values (@id_cotizacion, @c_producto, @cantidad, @monto,@c_Bodega);
         
         set @mensaje = 'Artículo enlistado.';
     end try
@@ -621,7 +662,6 @@ end;
 go
 
 --------------------------------crear tarea de cotizacion ----------------------------------
-
 create procedure cotizaciones.insertar_tarea
     @id_cotizacion int,
     @descripcion varchar(255),
@@ -642,6 +682,56 @@ begin
     end catch
 end;
 go
+
+
+-------------------modificar tarea --------------------
+create procedure cotizaciones.actualizar_tarea
+    @id_tarea int,  -- Asumimos que existe un identificador único para las tareas
+    @descripcion varchar(255) = null,
+    @usuario int = null,
+    @fecha_limite datetime = null,
+    @estado varchar(180) = null,
+    @mensaje nvarchar(200) output
+as
+begin
+    begin try
+        update cotizaciones.tareas
+        set 
+            descripcion = coalesce(@descripcion, descripcion),
+            usuario = coalesce(@usuario, usuario),
+            fecha_limite = coalesce(@fecha_limite, fecha_limite),
+            estado = coalesce(@estado, estado)
+        where id_tarea = @id_tarea;
+
+        set @mensaje = 'Tarea actualizada.';
+    end try
+    begin catch
+        set @mensaje = 'Error al actualizar la tarea.';
+    end catch
+end;
+go
+
+
+--------------- retorna los cotizacio----------------------
+
+create function dbo.tarea()
+returns table
+as 
+return (select id_tarea  from  cotizaciones.tareas );
+go 
+
+
+------------------------Borrar Tarea------------------------------
+create procedure cotizaciones.borrartareaporid
+    @id_tarea int
+as
+begin
+     delete from cotizaciones.tareas
+     where id_tarea = @id_tarea;
+end;
+go
+
+
 ---------------------------------------Validar Permiso -------------------------
 create function dbo.Validar_Permiso( 
 	@cedula int,
