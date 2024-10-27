@@ -443,6 +443,7 @@ begin
     );
 end;
 go
+
 -- Nombre de la tabla: lista_articulos_cotizacion
 -- Descripcion:	lista de los qrticulos que cotizo el cliente 
 -- Llaver primaria: id_lista
@@ -451,16 +452,16 @@ if not exists (select * from sys.tables where name='lista_articulos_cotizacion' 
 begin
     create table cotizaciones.lista_articulos_cotizacion (
 		id_lista int identity(1,1),
-        id_cotizacion int not null,
+		id_cotizacion int not null,
 		c_bodega varchar(180) not null,
-        c_producto varchar(180) not null,
-        cantidad int not null,
-        monto int not null,
+		c_producto varchar(180) not null,
+		cantidad int not null,
+		monto int not null,
 		primary key (id_lista),
 		foreign key (c_bodega) references gestion_inventario.bodegas(c_bodega),
-        foreign key (id_cotizacion) references cotizaciones.cotizaciones(id_cotizacion),
-        foreign key (c_producto) references gestion_inventario.articulos(c_articulo)
-    );
+		foreign key (id_cotizacion) references cotizaciones.cotizaciones(id_cotizacion),
+		foreign key (c_producto) references gestion_inventario.articulos(c_articulo)
+	);
 end;
 go
 -- Nombre de la tabla:tareas

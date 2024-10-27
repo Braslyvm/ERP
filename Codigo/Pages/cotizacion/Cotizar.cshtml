@@ -1,5 +1,5 @@
 @page
-@model IndexModel
+@model proyecto1bases.Pages.opcionescotizacion
 @{
     ViewData["Title"] = "Gestión de Ventas";
 }
@@ -10,68 +10,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
-    <style>
-        body {
-            font-family: 'Times New Roman', Times, serif, sans-serif;
-            background-color: #fdfdfd;
-            margin: 0;
-            padding: 0; 
-        }
-        .container { 
-           width: 80%;
-           max-width: 600px;
-           padding: 20px;
-           background-color: #d4d4d4;
-           border-radius: 8px;
-        }
-        h1 {
-            font-size: 2rem;
-            color: #000000;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #1f45ad;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s ease;
-        }
-        button:hover {
-            background-color: #ddd125;
-        }
-    </style>
+    <link rel="stylesheet" href="~/css/index.css">
 </head>
 <body>
     <div class="container">
         <h1>@ViewData["Title"]</h1>
         
-        <form method="get" action=/cotizacion/RegistrarCotizacion>
-            <button type="submit">Cotizar</button>
-        </form>
-         <form method="get" action=/cotizacion/EditarCotizacion>
-        <button type="submit">Editar Cotizacion</button>
-        </form>
-        <form method="get" action=/cotizacion/EliminarCotizacion>
-        <button type="submit">Eliminar Cotizacion</button>
-        </form>
-        <form method="get" action=/cotizacion/Cproductos>
-        <button type="submit">Lista de productos de cotizaciones</button>
-        </form>
-        <form method="get" action=/cotizacion/AsociarTarea>
-        <button type="submit">Tareas Cotizacion</button>
-        </form>
-        <form method="get" action=/cotizacion/modificarTarea>
-        <button type="submit">Modificar Tarea</button>
-        </form>
-         <form method="get" action=/cotizacion/borrarTarea >
-        <button type="submit">Eliminar Tarea</button>
+        @if (Model.CanCotizar)
+        {
+            <form method="get" action="/cotizacion/RegistrarCotizacion">
+                <button type="submit">Cotizar</button>
             </form>
+        }
+        
+        @if (Model.CanEditarCotizacion)
+        {
+            <form method="get" action="/cotizacion/EditarCotizacion">
+                <button type="submit">Editar Cotización</button>
+            </form>
+        }
+
+        @if (Model.CanEliminarCotizacion)
+        {
+            <form method="get" action="/cotizacion/EliminarCotizacion">
+                <button type="submit">Eliminar Cotización</button>
+            </form>
+        }
+
+        @if (Model.CanListaProductos)
+        {
+            <form method="get" action="/cotizacion/Cproductos">
+                <button type="submit">Lista de productos de cotizaciones</button>
+            </form>
+        }
+
+        @if (Model.CanAsociarTarea)
+        {
+            <form method="get" action="/cotizacion/AsociarTarea">
+                <button type="submit">Tareas Cotización</button>
+            </form>
+        }
+
+        @if (Model.CanModificarTarea)
+        {
+            <form method="get" action="/cotizacion/modificarTarea">
+                <button type="submit">Modificar Tarea</button>
+            </form>
+        }
+
+        @if (Model.CanEliminarTarea)
+        {
+            <form method="get" action="/cotizacion/borrarTarea">
+                <button type="submit">Eliminar Tarea</button>
+            </form>
+        }
+
+        @if (Model.CanMostrarCotizaciones)
+        {
+            <form method="get" action="/cotizacion/MostrarCotizaciones">
+                <button type="submit">Mostrar Cotizaciones</button>
+            </form>
+        }
     </div>
 </body>
 </html>

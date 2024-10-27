@@ -1,0 +1,73 @@
+@page
+@model proyecto1bases.Pages.MostrarCotizaciones
+@{
+    ViewData["Title"] = "Mostrar Cotizaciones";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/index.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Cotizaciones</h1>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID Cotización</th>
+                    <th>Cliente</th>
+                    <th>Empleado</th>
+                    <th>Fecha Cotización</th>
+                    <th>Estado</th>
+                    <th>Monto Total</th>
+                    <th>Artículos</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cotizacion in Model.Cotizaciones)
+                {
+                    <tr>
+                        <td>@cotizacion.IdCotizacion</td>
+                        <td>@cotizacion.Cliente</td>
+                        <td>@cotizacion.Empleado</td>
+                        <td>@cotizacion.FechaCotizacion.ToShortDateString()</td>
+                        <td>@cotizacion.Estado</td>
+                        <td>@cotizacion.MontoTotal?.ToString("C")</td>
+                        <td>
+                            @if (cotizacion.Articulos.Count > 0)
+                            {
+                                <ul>
+                                    @foreach (var articulo in cotizacion.Articulos)
+                                    {
+                                        <li>
+                                            Bodega: @articulo.CBodega, Producto: @articulo.CProducto, Cantidad: @articulo.Cantidad, Monto: @articulo.Monto.ToString("C")
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <span>No hay artículos</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (Model.Cotizaciones.Count == 0)
+        {
+            <div class="alert alert-warning">No hay cotizaciones disponibles.</div>
+        }
+
+        <form method="get" action="/cotizacion/Cotizar">
+            <button type="submit" class="boton-volver">Volver</button>
+        </form>
+    </div>
+</body>
+</html>

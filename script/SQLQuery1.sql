@@ -19,6 +19,8 @@ go
 EXEC usuarios.InsertarPermisosFacturas 'rol' , 1 , 1, 1
 go
 
+EXEC usuarios.InsertarPermisosCasos 'rol', 1, 0, 1;
+go 
 
 EXEC usuarios.InsertarPermisosReportes 'rol' , 1 , 1, 1
 go

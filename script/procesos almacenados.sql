@@ -555,6 +555,74 @@ begin
 end;
 go
 
+-------------------------------------actualizar total monto------------
+create procedure cotizaciones.actualizar_monto_total_cotizacion
+    @id_cotizacion int
+as
+begin
+    declare @total_monto int;
+    select @total_monto = sum(monto)
+    from cotizaciones.lista_articulos_cotizacion
+    where id_cotizacion = @id_cotizacion;
+    update cotizaciones.cotizaciones
+    set monto_total = @total_monto
+    where id_cotizacion = @id_cotizacion;
+end;
+go
+
+
+-----------------------------------optener articulos de cotizacion -----------------------------
+create procedure cotizaciones.sp_obtener_cotizaciones_con_articulos
+as
+begin
+    select 
+        c.id_cotizacion,
+        c.cliente,
+        c.empleado,
+        c.fecha_corizacion,
+        c.m_cierre,
+        c.probabilidad,
+        c.tipo,
+        c.descripción,
+        c.zona,
+        c.sector,
+        c.estado,
+        c.m_denegacion,
+        c.contra_quien,
+        c.monto_total,
+        la.c_bodega,
+        la.c_producto,
+        la.cantidad,
+        la.monto
+    from 
+        cotizaciones.cotizaciones c
+    left join 
+        cotizaciones.lista_articulos_cotizacion la on c.id_cotizacion = la.id_cotizacion
+    order by 
+        c.id_cotizacion;
+end;
+go
+
+--------------------------optener las tareas de cotizaciones--------------------------------
+create procedure cotizaciones.sp_obtener_tareas_cotizaciones
+as
+begin
+    select 
+        t.id_tarea,
+        t.id_cotizacion,
+        t.descripcion,
+        t.usuario,
+        t.fecha_inicio,
+        t.fecha_limite,
+        t.estado
+    from 
+        cotizaciones.tareas t
+    order by 
+        t.id_cotizacion, t.fecha_inicio;
+end;
+go
+
+
 
 --------------- retorna los Clientes----------------------
 
@@ -732,247 +800,294 @@ end;
 go
 
 
----------------------------------------Validar Permiso -------------------------
-create function dbo.Validar_Permiso( 
-	@cedula int,
-	@modulo varchar (180),
-	@tipo varchar (180)
+-----------------------------acesso a cotizar-------------------------------------------------------
+create function dbo.validar_permiso_cotizacion(
+    @cedula int,
+    @tipo varchar(100)
 )
 returns bit
-as 
-begin 
-	declare @rol varchar (180);
-	declare @funca bit ;
-	set @funca = 0
+as
+begin
+    declare @funca bit = 0;
+    declare @rol varchar(180);
+    select @rol = rol from usuarios.empleados where cedula = @cedula;
 
-    select @rol = e.rol
-    from usuarios.empleados AS e
-    where e.cedula = @cedula;
-
-	if @modulo = 'Inventario'
-	begin
-		if @tipo = 'Edicion'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMInventario as p_I ON r.nombre = p_I.nombre
-			where p_I.edicion = 1
-			return @funca;
-		end
-		else if @tipo = 'Visualizacion'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMInventario as p_I ON r.nombre = p_I.nombre
-			where p_I.visualizacion = 1
-			return @funca;
-		end
-		else if @tipo = 'Reportes'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMInventario as p_I ON r.nombre = p_I.nombre
-			where p_I.reportes = 1
-			return @funca;
-		end
+    if @rol is null
+    begin
+        return @funca; 
     end
-	else if @modulo = 'Usuario'
-	begin
-		if @tipo = 'Edicion'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMUsuarios as p_U ON r.nombre = p_U.nombre
-			where p_U.edicion = 1
-			return @funca;
-		end
-		else if @tipo = 'Visualizacion'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMUsuarios as p_U ON r.nombre = p_U.nombre
-			where p_U.visualizacion = 1
-			return @funca;
-		end
-		else if @tipo = 'Reportes'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMUsuarios as p_U ON r.nombre = p_U.nombre
-			where p_U.reportes = 1
-			return @funca;
-		end
-	end 
-	else if @modulo = 'Cotizacion'
-	begin
-		if @tipo = 'Edicion'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMCotizacion as p_C ON r.nombre = p_C.nombre
-			where p_C.edicion = 1
-			return @funca;
-		end
-		else if @tipo = 'Visualizacion'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMCotizacion as p_C ON r.nombre = p_C.nombre
-			where p_C.visualizacion = 1
-			return @funca;
-		end
-		else if @tipo = 'Reportes'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMCotizacion as p_C ON r.nombre = p_C.nombre
-			where p_C.reportes = 1
-			return @funca;
-		end
-	end 
-	else if @modulo = 'Facturacion'
-	begin
-		if @tipo = 'Edicion'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMFacturas as p_F ON r.nombre = p_F.nombre
-			where p_F.edicion = 1
-			return @funca;
-		end
-		else if @tipo = 'Visualizacion'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMFacturas as p_F ON r.nombre = p_F.nombre
-			where p_F.visualizacion = 1
-			return @funca;
-		end
-		else if @tipo = 'Reportes'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMFacturas as p_F ON r.nombre = p_F.nombre
-			where p_F.reportes = 1
-			return @funca;
-		end
-	end 
-	else if @modulo = 'Ventas'
-	begin
-		if @tipo = 'Edicion'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMVentas as p_V ON r.nombre = p_V.nombre
-			where p_V.edicion = 1
-			return @funca;
-		end
-		else if @tipo = 'Visualizacion'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMVentas as p_V ON r.nombre = p_V.nombre
-			where p_V.visualizacion = 1
-			return @funca;
-		end
-		else if @tipo = 'Reportes'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMVentas as p_V ON r.nombre = p_V.nombre
-			where p_V.reportes = 1
-			return @funca;
-		end
-	end 
-	else if @modulo = 'Clientes'
-	begin
-		if @tipo = 'Edicion'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMClientes as p_C ON r.nombre = p_C.nombre
-			where p_C.edicion = 1
-			return @funca;
-		end
-		else if @tipo = 'Visualizacion'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMClientes as p_C ON r.nombre = p_C.nombre
-			where p_C.visualizacion = 1
-			return @funca;
-		end
-		else if @tipo = 'Reportes'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMClientes as p_C ON r.nombre = p_C.nombre
-			where p_C.reportes = 1
-			return @funca;
-		end
-	end 
-	else if @modulo = 'Caso'
-	begin
-		if @tipo = 'Edicion'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMCaso as p_C ON r.nombre = p_C.nombre
-			where p_C.edicion = 1
-			return @funca;
-		end
-		else if @tipo = 'Visualizacion'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMCaso as p_C ON r.nombre = p_C.nombre
-			where p_C.visualizacion = 1
-			return @funca;
-		end
-		else if @tipo = 'Reportes'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMCaso as p_C ON r.nombre = p_C.nombre
-			where p_C.reportes = 1
-			return @funca;
-		end
-	end 
-	else if @modulo = 'Reportes'
-	begin
-		if @tipo = 'Edicion'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMReportes as p_R ON r.nombre = p_R.nombre
-			where p_R.edicion = 1
-			return @funca;
-		end
-		else if @tipo = 'Visualizacion'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMReportes as p_R ON r.nombre = p_R.nombre
-			where p_R.visualizacion = 1
-			return @funca;
-		end
-		else if @tipo = 'Reportes'
-		begin
-			select @funca = 1
-			from usuarios.roles  r
-			inner join usuarios.PermisosMReportes as p_R ON r.nombre = p_R.nombre
-			where p_R.reportes = 1
-			return @funca;
-		end
-	end 
-	select @funca = 1
-	from usuarios.roles  r
-	where r.vendedor = 1
-	return @funca
-end
+    if @tipo = 'edicion'
+    begin
+        select @funca = isnull(edicion, 0)
+        from usuarios.permisosmcotizacion
+        where nombre = @rol;
+    end
+    else if @tipo = 'visualizacion'
+    begin
+        select @funca = isnull(visualizacion, 0)
+        from usuarios.permisosmcotizacion
+        where nombre = @rol;
+    end
+    else if @tipo = 'reportes'
+    begin
+        select @funca = isnull(reportes, 0)
+        from usuarios.permisosmcotizacion
+        where nombre = @rol;
+    end
+    return @funca;
+end;
+go
+
+-----------------------------acesso a inventario-------------------------------------------------------
+create function dbo.validar_permiso_inventario(
+    @cedula int,
+    @tipo varchar(100)
+)
+returns bit
+as
+begin
+    declare @funca bit = 0;  
+    declare @rol varchar(180);
+    select @rol = rol from usuarios.empleados where cedula = @cedula;
+
+    if @rol is null
+    begin
+        return @funca;
+    end
+    if @tipo = 'edicion'
+    begin
+        select @funca = isnull(edicion, 0)
+        from usuarios.permisosminventario
+        where nombre = @rol;
+    end
+    else if @tipo = 'visualizacion'
+    begin
+        select @funca = isnull(visualizacion, 0)
+        from usuarios.permisosminventario
+        where nombre = @rol;
+    end
+    else if @tipo = 'reportes'
+    begin
+        select @funca = isnull(reportes, 0)
+        from usuarios.permisosminventario
+        where nombre = @rol;
+    end
+    return @funca; 
+end;
+go
+
+-----------------------------acesso a usuarios-------------------------------------------------------
+create function dbo.validar_permiso_usuarios(
+    @cedula int,
+    @tipo varchar(100)
+)
+returns bit
+as
+begin
+    declare @funca bit = 0;
+    declare @rol varchar(180);
+    select @rol = rol from usuarios.empleados where cedula = @cedula;
+
+    if @rol is null
+    begin
+        return @funca;  
+    end
+    if @tipo = 'edicion'
+    begin
+        select @funca = isnull(edicion, 0)
+        from usuarios.permisosmusuarios
+        where nombre = @rol;
+    end
+    else if @tipo = 'visualizacion'
+    begin
+        select @funca = isnull(visualizacion, 0)
+        from usuarios.permisosmusuarios
+        where nombre = @rol;
+    end
+    else if @tipo = 'reportes'
+    begin
+        select @funca = isnull(reportes, 0)
+        from usuarios.permisosmusuarios
+        where nombre = @rol;
+    end
+
+    return @funca;  
+end;
 go
 
 
+-----------------------------acesso a Facturas-------------------------------------------------------
+create function dbo.validar_permiso_facturas(
+    @cedula int,
+    @tipo varchar(100)
+)
+returns bit
+as
+begin
+    declare @funca bit = 0;  
+    declare @rol varchar(180);
+    select @rol = rol from usuarios.empleados where cedula = @cedula;
+
+    if @rol is null
+    begin
+        return @funca; 
+    end
+    if @tipo = 'edicion'
+    begin
+        select @funca = isnull(edicion, 0)
+        from usuarios.permisosmfacturas
+        where nombre = @rol;
+    end
+    else if @tipo = 'visualizacion'
+    begin
+        select @funca = isnull(visualizacion, 0)
+        from usuarios.permisosmfacturas
+        where nombre = @rol;
+    end
+    else if @tipo = 'reportes'
+    begin
+        select @funca = isnull(reportes, 0)
+        from usuarios.permisosmfacturas
+        where nombre = @rol;
+    end
+
+    return @funca;  
+end;
+go
+
+
+-----------------------------acesso a Clientes-------------------------------------------------------
+create function dbo.validar_permiso_clientes(
+    @cedula int,
+    @tipo varchar(100)
+)
+returns bit
+as
+begin
+    declare @funca bit = 0;  
+    declare @rol varchar(180);
+    select @rol = rol from usuarios.empleados where cedula = @cedula;
+
+    if @rol is null
+    begin
+        return @funca; 
+    end
+    if @tipo = 'edicion'
+    begin
+        select @funca = isnull(edicion, 0)
+        from usuarios.permisosmclientes
+        where nombre = @rol;
+    end
+    else if @tipo = 'visualizacion'
+    begin
+        select @funca = isnull(visualizacion, 0)
+        from usuarios.permisosmclientes
+        where nombre = @rol;
+    end
+    else if @tipo = 'reportes'
+    begin
+        select @funca = isnull(reportes, 0)
+        from usuarios.permisosmclientes
+        where nombre = @rol;
+    end
+
+    return @funca;  
+end;
+go
+
+-----------------------------acesso a Reportes-------------------------------------------------------
+create function dbo.validar_permiso_reportes(
+    @cedula int,
+    @tipo varchar(100)
+)
+returns bit
+as
+begin
+    declare @funca bit = 0;
+    declare @rol varchar(180);
+    select @rol = rol from usuarios.empleados where cedula = @cedula;
+
+    if @rol is null
+    begin
+        return @funca; 
+    end
+    if @tipo = 'edicion'
+    begin
+        select @funca = isnull(edicion, 0)
+        from usuarios.permisosmreportes
+        where nombre = @rol;
+    end
+    else if @tipo = 'visualizacion'
+    begin
+        select @funca = isnull(visualizacion, 0)
+        from usuarios.permisosmreportes
+        where nombre = @rol;
+    end
+    else if @tipo = 'reportes'
+    begin
+        select @funca = isnull(reportes, 0)
+        from usuarios.permisosmreportes
+        where nombre = @rol;
+    end
+
+    return @funca;  
+end;
+go
+-----------------------------acesso a caso-------------------------------------------------------
+create function dbo.validar_permiso_caso(
+    @cedula int,
+    @tipo varchar(100)
+)
+returns bit
+as
+begin
+    declare @funca bit = 0;  
+    declare @rol varchar(180);
+    select @rol = rol from usuarios.empleados where cedula = @cedula;
+
+    if @rol is null
+    begin
+        return @funca;
+    end
+    if @tipo = 'edicion'
+    begin
+        select @funca = isnull(edicion, 0)
+        from usuarios.permisosmcaso
+        where nombre = @rol;
+    end
+    else if @tipo = 'visualizacion'
+    begin
+        select @funca = isnull(visualizacion, 0)
+        from usuarios.permisosmcaso
+        where nombre = @rol;
+    end
+    else if @tipo = 'reportes'
+    begin
+        select @funca = isnull(reportes, 0)
+        from usuarios.permisosmcaso
+        where nombre = @rol;
+    end
+
+    return @funca;  -- retornar el resultado final
+end;
+go
+
+----- permiso de ventas ---------
+create function dbo.validar_permiso_venta(
+    @cedula int
+)
+returns bit
+as
+begin
+    declare @funca bit = 0;  
+    declare @rol varchar(180);
+    select @rol = rol from usuarios.empleados where cedula = @cedula;
+	select @funca = r.vendedor
+    from usuarios.roles r
+    where r.nombre = @rol;
+    return @funca;  
+end;
+go
 
 ----------------------------------- Insertar Factura -----------------------------------
 -- crear función para obtener la última factura

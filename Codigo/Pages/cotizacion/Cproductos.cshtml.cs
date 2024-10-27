@@ -14,6 +14,7 @@ namespace proyecto1bases.Pages
         
         public List<(string Codigo, string Bodega, int Cantidad)> ProductosSeleccionados { get; set; } = new List<(string, string, int)>();
 
+
         public int IdCotizacion { get; set; }
         public List<int> Cotizacion { get; set; } = new List<int>();
 
@@ -52,6 +53,8 @@ namespace proyecto1bases.Pages
             foreach (var producto in ProductosSeleccionados){
                 var mensaje = await InsertarArticuloCotizacion(IdCotizacion, producto.Codigo, producto.Cantidad, producto.Bodega);
             }
+
+            total (IdCotizacion);
             TempData["Mensaje"] = "Productos agregados correctamente.";
 
             ProductosSeleccionados.Clear();
@@ -117,5 +120,15 @@ namespace proyecto1bases.Pages
             }
             return mensajeSalida;
         }
+        public async Task total (int id_cotizacion){
+            using (var conexion = new SqlConnection(_connectionString)){
+                await conexion.OpenAsync();
+                var comando = new SqlCommand("EXEC cotizaciones.actualizar_monto_total_cotizacion @id_cotizacion ", conexion);
+                comando.Parameters.AddWithValue("@id_cotizacion", id_cotizacion);
+                await comando.ExecuteNonQueryAsync();
+
+                
+            }
+        }  
     }
 }
