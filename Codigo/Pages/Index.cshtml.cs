@@ -58,23 +58,14 @@ public class inicio_secionModel : PageModel {
     }
 
     public async Task GuardarCedula(int cedula) {
-        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json"); 
+        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
         var contenidoJson = await System.IO.File.ReadAllTextAsync(filePath);
         var json = JsonSerializer.Deserialize<Dictionary<string, object>>(contenidoJson);
+        json.Remove("Cedulas");
 
-        if (json.ContainsKey("Cedulas")){
-            var cedulas = JsonSerializer.Deserialize<List<int>>(json["Cedulas"].ToString());
-            if (cedulas != null && !cedulas.Contains(cedula)){
-                cedulas.Add(cedula);
-            }
-            json["Cedulas"] = cedulas;
-        }
-        else {
-            json["Cedulas"] = new List<int> { cedula };
-        }
-
+        json["Cedulas"] = new List<int> { cedula };
         var nuevojson = JsonSerializer.Serialize(json, new JsonSerializerOptions { WriteIndented = true });
-
         await System.IO.File.WriteAllTextAsync(filePath, nuevojson);
     }
+
 }
