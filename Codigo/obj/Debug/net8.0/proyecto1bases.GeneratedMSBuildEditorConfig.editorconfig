@@ -30,6 +30,22 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5pc3RyYXRpdm9zXFJlZ2lzdHJhclpvbmEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/brasl/Desktop/ERP/Codigo/Pages/Articulos/articulos.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXJ0aWN1bG9zXGFydGljdWxvcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/brasl/Desktop/ERP/Codigo/Pages/Articulos/EditarArticulos.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXJ0aWN1bG9zXEVkaXRhckFydGljdWxvcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/brasl/Desktop/ERP/Codigo/Pages/Articulos/EliminarArticulos.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXJ0aWN1bG9zXEVsaW1pbmFyQXJ0aWN1bG9zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/brasl/Desktop/ERP/Codigo/Pages/Articulos/RegistroArticulos.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXJ0aWN1bG9zXFJlZ2lzdHJvQXJ0aWN1bG9zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/brasl/Desktop/ERP/Codigo/Pages/bodegas/Bodegas.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcYm9kZWdhc1xCb2RlZ2FzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -164,6 +180,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/brasl/Desktop/ERP/Codigo/Pages/Usuarios/Listar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXN1YXJpb3NcTGlzdGFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/brasl/Desktop/ERP/Codigo/Pages/Usuarios/mesplantilla.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXN1YXJpb3NcbWVzcGxhbnRpbGxhLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/brasl/Desktop/ERP/Codigo/Pages/Usuarios/ModificarinfoUsuario.cshtml]

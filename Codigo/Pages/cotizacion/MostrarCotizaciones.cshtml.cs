@@ -50,12 +50,12 @@ namespace proyecto1bases.Pages
                                 MDenegacion = reader.IsDBNull(11) ? null : reader.GetString(11), // m_denegacion
                                 ContraQuien = reader.IsDBNull(12) ? null : reader.GetString(12), // contra_quien
                                 MontoTotal = reader.IsDBNull(13) ? (int?)null : reader.GetInt32(13), // monto_total
-                                Articulos = new List<Articulo>()
+                                Articuloco = new List<Articuloco>()
                             };
 
                             if (!reader.IsDBNull(14)) 
                             {
-                                cotizacion.Articulos.Add(new Articulo
+                                cotizacion.Articuloco.Add(new Articuloco
                                 {
                                     CBodega = reader.GetString(14), 
                                     CProducto = reader.GetString(15), 
@@ -90,10 +90,10 @@ namespace proyecto1bases.Pages
         public string MDenegacion { get; set; }
         public string ContraQuien { get; set; }
         public int? MontoTotal { get; set; } // Puede ser nulo
-        public List<Articulo> Articulos { get; set; }
+        public List<Articuloco> Articuloco { get; set; }
     }
 
-    public class Articulo
+    public class Articuloco
     {
         public string CBodega { get; set; }
         public string CProducto { get; set; }
