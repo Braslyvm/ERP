@@ -1572,3 +1572,49 @@ return
    
 );
 go
+
+
+
+---------------------------crear rol y persmisos -----------------
+EXEC  CrearRol 'rol' , 1
+go
+
+EXEC usuarios.InsertarPermisosInventario 'rol' , 1 , 1, 1
+go
+
+EXEC usuarios.InsertarPermisosUsuarios 'rol' , 1 , 1, 1
+go
+
+
+EXEC usuarios.InsertarPermisosCotizaciones 'rol' , 1 , 1, 1
+go
+
+EXEC usuarios.InsertarPermisosFacturas 'rol' , 1 , 1, 1
+go
+
+EXEC usuarios.InsertarPermisosCasos 'rol', 1, 0, 1;
+go 
+
+EXEC usuarios.InsertarPermisosReportes 'rol' , 1 , 1, 1
+go
+
+-------------- crear empleado de prueba-------------------------
+DECLARE @mensaje NVARCHAR(200);
+
+EXEC usuarios.insertar_empleado
+    @cedula = 987654321 ,
+    @nombre = 'Pedro',
+    @apellido1 = 'Ramírez',
+    @apellido2 = 'González',
+    @correo_electronico = 'pedro.ramirez@mail.com',
+    @contraseña = 'entrar',
+    @género = 'Masculino',
+    @fecha_nacimiento = '1990-05-10',
+    @lugar_residencia = 'San José',
+    @telefono = 22223333,
+    @fecha_ingreso = '2023-01-15',
+    @salario_actual = 1500,
+    @puesto_actual = 'gerente',
+    @departamento_actual = 'recursos humanos',
+    @rol = 'rol',  
+    @mensaje = @mensaje OUTPUT;

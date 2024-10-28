@@ -98,7 +98,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Registro de usuarios</h1>
+        <h1>Modificar usuario de usuarios</h1>
         <p>Ingrese los siguientes datos según corresponde.</p>
          @if (!string.IsNullOrEmpty(Model.SuccessMessage))
         {
@@ -159,12 +159,12 @@
         }
     </ul>
 </details>
-            <button type="submit">Registrar</button>
+            <button type="submit">Modificar</button>
         </form>
     </div>
- <form method="get" action=/menus/ManejoUsuarios>
-     <button type="submit" class="boton-volver">Volver</button>
- </form>
+    <form method="get" action="/Menu">
+    <button type="submit" class="btn btn-primary">Volver</button>
+</form>
 
 </body>
 </html>

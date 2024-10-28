@@ -26,6 +26,10 @@ begin
 end;
 go
 
+-- Módulo de usuario
+-- Nombre de la tabla: PermisosMInventario
+-- Descripcion:	guarda los permisos del modulo inventario
+-- Llaver primaria: nombre
 if not exists (select * from sys.tables where name = 'PermisisosMInventario' and schema_id = schema_id('usuarios'))
 begin
     create table usuarios.PermisosMInventario (
@@ -39,7 +43,10 @@ begin
     );
 end;
 go
-
+-- Módulo de usuario
+-- Nombre de la tabla: PermisosMUsuarios
+-- Descripcion:	guarda los permisos del modulo usuario
+-- Llaver primaria: nombre
 if not exists (select * from sys.tables where name = 'PermisisosMUsuarioa' and schema_id = schema_id('usuarios'))
 begin
     create table usuarios.PermisosMUsuarios (
@@ -53,6 +60,10 @@ begin
 end;
 go
 
+-- Módulo de usuario
+-- Nombre de la tabla: PermisosMCotizacion
+-- Descripcion:	guarda los permisos del modulo cotizacion
+-- Llaver primaria: nombre
 if not exists (select * from sys.tables where name = 'PermisisosMCotizacion' and schema_id = schema_id('usuarios'))
 begin
     create table usuarios.PermisosMCotizacion (
@@ -66,6 +77,10 @@ begin
 end;
 go
 
+-- Módulo de usuario
+-- Nombre de la tabla: PermisosMFacturas
+-- Descripcion:	guarda los permisos del modulo facturacion
+-- Llaver primaria: nombre
 if not exists (select * from sys.tables where name = 'PermisisosMFacturas' and schema_id = schema_id('usuarios'))
 begin
     create table usuarios.PermisosMFacturas (
@@ -79,8 +94,10 @@ begin
 end;
 go
 
-
-
+-- Módulo de usuario
+-- Nombre de la tabla: PermisosMClientes
+-- Descripcion:	guarda los permisos del modulo cliente 
+-- Llaver primaria: nombre
 if not exists (select * from sys.tables where name = 'PermisisosMCliente' and schema_id = schema_id('usuarios'))
 begin
     create table usuarios.PermisosMClientes (
@@ -94,6 +111,11 @@ begin
 end;
 go
 
+-- Módulo de usuario
+-- Nombre de la tabla: PermisisosMReportes
+-- Descripcion:	guarda los permisos del modulo reportes 
+-- Llaver primaria: nombre
+
 if not exists (select * from sys.tables where name = 'PermisisosMReportes' and schema_id = schema_id('usuarios'))
 begin
     create table usuarios.PermisosMReportes (
@@ -106,6 +128,11 @@ begin
     );
 end;
 go
+
+-- Módulo de usuario
+-- Nombre de la tabla: PermisosMCaso
+-- Descripcion:	guarda los permisos del modulo casos  
+-- Llaver primaria: nombre
 
 if not exists (select * from sys.tables where name = 'PermisisosMCaso' and schema_id = schema_id('usuarios'))
 begin

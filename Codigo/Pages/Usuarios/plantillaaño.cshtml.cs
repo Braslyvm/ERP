@@ -7,48 +7,39 @@ using System.Threading.Tasks;
 
 namespace proyecto1bases.Pages
 {
-    public class mesplantilla : PageModel
+    public class añoPlantilla : PageModel
     {
         private readonly string _connectionString;
 
-        public mesplantilla(IConfiguration configuration)
+        public añoPlantilla(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
         public List<Dictionary<string, object>> Planillas { get; set; } = new List<Dictionary<string, object>>();
 
-        // Nueva propiedad para el mes seleccionado
         [BindProperty(SupportsGet = true)]
-        public string Mes { get; set; }
+        public int? Año { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(bool? success)
+        public async Task<IActionResult> OnGetAsync()
         {
-            // Validación básica para el valor del mes
-            var mesesPermitidos = new HashSet<string> 
+            if (Año.HasValue)
             {
-                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
-                "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"
-            };
-
-            if (!string.IsNullOrEmpty(Mes) && mesesPermitidos.Contains(Mes))
-            {
-                Planillas.Clear(); // Limpiamos la lista para evitar acumulaciones
-                await LoadPlanillaAsync(Mes);
+                await LoadPlanillaByAñoAsync(Año.Value);
             }
 
             return Page();
         }
 
-        private async Task LoadPlanillaAsync(string mes)
+        private async Task LoadPlanillaByAñoAsync(int año)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                using (SqlCommand command = new SqlCommand("usuarios.PlanillaMes", connection))
+                using (SqlCommand command = new SqlCommand("usuarios.planillaAño", connection))
                 {
                     command.CommandType = System.Data.CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@mes", mes);
+                    command.Parameters.AddWithValue("@año", año);
 
                     using (SqlDataReader reader = await command.ExecuteReaderAsync())
                     {

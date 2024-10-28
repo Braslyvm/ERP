@@ -1,0 +1,66 @@
+@page
+@model proyecto1bases.Pages.añoPlantilla
+@{
+    ViewData["Title"] = "Planilla por Año";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planilla por Año</title>
+    <link rel="stylesheet" href="~/css/index.css">
+</head>
+<body>
+    <div class="container">
+        <h1>@ViewData["Title"]</h1>
+        <form method="get">
+            <div class="form-group">
+                <label for="Año">Seleccione Año:</label>
+                <input type="number" id="Año" name="Año" asp-for="Año" class="form-control" required />
+            </div>
+            <button type="submit">Consultar</button>
+        </form>
+
+        @if (Model.Planillas.Count > 0)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Cédula</th>
+                        <th>Nombre Completo</th>
+                        <th>Departamento</th>
+                        <th>Horas Normales</th>
+                        <th>Horas Extras</th>
+                        <th>Salario Actual</th>
+                        <th>Total Salario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.Planillas)
+                    {
+                        <tr>
+                            <td>@row["cedula"]</td>
+                            <td>@row["nombre_completo"]</td>
+                            <td>@row["departamento"]</td>
+                            <td>@row["h_normales"]</td>
+                            <td>@row["h_extras"]</td>
+                            <td>@row["salario_actual"]</td>
+                            <td>@row["total_salario"]</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else if (Model.Año.HasValue)
+        {
+            <p class="alert">No se encontraron registros para el año seleccionado.</p>
+        }
+
+        <form method="get" action="/menus/ManejoUsuarios">
+            <button type="submit" class="boton-volver">Volver</button>
+        </form>
+    </div>
+</body>
+</html>
