@@ -40,7 +40,6 @@ namespace proyecto1bases.Pages {
             return RedirectToPage(new { success = true });
         }   
 
-
         public List<(int Id, string nombre)> GetEmpleados(){
             var empleados = new List<(int, string)>();
 

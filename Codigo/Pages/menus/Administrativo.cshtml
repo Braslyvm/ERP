@@ -1,4 +1,4 @@
- @page
+@page
 @model IndexModel
 @{
     ViewData["Title"] = "Home Page";
@@ -17,25 +17,18 @@
             margin: 0;
             padding: 0; 
         }
-         //contedor de info
         .container { 
-           width: 80%;
-           max-width: 600px;
-           padding: 20px;
-           background-color: #e5e9e9;
-           border-radius: 8px;
-         
-        
-            
+            width: 80%;
+            max-width: 600px;
+            padding: 20px;
+            background-color: #e5e9e9;
+            border-radius: 8px;
         }
         h1 {
             font-size: 2rem;
             color: #000000;
-           
-           
         }
         form {
-           
             margin-bottom: 20px;
         }
         button {
@@ -43,7 +36,7 @@
             padding: 12px;
             background-color: #1f45ad;
             color: white;
-            border: currentColor;
+            border: none;
             border-radius: 4px;
             cursor: pointer;
             font-size: 1rem;
@@ -55,29 +48,14 @@
     </style>
 </head>
 <body>
-  
     <div class="container">
-          <h1>Gestion de actividades administrativas</h1>
-
-       
-        .<form method="get" action=/Administrativos/CrearBodega>
-        <button type="submit">Crear Bodega</button>
+        <h1>Gestión de actividades administrativas</h1>
+        <form method="get" action="/reportes/ListaArticulos">
+            <button type="submit">Inventario</button>
         </form>
-       
-        <form method="get" action=/Administrativos/RegistrarSector>
-            <button type="submit">Registro de sector</button>
-        </form>
-        <form method="get" action=/Administrativos/RegistrarZona>
-    <button type="submit">Registro de zona</button>
-        </form>
-        <form method="get" action=/Administrativos/login>
-            <button type="submit">credeciales de acceso</button>
-        </form>
-  
+                <form method="get" action="/Menu">
+    <button type="submit"> Volver</button>
+</form>
     </div>
 </body>
 </html>
-
- 
- 
- 
