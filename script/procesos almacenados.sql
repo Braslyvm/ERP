@@ -1188,10 +1188,10 @@ begin
         declare @id_movimiento int; 
         declare @n_factura int = facturación.obtenerultimafactura();
 
-        -- llamar a la función para obtener la bodega con cantidad suficiente
+        
         set @bodega = gestion_inventario.abodega(@c_articulo, @cantidad);
 
-        -- verificar si se encontró una bodega adecuada
+        
         if @bodega = 'no hay suficiente cantidad en ninguna bodega.'
         begin
             set @mensaje = @bodega;
@@ -1355,7 +1355,7 @@ begin catch
 end catch 
 end;
 go
-
+---------Retorna el puesto actual de un empleado
 create function usuarios.puestoactual(@cedula int)
 returns varchar(180) 
 as 
@@ -1369,6 +1369,7 @@ begin
     return @puesto_actual;
 end; 
 go
+---Retorna el departamento actual de un empleado
 create function usuarios.departamentoactual(@cedula int)
 returns varchar(180) 
 as 
@@ -1437,7 +1438,7 @@ RETURN
 GO
 
 
-
+--- retorna todos los puestos
 CREATE FUNCTION usuarios.puestos()
 RETURNS TABLE
 AS
@@ -1449,7 +1450,7 @@ RETURN
     FROM usuarios.puesto
 );
 go
-
+-- retorna las contraseñas
 CREATE FUNCTION usuarios.contraseñas()
 RETURNS TABLE
 AS
@@ -1461,7 +1462,7 @@ RETURN
     FROM usuarios.logeo
 );
 go
-
+--- retorna los historiales de salario
 create function usuarios.hsalario(@fechai datetime, @fechafin datetime)
 returns table
 as
@@ -1479,7 +1480,7 @@ return
 );
 go
 
-
+--retorna el inventario de productos
 create function gestion_inventario.productos()
 returns table
 as
@@ -1502,7 +1503,7 @@ return
         gestion_inventario.inventario gi on gi.c_articulo = ga.c_articulo
 );
 
-
+---retorna todos los clientes
 go
 create function clientes.ObtenerCliente()
 returns table
@@ -1522,7 +1523,7 @@ return
    
 );
 go
-
+--- retorna un cliente especifico por cedula
 create function clientes.obtenerclientoporcedula (@cedula nvarchar(50))
 returns table
 as
@@ -1559,6 +1560,7 @@ return
    
 );
 go
+--- retorna la informacion del local
 create function facturación.ERP()
 returns table
 as
