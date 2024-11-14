@@ -170,8 +170,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/ReportesE/CasosPorCotizacionFactura.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0ZXNFXENhc29zUG9yQ290aXphY2lvbkZhY3R1cmEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/ReportesE/depa.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0ZXNFXGRlcGEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/ReportesE/MovimientosBodega.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0ZXNFXE1vdmltaWVudG9zQm9kZWdhLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/ReportesE/PlanillaAnio.cshtml]
@@ -180,6 +188,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/ReportesE/PlanillaMensual.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0ZXNFXFBsYW5pbGxhTWVuc3VhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/ReportesE/TopClientesVentas.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0ZXNFXFRvcENsaWVudGVzVmVudGFzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/ReportesE/TopClientesZona.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0ZXNFXFRvcENsaWVudGVzWm9uYS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/coleg/OneDrive/Escritorio/ERP/Codigo/Pages/ReportesE/Ventafam.cshtml]

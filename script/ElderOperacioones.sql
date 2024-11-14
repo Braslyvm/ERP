@@ -103,11 +103,11 @@ JOIN
     clientes.cliente cl ON ff.id_cliente = cl.cedula          -- Relación entre facturas y cliente
 GROUP BY 
     cl.sector;
+GO
 
-SELECT * FROM VentaSector;
 
   /*Ventas por zona*/
-  CREATE VIEW VentaZona AS
+ CREATE VIEW VentaZona AS
 SELECT 
     SUM(lf.monto_total) AS total,
     cl.zona
@@ -115,21 +115,48 @@ FROM
     facturación.lista_articulos_facturados lf
 JOIN 
     facturación.facturas ff ON lf.n_factura = ff.n_factura  
+JOIN 
     clientes.cliente cl ON ff.id_cliente = cl.cedula         
 GROUP BY 
     cl.zona;
+GO
 
-go
 
 /*Ventas por departameto*/
-create view Ventadepartamento AS 
+CREATE VIEW gestion Ventadepartamento AS 
+SELECT COUNT(DISTINCT ff.n_factura) AS cantidadVentas, ue.departamento_actual
+FROM facturación.facturas ff 
+JOIN usuarios.empleados ue ON ff.id_empleado = ue.cedula
+GROUP BY ue.departamento_actual;
+GO
 
-select COUNT(DISTINCT ff.n_factura)  as cantidadVentas, ue.departamento_actual
-from  
-    facturación.facturas ff 
-	JOIN 
-	usuarios.empleados ue on ff.id_empleado= ue.cedula
+/*Cuenta cantidad de movimientos entrada salida*/
+create function gestion_inventario.cantidadmovimientos()
+returns table
+as
+return
+(
+    select 
+        c.bodega_origen as bodega,
+       'salida' as tipo,
+        count( c.id_movimiento) as cantidad_casos
+    from 
+        gestion_inventario.detalle_movimiento c
+    where c.bodega_destino is null
+    group by c.bodega_origen
+    union all
 
-group by ue.departamento_actual
+    select 
+        c.bodega_destino as bodega,
+       'Entrada' as tipo,
+        count( c.id_movimiento) as cantidad_casos
+    from 
+        gestion_inventario.detalle_movimiento c
+    where c.bodega_origen is null
+    group by c.bodega_destino
 
-select * from Ventadepartamento
+);
+
+
+
+

@@ -1,0 +1,94 @@
+@page
+@model proyecto1bases.Pages.CASOS
+@{
+    ViewData["Title"] = "Comparación de Casos de Cotización y Factura";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewData["Title"]</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4ff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 50px auto;
+        }
+        h1 {
+            font-size: 2rem;
+            color: #004085;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>@ViewData["Title"]</h1>
+
+        <canvas id="casosChart" width="400" height="300"></canvas>
+
+        <script>
+            var ctx = document.getElementById('casosChart').getContext('2d');
+            var casosChart = new Chart(ctx, {
+                type: 'bar', // Gráfico de barras comparativo
+                data: {
+                    // Usamos Distinct() para asegurarnos de que las fechas sean únicas
+                    labels: @Html.Raw(Json.Serialize(Model.Casos.Select(c => c.mesAño).Distinct().ToList())),
+                    datasets: [{
+                        label: 'Casos de Cotización',
+                        // Filtrar y organizar los datos por fecha sin repeticiones
+                        data: @Html.Raw(Json.Serialize(Model.Casos.Where(c => c.tipo == "cotizacion")
+                            .GroupBy(c => c.mesAño)  // Agrupamos por mesAño
+                            .Select(g => g.Sum(c => c.cantidad))  // Sumamos la cantidad de cada grupo
+                            .ToList())),
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Casos de Factura',
+                        // Igual que para los casos de cotización
+                        data: @Html.Raw(Json.Serialize(Model.Casos.Where(c => c.tipo == "factura")
+                            .GroupBy(c => c.mesAño)
+                            .Select(g => g.Sum(c => c.cantidad))
+                            .ToList())),
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return tooltipItem.dataset.label + ": " + tooltipItem.raw.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>

@@ -450,6 +450,7 @@ begin
     update gestion_inventario.inventario
     set cantidad = cantidad + @cantidad
     where c_bodega = @c_bodega and c_articulo = @c_articulo;
+PRINT 'suma hecha';
 end;
 go
 

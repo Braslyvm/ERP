@@ -1292,14 +1292,16 @@ print @mensaje;
 go 
 
 declare @mensaje nvarchar(200); 
-exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B001', @c_articulo = '001', @cantidad = 100, @n_factura = NULL, @usuario = 987654321, @bodega_origen = NULL, @bodega_destino = 'B001', @mensaje = @mensaje output; print @mensaje;
-exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B002', @c_articulo = '002', @cantidad = 150, @n_factura = NULL, @usuario = 34567890, @bodega_origen = NULL, @bodega_destino = 'B002', @mensaje = @mensaje output; print @mensaje;
-exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B003', @c_articulo = '003', @cantidad = 200, @n_factura = NULL, @usuario = 45678901, @bodega_origen = NULL, @bodega_destino = 'B003', @mensaje = @mensaje output; print @mensaje;
-exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B004', @c_articulo = '004', @cantidad = 250, @n_factura = NULL, @usuario = 56789012, @bodega_origen = NULL, @bodega_destino = 'B004', @mensaje = @mensaje output; print @mensaje;
-exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B005', @c_articulo = '005', @cantidad = 300, @n_factura = NULL, @usuario = 67890123, @bodega_origen = NULL, @bodega_destino = 'B005', @mensaje = @mensaje output; print @mensaje;
-exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B001', @c_articulo = '006', @cantidad = 50, @n_factura = NULL, @usuario = 67890123, @bodega_origen = NULL, @bodega_destino = 'B001', @mensaje = @mensaje output; print @mensaje;
-exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B002', @c_articulo = '007', @cantidad = 80, @n_factura = NULL, @usuario = 87654321, @bodega_origen = NULL, @bodega_destino = 'B002', @mensaje = @mensaje output; print @mensaje;
-exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B003', @c_articulo = '008', @cantidad = 120, @n_factura = NULL, @usuario = 987654321, @bodega_origen = NULL, @bodega_destino = 'B003', @mensaje = @mensaje output; print @mensaje;
+exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B001', @c_articulo = '001', @cantidad = 100, @n_factura = NULL, @usuario = 87654321, @bodega_origen = NULL, @bodega_destino = 'B001', @mensaje = @mensaje output; print @mensaje;
+exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B002', @c_articulo = '009', @cantidad = 10, @n_factura = NULL, @usuario = 87654321, @bodega_origen = NULL, @bodega_destino = 'B002', @mensaje = @mensaje output; print @mensaje;
+exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B003', @c_articulo = '011', @cantidad = 10, @n_factura = NULL, @usuario = 87654321, @bodega_origen = NULL, @bodega_destino = 'B003', @mensaje = @mensaje output; print @mensaje;
+exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B004', @c_articulo = '016', @cantidad = 10, @n_factura = NULL, @usuario = 34567890, @bodega_origen = NULL, @bodega_destino = 'B004', @mensaje = @mensaje output; print @mensaje;
+exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B005', @c_articulo = '009', @cantidad = 10, @n_factura = NULL, @usuario = 45678901, @bodega_origen = NULL, @bodega_destino = 'B005', @mensaje = @mensaje output; print @mensaje;
+exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B001', @c_articulo = '003', @cantidad = 10, @n_factura = NULL, @usuario = 56789012, @bodega_origen = NULL, @bodega_destino = 'B001', @mensaje = @mensaje output; print @mensaje;
+exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B002', @c_articulo = '009', @cantidad = 10, @n_factura = NULL, @usuario = 34567890, @bodega_origen = NULL, @bodega_destino = 'B002', @mensaje = @mensaje output; print @mensaje;
+exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B003', @c_articulo = '012', @cantidad = 10, @n_factura = NULL, @usuario = 87654321, @bodega_origen = NULL, @bodega_destino = 'B003', @mensaje = @mensaje output; print @mensaje;
+
+
 
 
 
@@ -1307,7 +1309,8 @@ exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B0
 
 --------------------------insertar cotizaciones----------------------------
 
-
+GO
+declare @mensaje nvarchar(200); 
 exec cotizaciones.insertar_cotizacion 951753852, 12345678, 'Noviembre', 80, 'Cotización de Venta', 'Compra de productos electrónicos', @mensaje;
 exec cotizaciones.insertar_cotizacion 123456789, 45678901, 'Diciembre', 75, 'Cotización de Servicio', 'Servicios para el hogar', @mensaje;
 exec cotizaciones.insertar_cotizacion 987654321, 12345678, 'Abril', 90, 'Cotización de Venta', 'Artículos para la cocina', @mensaje;
@@ -1328,9 +1331,11 @@ exec cotizaciones.insertar_cotizacion 123456789, 12345678, 'Octubre', 85, 'Cotiz
 exec cotizaciones.insertar_cotizacion 987654321, 87654321, 'Julio', 82, 'Cotización de Servicio', 'Servicios de reparación de electrodomésticos', @mensaje;
 exec cotizaciones.insertar_cotizacion 987654321, 87654321, 'Diciembre', 91, 'Cotización de Venta', 'Venta de productos electrónicos', @mensaje;
 exec cotizaciones.insertar_cotizacion 789654123, 12345678, 'Noviembre', 70, 'Cotización de Servicio', 'Alquiler de equipos para evento', @mensaje;
+go 
 
-exec cotizaciones.insertar_tarea 1, 'Revisar productos', 12345678, '2024-11-30', 'pendiente', @mensaje;
-exec cotizaciones.insertar_tarea 2, 'Presupuesto mantenimiento', 23456789, '2024-11-25', 'en progreso', @mensaje;
+declare @mensaje nvarchar(200); 
+exec cotizaciones.insertar_tarea 1, 'Revisar productos', 12345678, '2024-12-01', 'pendiente', @mensaje;
+exec cotizaciones.insertar_tarea 2, 'Presupuesto mantenimiento', 23456789, '2024-12-01', 'en progreso', @mensaje;
 exec cotizaciones.insertar_tarea 3, 'Buscar proveedores cocina', 34567890, '2024-12-01', 'pendiente', @mensaje;
 exec cotizaciones.insertar_tarea 4, 'Propuesta catering evento', 45678901, '2024-11-28', 'en progreso', @mensaje;
 exec cotizaciones.insertar_tarea 5, 'Actualizar cotización fiesta', 56789012, '2024-12-05', 'pendiente', @mensaje;
@@ -1340,7 +1345,7 @@ exec cotizaciones.insertar_tarea 8, 'Proveedores hogar', 987654321, '2024-12-03'
 exec cotizaciones.insertar_tarea 9, 'Cotización accesorios oficina', 12345678, '2024-11-29', 'pendiente', @mensaje;
 exec cotizaciones.insertar_tarea 10, 'Gestionar transporte', 23456789, '2024-11-25', 'en progreso', @mensaje;
 exec cotizaciones.insertar_tarea 11, 'Propuesta suministros oficina', 34567890, '2024-11-30', 'pendiente', @mensaje;
-exec cotizaciones.insertar_tarea 12, 'Revisar cotización seguridad', 45678901, '2024-12-02', 'en progreso', @mensaje;
+exec cotizaciones.insertar_tarea 12, 'Revisar cotización seguridad', 45678901, '2024-12-01', 'en progreso', @mensaje;
 exec cotizaciones.insertar_tarea 13, 'Propuesta mobiliario oficina', 56789012, '2024-12-04', 'pendiente', @mensaje;
 exec cotizaciones.insertar_tarea 14, 'Asesoría empresarial', 67890123, '2024-11-30', 'en progreso', @mensaje;
 exec cotizaciones.insertar_tarea 15, 'Actualizar cotización limpieza', 87654321, '2024-12-01', 'pendiente', @mensaje;

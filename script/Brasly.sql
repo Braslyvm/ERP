@@ -1,3 +1,5 @@
+use Planificador_recursos_empresariales
+go
 
 -----------------------------retorna el top 15 tareas -----------------------------------------
 create function cotizaciones.top15_tareas()
@@ -62,7 +64,7 @@ return
         count(c.id_caso) as cantidad_casos
     from 
         registro_caso.casos c
-    where c.id_cotizacion = id_factura
+    where c.id_factura IS NULL
     group by  year(c.fecha_creacion), month(c.fecha_creacion)
     
     union all
@@ -72,8 +74,8 @@ return
         'factura' as tipo,
         count(c.id_caso) as cantidad_casos
     from registro_caso.casos c
-    where c.id_cotizacion = null
+    where c.id_cotizacion  IS NULL
     group by year(c.fecha_creacion), month(c.fecha_creacion)
 );
-
+select * from casos_cotizacion_factura()
 
