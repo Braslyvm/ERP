@@ -1,0 +1,66 @@
+@page
+@model proyecto1bases.Pages.topClientes
+@{
+    ViewData["Title"] = "Top 10 clientes con mayores ventas";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/index.css">
+    <style>
+        .styled-table {
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 15px; /* Reducción de márgenes */
+        }
+
+        .styled-table th, .styled-table td {
+            padding: 8px; /* Espaciado interno más pequeño */
+            text-align: left; 
+            border-bottom: 1px solid #ddd; 
+        }
+
+        .styled-table th {
+            background-color: #4CAF50; 
+            color: white; 
+        }
+
+        .styled-table tr:hover {
+            background-color: #f1f1f1; 
+        }
+
+        .styled-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>@ViewData["Title"]</h1>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Monto</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var datos in Model.topCliente)
+                {
+                    <tr>
+                        <td>@datos.cliente</td>
+                        <td>@datos.Monto</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <form method="get" action="/menus/Reportes">
+        <button type="submit" class="boton-volver">Volver</button>
+    </form>
+</body>
+</html>
