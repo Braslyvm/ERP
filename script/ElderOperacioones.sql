@@ -90,7 +90,7 @@ GROUP BY
 
 go
 
-
+/*ventas por sector*/
 CREATE VIEW VentaSector AS
 SELECT 
     SUM(lf.monto_total) AS total,
@@ -106,3 +106,17 @@ GROUP BY
 
 SELECT * FROM VentaSector;
 
+  /*Ventas por zona*/
+  CREATE VIEW VentaZona AS
+SELECT 
+    SUM(lf.monto_total) AS total,
+    cl.zona
+FROM 
+    facturación.lista_articulos_facturados lf
+JOIN 
+    facturación.facturas ff ON lf.n_factura = ff.n_factura  
+    clientes.cliente cl ON ff.id_cliente = cl.cedula         
+GROUP BY 
+    cl.zona;
+
+SELECT * FROM VentaZona;

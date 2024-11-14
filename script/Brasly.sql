@@ -1,4 +1,5 @@
 
+
 -----------------------------retorna el top 15 tareas -----------------------------------------
 create function cotizaciones.top15_tareas()
 returns table
@@ -53,7 +54,8 @@ return
 );
 go
 
-
+use Planificador_recursos_empresariales
+go
 --------------------------insertar cotizaciones----------------------------
 
 
@@ -79,7 +81,7 @@ exec cotizaciones.insertar_cotizacion 987654321, 87654321, 'Julio', 82, 'Cotizac
 exec cotizaciones.insertar_cotizacion 987654321, 87654321, 'Diciembre', 91, 'Cotización de Venta', 'Venta de productos electrónicos', @mensaje;
 exec cotizaciones.insertar_cotizacion 789654123, 12345678, 'Noviembre', 70, 'Cotización de Servicio', 'Alquiler de equipos para evento', @mensaje;
 
-DECLARE @mensaje nvarchar(200);
+
 exec cotizaciones.insertar_tarea 1, 'Revisar productos', 12345678, '2024-11-30', 'pendiente', @mensaje;
 exec cotizaciones.insertar_tarea 2, 'Presupuesto mantenimiento', 23456789, '2024-11-25', 'en progreso', @mensaje;
 exec cotizaciones.insertar_tarea 3, 'Buscar proveedores cocina', 34567890, '2024-12-01', 'pendiente', @mensaje;
@@ -102,7 +104,7 @@ exec cotizaciones.insertar_tarea 19, 'Revisar cotización electrónica', 34567890,
 exec cotizaciones.insertar_tarea 20, 'Generar cotización alquiler', 45678901, '2024-11-30', 'en progreso', @mensaje;
 
 ----------------------------insertar productos cotizacion -------------------
-DECLARE @mensaje nvarchar(200);
+
 
 -- Cotización 1
 EXEC cotizaciones.insertar_articulo_cotizacion 1, '001', 5, 'B001', @mensaje;
