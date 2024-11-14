@@ -1,4 +1,6 @@
 
+use Planificador_recursos_empresariales
+go
 
 /*funcion que toma las planillas por año*/
 create function usuarios.planillaaños(@anoinicio int = null, @anofin int = null)
@@ -44,7 +46,7 @@ END;
 GO
 
 /*Planilals por mes*/
-
+go
 CREATE  FUNCTION usuarios.PlanillaMesse(
     @anio_inicio INT = NULL, 
     @mes_inicio INT = NULL, 
@@ -68,16 +70,39 @@ RETURN
         AND (@mes_fin IS NULL OR (a.año = @anio_fin AND a.mes <= @mes_fin))
     GROUP BY a.año, a.mes
 );
-
+go
 
 
 /*Familias de productos vendidos*/
 
-CREATE VIEW  FamiliaProductos  AS
-SELECT sum(lf.monto_total) as total , gf.nombre as nombreFam
-FROM facturación.lista_articulos_facturados lf
-join gestion_inventario.articulos ga on lf.c_articulo =ga.c_articulo
-join gestion_inventario.familia_articulos gf on ga.c_familia = gf.id_familia
-GROUP BY gf.nombre
+CREATE VIEW FamiliaProductos AS
+SELECT 
+    SUM(lf.monto_total) AS total,
+    gf.nombre AS nombreFam
+FROM 
+    facturación.lista_articulos_facturados lf
+JOIN 
+    gestion_inventario.articulos ga ON lf.c_articulo = ga.c_articulo
+JOIN 
+    gestion_inventario.familia_articulos gf ON ga.c_familia = gf.id_familia
+GROUP BY 
+    gf.nombre;
 
-select * from FamiliaProductos
+go
+
+
+CREATE VIEW VentaSector AS
+SELECT 
+    SUM(lf.monto_total) AS total,
+    cl.sector
+FROM 
+    facturación.lista_articulos_facturados lf
+JOIN 
+    facturación.facturas ff ON lf.n_factura = ff.n_factura  -- Relación entre lista_articulos_facturados y facturas
+JOIN 
+    clientes.cliente cl ON ff.id_cliente = cl.cedula          -- Relación entre facturas y cliente
+GROUP BY 
+    cl.sector;
+
+SELECT * FROM VentaSector;
+
