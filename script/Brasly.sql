@@ -77,28 +77,26 @@ exec cotizaciones.insertar_cotizacion '987654321', 'Cotización de Servicio', 82,
 exec cotizaciones.insertar_cotizacion '987654321', 'Cotización de Venta', 91, 'Venta de productos electrónicos', @mensaje;
 exec cotizaciones.insertar_cotizacion '789654123', 'Cotización de Servicio', 70, 'Alquiler de equipos para evento', @mensaje;
 
---------------------------------------------crear tarea-----------------------
-exec cotizaciones.insertar_tarea 1, 'Revisar productos', NULL, '2024-11-30', 'pendiente', @mensaje;
-exec cotizaciones.insertar_tarea 2, 'Presupuesto mantenimiento', NULL, '2024-11-25', 'en progreso', @mensaje;
-exec cotizaciones.insertar_tarea 3, 'Buscar proveedores cocina', NULL, '2024-12-01', 'pendiente', @mensaje;
-exec cotizaciones.insertar_tarea 4, 'Propuesta catering evento', NULL, '2024-11-28', 'en progreso', @mensaje;
-exec cotizaciones.insertar_tarea 5, 'Actualizar cotización fiesta', NULL, '2024-12-05', 'pendiente', @mensaje;
-exec cotizaciones.insertar_tarea 6, 'Investigar productos oficina', NULL, '2024-11-30', 'en progreso', @mensaje;
-exec cotizaciones.insertar_tarea 7, 'Revisar herramientas', NULL, '2024-11-27', 'pendiente', @mensaje;
-exec cotizaciones.insertar_tarea 8, 'Proveedores hogar', NULL, '2024-12-03', 'en progreso', @mensaje;
-exec cotizaciones.insertar_tarea 9, 'Cotización accesorios oficina', NULL, '2024-11-29', 'pendiente', @mensaje;
-exec cotizaciones.insertar_tarea 10, 'Gestionar transporte', NULL, '2024-11-25', 'en progreso', @mensaje;
-exec cotizaciones.insertar_tarea 11, 'Propuesta suministros oficina', NULL, '2024-11-30', 'pendiente', @mensaje;
-exec cotizaciones.insertar_tarea 12, 'Revisar cotización seguridad', NULL, '2024-12-02', 'en progreso', @mensaje;
-exec cotizaciones.insertar_tarea 13, 'Propuesta mobiliario oficina', NULL, '2024-12-04', 'pendiente', @mensaje;
-exec cotizaciones.insertar_tarea 14, 'Asesoría empresarial', NULL, '2024-11-30', 'en progreso', @mensaje;
-exec cotizaciones.insertar_tarea 15, 'Actualizar cotización limpieza', NULL, '2024-12-01', 'pendiente', @mensaje;
-exec cotizaciones.insertar_tarea 16, 'Coordinar mantenimiento', NULL, '2024-11-29', 'en progreso', @mensaje;
-exec cotizaciones.insertar_tarea 17, 'Revisar cotización tecnología', NULL, '2024-12-06', 'pendiente', @mensaje;
-exec cotizaciones.insertar_tarea 18, 'Propuesta reparación electrodomésticos', NULL, '2024-11-28', 'en progreso', @mensaje;
-exec cotizaciones.insertar_tarea 19, 'Revisar cotización electrónica', NULL, '2024-12-02', 'pendiente', @mensaje;
-exec cotizaciones.insertar_tarea 20, 'Generar cotización alquiler', NULL, '2024-11-30', 'en progreso', @mensaje;
-
+exec cotizaciones.insertar_tarea 1, 'Revisar productos', 12345678, '2024-11-30', 'pendiente', @mensaje;
+exec cotizaciones.insertar_tarea 2, 'Presupuesto mantenimiento', 23456789, '2024-11-25', 'en progreso', @mensaje;
+exec cotizaciones.insertar_tarea 3, 'Buscar proveedores cocina', 34567890, '2024-12-01', 'pendiente', @mensaje;
+exec cotizaciones.insertar_tarea 4, 'Propuesta catering evento', 45678901, '2024-11-28', 'en progreso', @mensaje;
+exec cotizaciones.insertar_tarea 5, 'Actualizar cotización fiesta', 56789012, '2024-12-05', 'pendiente', @mensaje;
+exec cotizaciones.insertar_tarea 6, 'Investigar productos oficina', 67890123, '2024-11-30', 'en progreso', @mensaje;
+exec cotizaciones.insertar_tarea 7, 'Revisar herramientas', 87654321, '2024-11-27', 'pendiente', @mensaje;
+exec cotizaciones.insertar_tarea 8, 'Proveedores hogar', 987654321, '2024-12-03', 'en progreso', @mensaje;
+exec cotizaciones.insertar_tarea 9, 'Cotización accesorios oficina', 12345678, '2024-11-29', 'pendiente', @mensaje;
+exec cotizaciones.insertar_tarea 10, 'Gestionar transporte', 23456789, '2024-11-25', 'en progreso', @mensaje;
+exec cotizaciones.insertar_tarea 11, 'Propuesta suministros oficina', 34567890, '2024-11-30', 'pendiente', @mensaje;
+exec cotizaciones.insertar_tarea 12, 'Revisar cotización seguridad', 45678901, '2024-12-02', 'en progreso', @mensaje;
+exec cotizaciones.insertar_tarea 13, 'Propuesta mobiliario oficina', 56789012, '2024-12-04', 'pendiente', @mensaje;
+exec cotizaciones.insertar_tarea 14, 'Asesoría empresarial', 67890123, '2024-11-30', 'en progreso', @mensaje;
+exec cotizaciones.insertar_tarea 15, 'Actualizar cotización limpieza', 87654321, '2024-12-01', 'pendiente', @mensaje;
+exec cotizaciones.insertar_tarea 16, 'Coordinar mantenimiento', 987654321, '2024-11-29', 'en progreso', @mensaje;
+exec cotizaciones.insertar_tarea 17, 'Revisar cotización tecnología', 12345678, '2024-12-06', 'pendiente', @mensaje;
+exec cotizaciones.insertar_tarea 18, 'Propuesta reparación electrodomésticos', 23456789, '2024-11-28', 'en progreso', @mensaje;
+exec cotizaciones.insertar_tarea 19, 'Revisar cotización electrónica', 34567890, '2024-12-02', 'pendiente', @mensaje;
+exec cotizaciones.insertar_tarea 20, 'Generar cotización alquiler', 45678901, '2024-11-30', 'en progreso', @mensaje;
 
 ----------------------------insertar productos cotizacion -------------------
 DECLARE @mensaje nvarchar(200);
