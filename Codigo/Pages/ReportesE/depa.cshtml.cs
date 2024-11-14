@@ -6,51 +6,59 @@ using System.Data;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using proyecto1bases.Models;
+
 namespace proyecto1bases.Pages
 {
-public class depa : PageModel
-{
-    private readonly string _connectionString;
-    
-    public List<PlanillaDataDeptoMes> Planilla { get; set; } = new List<PlanillaDataDeptoMes>();
-    
-    public depa(IConfiguration configuration)
+    public class depa : PageModel
     {
-        _connectionString = configuration.GetConnectionString("DefaultConnection");
-    }
+        private readonly string _connectionString;
 
-    public async Task<IActionResult> OnGetAsync()
-    {
-        using (var connection = new SqlConnection(_connectionString))
+        public List<PlanillaDataDeptoMes> Planilla { get; set; } = new List<PlanillaDataDeptoMes>();
+
+        public depa(IConfiguration configuration)
         {
-            await connection.OpenAsync();
-            using (var command = new SqlCommand("usuarios.planilldepa", connection)) // Llama el procedimiento almacenado
-            {
-                command.CommandType = CommandType.StoredProcedure;
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
+        }
 
-                using (var reader = await command.ExecuteReaderAsync())
+        public async Task<IActionResult> OnGetAsync(string? departamento, int? año_inicio, int? mes_inicio, int? año_final, int? mes_final)
+        {
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand("usuarios.planilla_por_departamentos", connection))
                 {
-                    while (await reader.ReadAsync()) // Lee cada fila de los resultados
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@departamento", (object)departamento ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@año_inicio", (object)año_inicio ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@mes_inicio", (object)mes_inicio ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@año_final", (object)año_final ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@mes_final", (object)mes_final ?? DBNull.Value);
+
+                    using (var reader = await command.ExecuteReaderAsync())
                     {
-                        Planilla.Add(new PlanillaDataDeptoMes 
+                        while (await reader.ReadAsync())
                         {
-                            Departamento = reader["departamento"].ToString(),
-                            Mes = reader["mes"].ToString(),
-                            TotalSalario = decimal.Parse(reader["total_salario"].ToString())
-                        });
+                            Planilla.Add(new PlanillaDataDeptoMes
+                            {
+                                Departamento = reader["departamento"].ToString(),
+                                Mes = reader["mes"].ToString(),
+                                Año = reader["año"].ToString(),
+                                TotalSalario = decimal.Parse(reader["total_salario"].ToString())
+                            });
+                        }
                     }
                 }
             }
+            return Page();
         }
-        return Page();
     }
-}
 
-// Clase que refleja los datos de la planilla agrupados por departamento y mes
-public class PlanillaDataDeptoMes
-{
-    public string Departamento { get; set; }  // Departamento
-    public string Mes { get; set; }           // Mes
-    public decimal TotalSalario { get; set; } // Total de salario por mes y departamento
-}
+    public class PlanillaDataDeptoMes
+    {
+        public string Departamento { get; set; }
+        public string Mes { get; set; }
+        public string Año { get; set; }
+        public decimal TotalSalario { get; set; }
+    }
 }

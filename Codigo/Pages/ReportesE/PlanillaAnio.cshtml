@@ -1,4 +1,3 @@
-
 @page
 @model proyecto1bases.Pages.MAño
 @{
@@ -11,7 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@ViewData["Title"]</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!--libreria--> 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Librería para gráficos -->
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -51,17 +50,30 @@
 <body>
     <div class="container">
         <h1>@ViewData["Title"]</h1>
+
+        <!-- Formulario para Filtrar por Año -->
+        <form method="get">
+            <label for="anioInicio">Año Inicio:</label>
+            <input type="number" id="anioInicio" name="anioInicio" min="2000" value="@Request.Query["anioInicio"]">
+
+            <label for="anioFin">Año Fin:</label>
+            <input type="number" id="anioFin" name="anioFin" min="2000" value="@Request.Query["anioFin"]">
+
+            <button type="submit">Filtrar</button>
+        </form>
+
+        <!-- Gráfico de salarios por año -->
         <canvas id="salarioChart" width="400" height="200"></canvas>
 
         <script>
             var ctx = document.getElementById('salarioChart').getContext('2d');
             var salarioChart = new Chart(ctx, {
-                type: 'bar',//Tipo de diagrama
+                type: 'bar',
                 data: {
-                    labels: @Html.Raw(Json.Serialize(Model.Planilla.Select(p => p.Año).ToList())),//COLUNMA DE ABAJO
+                    labels: @Html.Raw(Json.Serialize(Model.Planilla.Select(p => p.Año).ToList())), // Etiquetas de los años
                     datasets: [{
                         label: 'Salario Total',
-                        data: @Html.Raw(Json.Serialize(Model.Planilla.Select(p => p.TotalSalario).ToList())), // SColumna arriba
+                        data: @Html.Raw(Json.Serialize(Model.Planilla.Select(p => p.TotalSalario).ToList())), // Datos de salarios
                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
                         borderColor: 'rgba(255, 99, 132, 1)',
                         borderWidth: 1

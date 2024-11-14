@@ -1125,10 +1125,10 @@ end;
 go
 
 -- crear procedimiento para insertar una factura
-create  procedure facturación.insertar_factura
+create procedure facturación.insertar_factura
     @cedula_juridica_local int, 
     @id_cliente int, 
-    @id_cotizacion int, 
+    @id_cotizacion int = null, 
     @id_empleado int,
     @fecha_factura datetime,
     @estado varchar(20), 
@@ -1173,7 +1173,7 @@ end;
 go
 
 -- Crear procedimiento para insertar líneas de factura
--- crear procedimiento para insertar líneas de factura
+-- Procedimiento: Insertar líneas de factura
 create procedure facturación.lineasfactura
     @c_articulo varchar(180),
     @cantidad int,
@@ -1186,55 +1186,61 @@ begin
     begin try
         declare @bodega varchar(180);
         declare @id_movimiento int; 
-        declare @n_factura int = facturación.obtenerultimafactura();
+        declare @n_factura int;
+		       declare @aprovacion int;
 
-        
+        -- Obtener el último número de factura
+        select @n_factura = max(n_factura) from facturación.facturas;
+
+        -- Llamar a la función para verificar la bodega con cantidad suficiente
         set @bodega = gestion_inventario.abodega(@c_articulo, @cantidad);
 
-        
         if @bodega = 'no hay suficiente cantidad en ninguna bodega.'
         begin
             set @mensaje = @bodega;
             return;
         end
-        
-        -- insertar en la lista de artículos facturados
+
+        -- Insertar en la lista de artículos facturados
         insert into facturación.lista_articulos_facturados(n_factura, c_articulo, cantidad, precio_unitario, monto_total)
         values (@n_factura, @c_articulo, @cantidad, @precio_unitario, @monto_total);
 
-        -- calcular y actualizar el total de la factura
+        -- Calcular y actualizar el total de la factura
         declare @totalfactura decimal(10, 2);
         exec facturación.calculartotalfactura @n_factura, @totalfactura output;
 
         update facturación.facturas
         set total = @totalfactura
         where n_factura = @n_factura;
-        
-        -- restar la cantidad del inventario en la bodega seleccionada
+
+        -- Restar la cantidad del inventario en la bodega seleccionada
         update gestion_inventario.inventario
         set cantidad = cantidad - @cantidad
         where c_articulo = @c_articulo and c_bodega = @bodega;
 
-        -- registrar el movimiento
-        exec gestion_inventario.gestionar_movimiento 'salida', @c_articulo, @bodega, null, @cantidad, @usuario;
+        -- Registrar el movimiento
+        set @aprovacion =  gestion_inventario.cantidad_disponible(@bodega, @c_articulo, @cantidad);
+		if (@aprovacion != 1)
+			return 'La salida fallo'
+		--EXEC gestion_inventario.restar_inventario @bodega, @c_articulo, @cantidad;
 
-        -- obtener el último id de movimiento
+        -- Obtener el último ID de movimiento
         set @id_movimiento = gestion_inventario.obtenerultimoidmovimiento();
-        print 'el último id de movimiento es: ' + cast(@id_movimiento as varchar(10));
 
-        -- insertar el detalle del movimiento directamente aquí   exec gestion_inventario.insertar_detalle_movimiento @id_movimiento, @c_articulo, @cantidad, @bodega, null, @mensaje;
-        insert into gestion_inventario.detalle_movimiento (id_movimiento, c_articulo, cantidad, bodega_origen,bodega_destino)
-        values (@id_movimiento, @c_articulo, @cantidad, @bodega, null); -- ajusta 'otra_columna' según tus necesidades
+        -- Insertar el detalle del movimiento
+        insert into gestion_inventario.detalle_movimiento (id_movimiento, c_articulo, cantidad, bodega_origen, bodega_destino)
+        values (@id_movimiento, @c_articulo, @cantidad, @bodega, null);
 
-        -- mensaje final
-        set @mensaje = 'artículo enlistado y cantidad restada del inventario, movimiento registrado.';
+        -- Mensaje final
+        set @mensaje = 'Artículo enlistado y cantidad restada del inventario, movimiento registrado.';
     end try
     begin catch
-        -- manejo de errores
-        set @mensaje = 'error: ' + error_message();
+        -- Manejo de errores
+        set @mensaje = 'Error: ' + error_message();
     end catch
 end;
 go
+
 
 
 -- función para obtener la bodega con suficiente cantidad
@@ -1489,7 +1495,6 @@ return
     select 
         ga.c_articulo,
 		ga.activo,
-
         ga.c_familia,
         ga.descripcion,
         ga.nombre,

@@ -12,28 +12,40 @@ namespace proyecto1bases.Pages
     public class MAño : PageModel
     {
         private readonly string _connectionString;
-        
+
         public List<PlanillaDataAnio> Planilla { get; set; } = new List<PlanillaDataAnio>();
-        
+        public int? AnioInicio { get; set; }
+        public int? AnioFin { get; set; }
+
         public MAño(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(int? anioInicio, int? anioFin)
         {
+            // Asignar los valores de los filtros a las propiedades
+            AnioInicio = anioInicio ?? 2000; // Valor predeterminado de inicio
+            AnioFin = anioFin ?? 2024; // Valor predeterminado de fin
+
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                using (var command = new SqlCommand("usuarios.Planillaanio", connection)) // Llama el procedimiento almacenado
+
+                // Consulta SQL con parámetros para los años
+                var query = "SELECT * FROM usuarios.planillaaños(@anioInicio, @anioFin)";
+
+                using (var command = new SqlCommand(query, connection))
                 {
-                    command.CommandType = CommandType.StoredProcedure;
+                    // Agregar los parámetros a la consulta
+                    command.Parameters.AddWithValue("@anioInicio", AnioInicio);
+                    command.Parameters.AddWithValue("@anioFin", AnioFin);
 
                     using (var reader = await command.ExecuteReaderAsync())
                     {
-                        while (await reader.ReadAsync()) // Lee cada fila de los resultados
+                        while (await reader.ReadAsync())
                         {
-                            Planilla.Add(new PlanillaDataAnio 
+                            Planilla.Add(new PlanillaDataAnio
                             {
                                 Año = reader["año"].ToString(),
                                 TotalSalario = decimal.Parse(reader["total_salario"].ToString())
@@ -46,10 +58,10 @@ namespace proyecto1bases.Pages
         }
     }
 
-    // Clase que refleja los datos de la planilla agrupados por año
+    // Clase para representar los datos de la planilla por año
     public class PlanillaDataAnio
     {
-        public string Año { get; set; }  // Año agrupado
-        public decimal TotalSalario { get; set; }  // Total de salario por año
+        public string Año { get; set; }
+        public decimal TotalSalario { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 @page
 @model proyecto1bases.Pages.depa
 @{
-    ViewData["Title"] = "Gráfico de planilla por año";
+    ViewData["Title"] = "Gráfico de Planilla por Departamento y Mes";
 }
 
 <!DOCTYPE html>
@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@ViewData["Title"]</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!--libreria--> 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Librería -->
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -32,24 +32,69 @@
             color: #004085;
             text-align: center;
         }
-        table {
-            width: 100%;
-            margin-top: 10px;
-            border-collapse: collapse;
+        form {
+            text-align: center;
+            margin-bottom: 20px;
         }
-        th, td {
+        label {
+            font-size: 1rem;
+            color: #333;
+        }
+        input, select, button {
             padding: 10px;
-            border: 1px solid #dee2e6;
-            text-align: left;
-        }
-        th {
-            background-color: #f8f9fa;
+            font-size: 1rem;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>@ViewData["Title"]</h1>
+        <form method="get">
+            <label for="departamento">Departamento:</label>
+            <input type="text" id="departamento" name="departamento">
+
+            <label for="año_inicio">Año Inicio:</label>
+            <input type="number" id="año_inicio" name="año_inicio">
+
+            <label for="mes_inicio">Mes Inicio:</label>
+            <select id="mes_inicio" name="mes_inicio">
+                <option value="Enero">Enero</option>
+                <option value="Febrero">Febrero</option>
+                <option value="Marzo">Marzo</option>
+                <option value="Abril">Abril</option>
+                <option value="Mayo">Mayo</option>
+                <option value="Junio">Junio</option>
+                <option value="Julio">Julio</option>
+                <option value="Agosto">Agosto</option>
+                <option value="Septiembre">Septiembre</option>
+                <option value="Octubre">Octubre</option>
+                <option value="Noviembre">Noviembre</option>
+                <option value="Diciembre">Diciembre</option>
+            </select>
+
+            <label for="año_final">Año Final:</label>
+            <input type="number" id="año_final" name="año_final">
+
+            <label for="mes_final">Mes Final:</label>
+            <select id="mes_final" name="mes_final">
+                <option value="Enero">Enero</option>
+                <option value="Febrero">Febrero</option>
+                <option value="Marzo">Marzo</option>
+                <option value="Abril">Abril</option>
+                <option value="Mayo">Mayo</option>
+                <option value="Junio">Junio</option>
+                <option value="Julio">Julio</option>
+                <option value="Agosto">Agosto</option>
+                <option value="Septiembre">Septiembre</option>
+                <option value="Octubre">Octubre</option>
+                <option value="Noviembre">Noviembre</option>
+                <option value="Diciembre">Diciembre</option>
+            </select>
+
+            <button type="submit">Ver Planilla</button>
+        </form>
+
         <canvas id="planillaChart" width="400" height="400"></canvas>
 
         <script>
@@ -57,24 +102,24 @@
             var planillaChart = new Chart(ctx, {
                 type: 'pie', // Tipo de diagrama circular
                 data: {
-                    labels: @Html.Raw(Json.Serialize(Model.Planilla.Select(p => p.Departamento + " - " + p.Mes).ToList())), // Etiquetas de departamento y mes
+                    labels: @Html.Raw(Json.Serialize(Model.Planilla.Select(p => p.Departamento + " - " + p.Mes +  " - " + p.Año).ToList())),
                     datasets: [{
                         label: 'Total Salario',
-                        data: @Html.Raw(Json.Serialize(Model.Planilla.Select(p => p.TotalSalario).ToList())), // Datos del gráfico (salario total)
+                        data: @Html.Raw(Json.Serialize(Model.Planilla.Select(p => p.TotalSalario).ToList())),
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)', 
-                            'rgba(54, 162, 235, 0.2)', 
-                            'rgba(255, 206, 86, 0.2)', 
-                            'rgba(75, 192, 192, 0.2)', 
-                            'rgba(153, 102, 255, 0.2)', 
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
                             'rgba(255, 159, 64, 0.2)'
                         ],
                         borderColor: [
-                            'rgba(255, 99, 132, 1)', 
-                            'rgba(54, 162, 235, 1)', 
-                            'rgba(255, 206, 86, 1)', 
-                            'rgba(75, 192, 192, 1)', 
-                            'rgba(153, 102, 255, 1)', 
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
                             'rgba(255, 159, 64, 1)'
                         ],
                         borderWidth: 1
@@ -89,7 +134,7 @@
                         tooltip: {
                             callbacks: {
                                 label: function(tooltipItem) {
-                                    return tooltipItem.label + ': ₡' + tooltipItem.raw.toLocaleString();
+                                    return tooltipItem.label + ": " + tooltipItem.raw.toLocaleString();
                                 }
                             }
                         }

@@ -1,7 +1,7 @@
 @page
 @model proyecto1bases.Pages.MesAño
 @{
-    ViewData["Title"] = "Gráfico de planilla por mes-año";
+    ViewData["Title"] = "Gráfico de planilla por rango de año-mes";
 }
 
 <!DOCTYPE html>
@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@ViewData["Title"]</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!--libreria--> 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Librería Chart.js --> 
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -50,23 +50,37 @@
 <body>
     <div class="container">
         <h1>@ViewData["Title"]</h1>
+        
+        <form method="get">
+            <label for="anioInicio">Año Inicio:</label>
+            <input type="number" id="anioInicio" name="anioInicio" value="@Model.AnioInicio" />
+            <label for="mesInicio">Mes Inicio:</label>
+            <input type="number" id="mesInicio" name="mesInicio" value="@Model.MesInicio" min="1" max="12" />
+            <label for="anioFin">Año Fin:</label>
+            <input type="number" id="anioFin" name="anioFin" value="@Model.AnioFin" />
+            <label for="mesFin">Mes Fin:</label>
+            <input type="number" id="mesFin" name="mesFin" value="@Model.MesFin" min="1" max="12" />
+            <button type="submit">Filtrar</button>
+        </form>
+        
         <canvas id="salarioChart" width="400" height="200"></canvas>
 
         <script>
             var ctx = document.getElementById('salarioChart').getContext('2d');
             var salarioChart = new Chart(ctx, {
-                type: 'bar',//Tipo de diagrama
+                type: 'bar', // Tipo de gráfico
                 data: {
-                    labels: @Html.Raw(Json.Serialize(Model.Planilla.Select(p => p.mes + ' ' + p.año).ToList())),//COLUNMA DE ABAJO
+                    labels: @Html.Raw(Json.Serialize(Model.Planilla.Select(p => p.mes + ' ' + p.año).ToList())), // Etiquetas del eje X
                     datasets: [{
-                        label: 'Salario Total',
-                        data: @Html.Raw(Json.Serialize(Model.Planilla.Select(p => p.TotalSalario).ToList())), // SColumna arriba
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderColor: 'rgba(255, 99, 132, 1)',
+                        label: 'Total Salario',
+                        data: @Html.Raw(Json.Serialize(Model.Planilla.Select(p => p.TotalSalario).ToList())), // Datos del gráfico
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
                         borderWidth: 1
                     }]
                 },
                 options: {
+                    responsive: true,
                     scales: {
                         y: {
                             beginAtZero: true
@@ -75,6 +89,7 @@
                 }
             });
         </script>
+
     </div>
 </body>
 </html>
