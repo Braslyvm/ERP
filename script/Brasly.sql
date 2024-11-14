@@ -30,7 +30,7 @@ return
     select top 10 
         c.nombre as cliente,
         sum(v.monto) as monto_total_ventas
-    from clientes c
+    from clientes.cliente c
     inner join ventas v on c.clienteid = v.clienteid
     group by c.nombre
     order by monto_total_ventas desc
@@ -55,28 +55,31 @@ go
 
 
 --------------------------insertar cotizaciones----------------------------
-declare @mensaje nvarchar(200);
-exec cotizaciones.insertar_cotizacion '951753852', 'Cotización de Venta', 80, 'Compra de productos electrónicos', @mensaje;
-exec cotizaciones.insertar_cotizacion '123456789', 'Cotización de Servicio', 75, 'Servicios para el hogar', @mensaje;
-exec cotizaciones.insertar_cotizacion '987654321', 'Cotización de Venta', 90, 'Artículos para la cocina', @mensaje;
-exec cotizaciones.insertar_cotizacion '123456789', 'Cotización de Servicio', 85, 'Catering para evento', @mensaje;
-exec cotizaciones.insertar_cotizacion '654987321', 'Cotización de Servicio', 70, 'Alquiler para fiesta', @mensaje;
-exec cotizaciones.insertar_cotizacion '987654321', 'Cotización de Venta', 95, 'Productos de oficina', @mensaje;
-exec cotizaciones.insertar_cotizacion '123456789', 'Cotización de Venta', 80, 'Compra de herramientas', @mensaje;
-exec cotizaciones.insertar_cotizacion '321654987', 'Cotización de Venta', 90, 'Productos para el hogar', @mensaje;
-exec cotizaciones.insertar_cotizacion '789654123', 'Cotización de Venta', 85, 'Accesorios para el hogar', @mensaje;
-exec cotizaciones.insertar_cotizacion '321654987', 'Cotización de Servicio', 60, 'Servicio de transporte para evento', @mensaje;
-exec cotizaciones.insertar_cotizacion '123456789', 'Cotización de Venta', 92, 'Suministros de oficina', @mensaje;
-exec cotizaciones.insertar_cotizacion '951753852', 'Cotización de Servicio', 75, 'Instalación de sistemas de seguridad', @mensaje;
-exec cotizaciones.insertar_cotizacion '321654987', 'Cotización de Venta', 88, 'Mobiliario de oficina', @mensaje;
-exec cotizaciones.insertar_cotizacion '654987321', 'Cotización de Servicio', 80, 'Asesoría empresarial', @mensaje;
-exec cotizaciones.insertar_cotizacion '123456789', 'Cotización de Venta', 77, 'Suministros de limpieza para empresa', @mensaje;
-exec cotizaciones.insertar_cotizacion '951753852', 'Cotización de Servicio', 68, 'Servicios de mantenimiento de equipos', @mensaje;
-exec cotizaciones.insertar_cotizacion '123456789', 'Cotización de Venta', 85, 'Compra de productos tecnológicos', @mensaje;
-exec cotizaciones.insertar_cotizacion '987654321', 'Cotización de Servicio', 82, 'Servicios de reparación de electrodomésticos', @mensaje;
-exec cotizaciones.insertar_cotizacion '987654321', 'Cotización de Venta', 91, 'Venta de productos electrónicos', @mensaje;
-exec cotizaciones.insertar_cotizacion '789654123', 'Cotización de Servicio', 70, 'Alquiler de equipos para evento', @mensaje;
 
+
+declare @mensaje nvarchar(200);
+exec cotizaciones.insertar_cotizacion 951753852, 12345678, 'Noviembre', 80, 'Cotización de Venta', 'Compra de productos electrónicos', @mensaje;
+exec cotizaciones.insertar_cotizacion 123456789, 45678901, 'Diciembre', 75, 'Cotización de Servicio', 'Servicios para el hogar', @mensaje;
+exec cotizaciones.insertar_cotizacion 987654321, 12345678, 'Abril', 90, 'Cotización de Venta', 'Artículos para la cocina', @mensaje;
+exec cotizaciones.insertar_cotizacion 123456789, 67890123, 'Mayo', 85, 'Cotización de Servicio', 'Catering para evento', @mensaje;
+exec cotizaciones.insertar_cotizacion 654987321, 12345678, 'Junio', 70, 'Cotización de Servicio', 'Alquiler para fiesta', @mensaje;
+exec cotizaciones.insertar_cotizacion 987654321, 23456789, 'Julio', 95, 'Cotización de Venta', 'Productos de oficina', @mensaje;
+exec cotizaciones.insertar_cotizacion 123456789, 23456789, 'Agosto', 80, 'Cotización de Venta', 'Compra de herramientas', @mensaje;
+exec cotizaciones.insertar_cotizacion 321654987, 45678901, 'Septiembre', 90, 'Cotización de Venta', 'Productos para el hogar', @mensaje;
+exec cotizaciones.insertar_cotizacion 789654123, 23456789, 'Octubre', 85, 'Cotización de Venta', 'Accesorios para el hogar', @mensaje;
+exec cotizaciones.insertar_cotizacion 321654987, 45678901, 'Julio', 60, 'Cotización de Servicio', 'Servicio de transporte para evento', @mensaje;
+exec cotizaciones.insertar_cotizacion 123456789, 23456789, 'Noviembre', 92, 'Cotización de Venta', 'Suministros de oficina', @mensaje;
+exec cotizaciones.insertar_cotizacion 951753852, 12345678, 'Noviembre', 75, 'Cotización de Servicio', 'Instalación de sistemas de seguridad', @mensaje;
+exec cotizaciones.insertar_cotizacion 321654987, 23456789, 'Noviembre', 88, 'Cotización de Venta', 'Mobiliario de oficina', @mensaje;
+exec cotizaciones.insertar_cotizacion 654987321, 23456789, 'Octubre', 80, 'Cotización de Servicio', 'Asesoría empresarial', @mensaje;
+exec cotizaciones.insertar_cotizacion 123456789, 67890123, 'Noviembre', 77, 'Cotización de Venta', 'Suministros de limpieza para empresa', @mensaje;
+exec cotizaciones.insertar_cotizacion 951753852, 67890123, 'Noviembre', 68, 'Cotización de Servicio', 'Servicios de mantenimiento de equipos', @mensaje;
+exec cotizaciones.insertar_cotizacion 123456789, 12345678, 'Octubre', 85, 'Cotización de Venta', 'Compra de productos tecnológicos', @mensaje;
+exec cotizaciones.insertar_cotizacion 987654321, 87654321, 'Julio', 82, 'Cotización de Servicio', 'Servicios de reparación de electrodomésticos', @mensaje;
+exec cotizaciones.insertar_cotizacion 987654321, 87654321, 'Diciembre', 91, 'Cotización de Venta', 'Venta de productos electrónicos', @mensaje;
+exec cotizaciones.insertar_cotizacion 789654123, 12345678, 'Noviembre', 70, 'Cotización de Servicio', 'Alquiler de equipos para evento', @mensaje;
+
+DECLARE @mensaje nvarchar(200);
 exec cotizaciones.insertar_tarea 1, 'Revisar productos', 12345678, '2024-11-30', 'pendiente', @mensaje;
 exec cotizaciones.insertar_tarea 2, 'Presupuesto mantenimiento', 23456789, '2024-11-25', 'en progreso', @mensaje;
 exec cotizaciones.insertar_tarea 3, 'Buscar proveedores cocina', 34567890, '2024-12-01', 'pendiente', @mensaje;
