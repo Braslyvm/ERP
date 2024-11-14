@@ -319,13 +319,14 @@ print @mensaje;
 -- Factura 5
 PRINT 'Factura 5: ';
 go
+
 declare @mensaje nvarchar(200);
 exec facturación.insertar_factura 
     @cedula_juridica_local = 123456789, 
     @id_cliente = 951753852, 
     @id_cotizacion = null, 
     @id_empleado = 12345678, 
-    @fecha_factura = '2024-19-12', 
+    @fecha_factura = '2024-12-19', 
     @estado = 'aprobada', 
     @motivo_anulacion = null, 
     @total = null,        
