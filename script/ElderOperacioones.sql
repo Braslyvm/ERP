@@ -119,4 +119,17 @@ JOIN
 GROUP BY 
     cl.zona;
 
-SELECT * FROM VentaZona;
+go
+
+/*Ventas por departameto*/
+create view Ventadepartamento AS 
+
+select COUNT(DISTINCT ff.n_factura)  as cantidadVentas, ue.departamento_actual
+from  
+    facturación.facturas ff 
+	JOIN 
+	usuarios.empleados ue on ff.id_empleado= ue.cedula
+
+group by ue.departamento_actual
+
+select * from Ventadepartamento

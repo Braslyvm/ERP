@@ -1625,3 +1625,53 @@ EXEC usuarios.insertar_empleado
     @departamento_actual = 'recursos humanos',
     @rol = 'rol',  
     @mensaje = @mensaje OUTPUT;
+
+	GO 
+
+
+create procedure gestion_inventario.insertar_producto_y_registrar_movimiento (
+    @c_bodega varchar(180),
+    @c_articulo varchar(180),
+    @cantidad int,
+    @n_factura int,
+    @usuario int,
+    @bodega_origen varchar(180) = NULL,
+    @bodega_destino varchar(180),
+    @mensaje nvarchar(200) output
+)
+as
+begin
+    begin try
+        -- Paso 1: Actualizar la cantidad en la tabla inventario
+        exec gestion_inventario.suma_inventario @c_bodega = @c_bodega, @c_articulo = @c_articulo, @cantidad = @cantidad;
+        
+        -- Paso 2: Insertar el movimiento en movimientos_inventario
+        exec gestion_inventario.insertar_movimiento 
+            @n_factura = @n_factura, 
+            @tipo = 'entrada', 
+            @usuario = @usuario, 
+            @mensaje = @mensaje output;
+
+        -- Paso 3: Obtener el último id_movimiento insertado
+        declare @id_movimiento int;
+        set @id_movimiento = gestion_inventario.obtenerultimoidmovimiento();
+
+        -- Paso 4: Insertar el detalle del movimiento
+        exec gestion_inventario.insertar_detalle_movimiento 
+            @id_movimiento = @id_movimiento, 
+            @c_articulo = @c_articulo, 
+            @cantidad = @cantidad, 
+            @bodega_origen = @bodega_origen, 
+            @bodega_destino = @bodega_destino, 
+            @mensaje = @mensaje output;
+
+        -- Mensaje de éxito
+        set @mensaje = 'Producto insertado y movimiento registrado correctamente.';
+    end try
+    begin catch
+        -- Manejo de errores
+        set @mensaje = 'Error al insertar el producto o registrar el movimiento: ' + ERROR_MESSAGE();
+    end catch
+end;
+go
+
