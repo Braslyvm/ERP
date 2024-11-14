@@ -629,7 +629,7 @@ begin
         id_caso int identity(1,1),
         id_empleado int null, 
         id_cotizacion int null, 
-        id_factura int not null, 
+        id_factura int null, 
         nombre_cuenta varchar(180) not null,
         nombre_contacto varchar(180) not null,
         asunto varchar(180) not null,

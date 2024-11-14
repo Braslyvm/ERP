@@ -1581,54 +1581,6 @@ return
 go
 
 
-
----------------------------crear rol y persmisos -----------------
-EXEC  CrearRol 'rol' , 1
-go
-
-EXEC usuarios.InsertarPermisosInventario 'rol' , 1 , 1, 1
-go
-
-EXEC usuarios.InsertarPermisosUsuarios 'rol' , 1 , 1, 1
-go
-
-
-EXEC usuarios.InsertarPermisosCotizaciones 'rol' , 1 , 1, 1
-go
-
-EXEC usuarios.InsertarPermisosFacturas 'rol' , 1 , 1, 1
-go
-
-EXEC usuarios.InsertarPermisosCasos 'rol', 1, 0, 1;
-go 
-
-EXEC usuarios.InsertarPermisosReportes 'rol' , 1 , 1, 1
-go
-
--------------- crear empleado de prueba-------------------------
-DECLARE @mensaje NVARCHAR(200);
-
-EXEC usuarios.insertar_empleado
-    @cedula = 987654321 ,
-    @nombre = 'Pedro',
-    @apellido1 = 'Ramírez',
-    @apellido2 = 'González',
-    @correo_electronico = 'pedro.ramirez@mail.com',
-    @contraseña = 'entrar',
-    @género = 'Masculino',
-    @fecha_nacimiento = '1990-05-10',
-    @lugar_residencia = 'San José',
-    @telefono = 22223333,
-    @fecha_ingreso = '2023-01-15',
-    @salario_actual = 1500,
-    @puesto_actual = 'gerente',
-    @departamento_actual = 'recursos humanos',
-    @rol = 'rol',  
-    @mensaje = @mensaje OUTPUT;
-
-	GO 
-
-
 create procedure gestion_inventario.insertar_producto_y_registrar_movimiento (
     @c_bodega varchar(180),
     @c_articulo varchar(180),
@@ -1675,3 +1627,88 @@ begin
 end;
 go
 
+
+----------------------procedimientos para insertar caso -----------
+
+create procedure registro_caso.insertar_caso
+    @id_empleado int,
+    @id_cotizacion int = null,
+    @id_factura int = null,
+    @nombre_cuenta varchar(180),
+    @nombre_contacto varchar(180),
+    @asunto varchar(180),
+    @direccion varchar(180),
+    @descripcion_caso varchar(1000),
+    @estado varchar(180),
+    @tipo_caso varchar(180),
+    @prioridad varchar(180)
+as
+begin
+    insert into registro_caso.casos (id_empleado, id_cotizacion, id_factura, nombre_cuenta, nombre_contacto, asunto, direccion, descripcion, estado, tipo_caso, prioridad)
+    values (@id_empleado, @id_cotizacion, @id_factura, @nombre_cuenta, @nombre_contacto, @asunto, @direccion, @descripcion_caso, @estado, @tipo_caso, @prioridad);
+end;
+go
+
+
+
+----------------------procedimientos para insertar Tarea de casos -----------
+create procedure registro_caso.insertar_tarea_caso
+    @id_caso int,
+    @id_empleado int,
+    @descripcion_tarea nvarchar(1000)
+as
+begin
+    insert into registro_caso.tarea_casos (id_caso, id_empleado, fecha, descripcion) 
+    values (@id_caso, @id_empleado, getdate(), @descripcion_tarea);
+end;
+go
+
+
+
+
+
+---------------------------crear rol y persmisos -----------------
+EXEC  CrearRol 'rol' , 1
+go
+
+EXEC usuarios.InsertarPermisosInventario 'rol' , 1 , 1, 1
+go
+
+EXEC usuarios.InsertarPermisosUsuarios 'rol' , 1 , 1, 1
+go
+
+
+EXEC usuarios.InsertarPermisosCotizaciones 'rol' , 1 , 1, 1
+go
+
+EXEC usuarios.InsertarPermisosFacturas 'rol' , 1 , 1, 1
+go
+
+EXEC usuarios.InsertarPermisosCasos 'rol', 1, 0, 1;
+go 
+
+EXEC usuarios.InsertarPermisosReportes 'rol' , 1 , 1, 1
+go
+
+-------------- crear empleado de prueba-------------------------
+DECLARE @mensaje NVARCHAR(200);
+
+EXEC usuarios.insertar_empleado
+    @cedula = 987654321 ,
+    @nombre = 'Pedro',
+    @apellido1 = 'Ramírez',
+    @apellido2 = 'González',
+    @correo_electronico = 'pedro.ramirez@mail.com',
+    @contraseña = 'entrar',
+    @género = 'Masculino',
+    @fecha_nacimiento = '1990-05-10',
+    @lugar_residencia = 'San José',
+    @telefono = 22223333,
+    @fecha_ingreso = '2023-01-15',
+    @salario_actual = 1500,
+    @puesto_actual = 'gerente',
+    @departamento_actual = 'recursos humanos',
+    @rol = 'rol',  
+    @mensaje = @mensaje OUTPUT;
+
+	GO 
