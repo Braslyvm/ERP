@@ -2,70 +2,84 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using System.Data;
+using System.Globalization;
+using System;
 
-namespace proyecto1bases.Pages.ReportesE
+
+namespace proyecto1bases.Pages
 {
-    public class MovimientosBodegaModel : PageModel
-    {
+    public class MovimientosBodegaModel : PageModel {
         private readonly string _connectionString;
+        public List<(string bodega, string nombre_bodega, int cantidad_movimientos)> contarMovimientos { get; set; } = new List<(string, string,int)>();
+        public string tipo { get; set; }
+        public string fechaFin{ get; set; }
+        public string fechainicio{ get; set; }
 
-        public string? TipoMovimiento { get; set; }
-        public List<MovimientoData> Movimientos { get; set; } = new List<MovimientoData>();
-        public DateTime? FechaInicio { get; set; }
-        public DateTime? FechaFin { get; set; }
+    
 
         public MovimientosBodegaModel(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
-          /// <summary>
-          /// Lee la informacion de la tabla y la retorna a la clase del tipo de la tabla 
-          /// </summary>
-          /// <returns></returns>
-        public async Task OnGetAsync(string? tipoMovimiento, DateTime? fechaInicio, DateTime? fechaFin)
+
+        /// OnGetAsync
+        /// 
+        /// Envia los datos a la interfaz
+        /// <returns>La pagina</returns>
+
+        public async Task<IActionResult> OnGetAsync(){
+            return Page();
+        }
+        /// <OnPostAsync>
+        /// 
+        /// Recibe los datos solicitados de la intefaz 
+        /// 
+        /// 
+        public async Task<IActionResult> OnPostAsync(){
+            tipo = Request.Form["tipoMovimiento"];
+            fechainicio = Request.Form["fechaInicio"];
+            fechaFin = Request.Form["fechaFinal"];
+            contarMovimientos = getCantidad(tipo, fechainicio, fechaFin);
+
+            return Page();
+        }
+
+        public List<(string bodega, string nombre_bodega, int cantidad_movimientos)> getCantidad(string movimiento, string? fechainicio, string? fechafin)
         {
-            TipoMovimiento = tipoMovimiento; // Captura el filtro de tipo de movimiento
-            FechaInicio = fechaInicio; // Captura la fecha de inicio
-            FechaFin = fechaFin; // Captura la fecha de fin
+            var movimientos = new List<(string, string, int)>();
+            
 
-            // Llama a la función para obtener los movimientos filtrados según el tipo y las fechas
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-                using (var command = new SqlCommand("SELECT * FROM gestion_inventario.cantidadmovimientos(@fecha_inicio, @fecha_fin)", connection))
-                {
-                    command.Parameters.AddWithValue("@fecha_inicio", FechaInicio ?? (object)DBNull.Value);
-                    command.Parameters.AddWithValue("@fecha_fin", FechaFin ?? (object)DBNull.Value);
+            using (var conexion = new SqlConnection(_connectionString)){
+                conexion.Open();
 
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
+                using (var comando = new SqlCommand("SELECT * FROM gestion_inventario.total_movimientos(@tipo_movimiento, @fecha_inicio, @fecha_final)", conexion)){
+                    comando.Parameters.AddWithValue("@tipo_movimiento", movimiento);
+                    if (fechainicio == "")
+                        comando.Parameters.AddWithValue("@fecha_inicio",DBNull.Value);
+                    else
+                        comando.Parameters.AddWithValue("@fecha_inicio", fechainicio);
+
+                    if (fechafin == "")
+                        comando.Parameters.AddWithValue("@fecha_final", DBNull.Value);
+                    else
+                        comando.Parameters.AddWithValue("@fecha_final", fechafin);
+
+                    using (var reader = comando.ExecuteReader()){
+                        while (reader.Read())
                         {
-                            string tipo = reader["tipo"].ToString();
-                            if (TipoMovimiento == null || TipoMovimiento == tipo)
-                            {
-                                Movimientos.Add(new MovimientoData
-                                {
-                                    Bodega = reader["bodega"].ToString(),
-                                    Tipo = tipo,
-                                    Cantidad = int.Parse(reader["cantidad_casos"].ToString())
-                                });
-                            }
+                            string bodega = reader["c_bodega"].ToString();
+                            string nombreBodega = reader["nombre_bodega"].ToString();
+                            int cantidadMovimientos = Convert.ToInt32(reader["cantidad_movimientos"]);
+                            movimientos.Add((bodega, nombreBodega, cantidadMovimientos));
                         }
                     }
                 }
             }
-        }
-    }
 
-    public class MovimientoData
-    {
-        public string Bodega { get; set; }
-        public string Tipo { get; set; }
-        public int Cantidad { get; set; }
+            return movimientos;
+        }
+
     }
 }
