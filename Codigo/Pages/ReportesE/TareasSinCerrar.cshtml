@@ -1,0 +1,76 @@
+@page
+@model proyecto1bases.Pages.topTareas
+@{
+    ViewData["Title"] = "Top 15 Tareas";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/index.css">
+    <style>
+        .styled-table {
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 15px; /* Reducción de márgenes */
+        }
+
+        .styled-table th, .styled-table td {
+            padding: 8px; /* Espaciado interno más pequeño */
+            text-align: left; 
+            border-bottom: 1px solid #ddd; 
+        }
+
+        .styled-table th {
+            background-color: #4CAF50; 
+            color: white; 
+        }
+
+        .styled-table tr:hover {
+            background-color: #f1f1f1; 
+        }
+
+        .styled-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>@ViewData["Title"]</h1>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>ID Tarea</th>
+                    <th>ID Cotización</th>
+                    <th>Descripción</th>
+                    <th>Usuario</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Límite</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tarea in Model.topTareasList)
+                {
+                    <tr>
+                        <td>@tarea.id_tarea</td>
+                        <td>@tarea.id_cotizacion</td>
+                        <td>@tarea.descripcion</td>
+                        <td>@tarea.usuario</td>
+                        <td>@tarea.fecha_inicio.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                        <td>@tarea.fecha_limite.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                        <td>@tarea.estado</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <form method="get" action="/menus/Reportes">
+        <button type="submit" class="boton-volver">Volver</button>
+    </form>
+</body>
+</html>

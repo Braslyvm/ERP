@@ -7,6 +7,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using proyecto1bases.Models;
+using System;
+using System.Globalization;
 
 namespace proyecto1bases.Pages
 {
@@ -46,6 +48,20 @@ namespace proyecto1bases.Pages
             }
             return Page();
         }
+         public static int ObtenerNumeroDeMes(string nombreMes)
+    {
+        try
+        {
+            // Convierte el nombre del mes a número usando la cultura actual
+            DateTime fecha = DateTime.ParseExact(nombreMes, "MMMM", CultureInfo.CurrentCulture, DateTimeStyles.None);
+            return fecha.Month;
+        }
+        catch (FormatException)
+        {
+            // Retorna -1 si el nombre del mes no es válido
+            return -1;
+        }
+    }
     }
 
     public class CasosData

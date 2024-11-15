@@ -75,7 +75,12 @@ go
 
 /*Familias de productos vendidos*/
 
-CREATE VIEW FamiliaProductos AS
+CREATE function FamiliaProductos (
+    @fecha_inicio date = null,
+    @fecha_fin date = null
+) returns table
+as
+return (
 SELECT 
     SUM(lf.monto_total) AS total,
     gf.nombre AS nombreFam
@@ -85,50 +90,96 @@ JOIN
     gestion_inventario.articulos ga ON lf.c_articulo = ga.c_articulo
 JOIN 
     gestion_inventario.familia_articulos gf ON ga.c_familia = gf.id_familia
+join facturación.facturas ff on lf.n_factura=ff.n_factura
+  where 
+        (@fecha_inicio is null or ff.fecha_factura >= @fecha_inicio) 
+        and 
+        (@fecha_fin is null or ff.fecha_factura <= @fecha_fin)
+  
 GROUP BY 
-    gf.nombre;
+    gf.nombre )
 
 go
 
+
 /*ventas por sector*/
-CREATE VIEW VentaSector AS
+CREATE function VentaSector  (
+    @fecha_inicio date = null,
+    @fecha_fin date = null
+) 
+returns table
+as return(
 SELECT 
     SUM(lf.monto_total) AS total,
     cl.sector
 FROM 
     facturación.lista_articulos_facturados lf
 JOIN 
-    facturación.facturas ff ON lf.n_factura = ff.n_factura  -- Relación entre lista_articulos_facturados y facturas
-JOIN 
-    clientes.cliente cl ON ff.id_cliente = cl.cedula          -- Relación entre facturas y cliente
+    facturación.facturas ff ON lf.n_factura = ff.n_factura  
+	join
+    clientes.cliente cl ON ff.id_cliente = cl.cedula  
+	where 
+        (@fecha_inicio is null or ff.fecha_factura >= @fecha_inicio) 
+        and 
+        (@fecha_fin is null or ff.fecha_factura <= @fecha_fin)
 GROUP BY 
-    cl.sector;
+    cl.sector)
 GO
 
 
   /*Ventas por zona*/
- CREATE VIEW VentaZona AS
-SELECT 
-    SUM(lf.monto_total) AS total,
-    cl.zona
-FROM 
-    facturación.lista_articulos_facturados lf
-JOIN 
-    facturación.facturas ff ON lf.n_factura = ff.n_factura  
-JOIN 
-    clientes.cliente cl ON ff.id_cliente = cl.cedula         
-GROUP BY 
-    cl.zona;
-GO
+create function VentaZona (
+    @fecha_inicio date = null,
+    @fecha_fin date = null
+)
+returns table
+as
+return
+(
+    select 
+        sum(lf.monto_total) as total,
+        cl.zona
+    from 
+        facturación.lista_articulos_facturados lf
+    join 
+        facturación.facturas ff on lf.n_factura = ff.n_factura  
+    join 
+        clientes.cliente cl on ff.id_cliente = cl.cedula
+    where 
+        (@fecha_inicio is null or ff.fecha_factura >= @fecha_inicio) 
+        and 
+        (@fecha_fin is null or ff.fecha_factura <= @fecha_fin)
+    group by 
+        cl.zona
+);
+
+go
 
 
 /*Ventas por departameto*/
-CREATE VIEW gestion Ventadepartamento AS 
-SELECT COUNT(DISTINCT ff.n_factura) AS cantidadVentas, ue.departamento_actual
-FROM facturación.facturas ff 
-JOIN usuarios.empleados ue ON ff.id_empleado = ue.cedula
-GROUP BY ue.departamento_actual;
-GO
+create function Ventadepartamento (
+    @fecha_inicio date = null,
+    @fecha_fin date = null
+)
+returns table
+as
+return
+(
+    select 
+        count(distinct ff.n_factura) as cantidad_ventas,
+        ue.departamento_actual
+    from 
+        facturación.facturas ff
+    join 
+        usuarios.empleados ue on ff.id_empleado = ue.cedula
+    where 
+        (@fecha_inicio is null or ff.fecha_factura >= @fecha_inicio) 
+        and 
+        (@fecha_fin is null or ff.fecha_factura <= @fecha_fin)
+    group by 
+        ue.departamento_actual
+);
+go
 
 /*Cuenta cantidad de movimientos entrada salida*/
 create function gestion_inventario.cantidadmovimientos()
@@ -142,6 +193,7 @@ return
         count( c.id_movimiento) as cantidad_casos
     from 
         gestion_inventario.detalle_movimiento c
+		join gestion_inventario.movimientos_inventario gi on c.id_movimiento=gi.id_movimiento
     where c.bodega_destino is null
     group by c.bodega_origen
     union all
@@ -158,5 +210,124 @@ return
 );
 
 
+create view top10 as
+select top 10 
+    count(cl.c_producto) as cantidad,
+    ga.nombre,
+    ga.descripcion,
+    ga.c_articulo
+from [cotizaciones].[lista_articulos_cotizacion] cl
+join gestion_inventario.articulos ga on cl.c_producto = ga.c_articulo
+group by ga.nombre, ga.descripcion, ga.c_articulo
+order by cantidad desc;
 
 
+
+
+create  view CotizacionesyVentas as 
+	
+select 
+    coalesce(cotizaciones.departamento_actual, ventas.departamento_actual) as departamento_actual,
+    cotizaciones.cantidadCotizacion,
+    ventas.cantidadVentas
+from 
+    (
+        select 
+            count(distinct cc.id_cotizacion) as cantidadCotizacion,
+            ue.departamento_actual,cc.fecha_corizacion
+        from 
+            cotizaciones.cotizaciones cc
+        join 
+            usuarios.empleados ue on cc.empleado = ue.cedula
+        group by 
+            ue.departamento_actual,cc.fecha_corizacion
+    ) as cotizaciones
+full outer join 
+    (
+        select 
+            count(distinct ff.n_factura) as cantidadVentas,
+            ue.departamento_actual,ff.fecha_factura
+        from 
+            facturación.facturas ff
+        join 
+            usuarios.empleados ue on ff.id_empleado = ue.cedula
+        group by 
+            ue.departamento_actual,ff.fecha_factura
+    ) as ventas 
+on 
+    cotizaciones.departamento_actual = ventas.departamento_actual;
+
+
+
+
+create  view ventasycotizaciones as 
+	
+select 
+    coalesce(cotizaciones.departamento_actual, ventas.departamento_actual) as departamento_actual,
+    cotizaciones.cantidadCotizacion,
+    ventas.cantidadVentas
+from 
+    (
+        select 
+            count(distinct cc.id_cotizacion) as cantidadCotizacion,
+            ue.departamento_actual,cc.fecha_corizacion
+        from 
+            cotizaciones.cotizaciones cc
+        join 
+            usuarios.empleados ue on cc.empleado = ue.cedula
+        group by 
+            ue.departamento_actual,cc.fecha_corizacion
+    ) as cotizaciones
+full outer join 
+    (
+        select 
+            count(distinct ff.n_factura) as cantidadVentas,
+            ue.departamento_actual,ff.fecha_factura
+        from 
+            facturación.facturas ff
+        join 
+            usuarios.empleados ue on ff.id_empleado = ue.cedula
+        group by 
+            ue.departamento_actual,ff.fecha_factura
+    ) as ventas 
+on 
+    cotizaciones.departamento_actual = ventas.departamento_actual;
+
+
+/*ventas y cotizaciones por mes y año*/
+
+create view ventasycotizaciones as 
+
+
+select 
+    coalesce(cotizaciones.anio, ventas.anio) as anio,
+    coalesce(cotizaciones.mes, ventas.mes) as mes,
+    cotizaciones.cantidadcotizacion,
+    ventas.cantidadventas
+from 
+    (
+        select 
+            count(distinct cc.id_cotizacion) as cantidadcotizacion,
+            year(cc.fecha_corizacion) as anio,
+            month(cc.fecha_corizacion) as mes
+        from 
+            cotizaciones.cotizaciones cc
+        group by 
+            year(cc.fecha_corizacion),
+            month(cc.fecha_corizacion)
+    ) as cotizaciones
+full outer join 
+    (
+        select 
+            count(distinct ff.n_factura) as cantidadventas,
+            year(ff.fecha_factura) as anio,
+            month(ff.fecha_factura) as mes
+        from 
+            facturación.facturas ff
+        group by 
+            year(ff.fecha_factura),
+            month(ff.fecha_factura)
+    ) as ventas 
+on 
+    cotizaciones.anio = ventas.anio
+    and cotizaciones.mes = ventas.mes;

@@ -1,0 +1,93 @@
+@page
+@model proyecto1bases.Pages.COVE
+@{
+    ViewData["Title"] = "Ventas y Cotizaciones por Mes y Año";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewData["Title"]</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4ff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 50px auto;
+        }
+        h1 {
+            font-size: 2rem;
+            color: #004085;
+            text-align: center;
+        }
+        canvas {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>@ViewData["Title"]</h1>
+
+        <canvas id="ventasCotizacionesChart" width="400" height="300"></canvas>
+
+        <script>
+            var ctx = document.getElementById('ventasCotizacionesChart').getContext('2d');
+            var ventasCotizacionesChart = new Chart(ctx, {
+                type: 'bar', // Gráfico de barras comparativo
+                data: {
+                    labels: @Html.Raw(Json.Serialize(Model.Ventas.Select(v => v.AnioMes).ToList())), // Etiquetas: mes y año
+                    datasets: [{
+                        label: 'Cantidad de Ventas',
+                        data: @Html.Raw(Json.Serialize(Model.Ventas.Select(v => v.CantidadVentas).ToList())), // Datos de ventas
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)', // Color de las barras
+                        borderColor: 'rgba(54, 162, 235, 1)', // Color de borde
+                        borderWidth: 1
+                    }, {
+                        label: 'Cantidad de Cotizaciones',
+                        data: @Html.Raw(Json.Serialize(Model.Ventas.Select(v => v.CantidadCotizaciones).ToList())), // Datos de cotizaciones
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)', // Color de las barras
+                        borderColor: 'rgba(255, 99, 132, 1)', // Color de borde
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) { return value.toLocaleString(); } // Formato con comas
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return tooltipItem.label + ": " + tooltipItem.raw.toLocaleString(); // Formato en tooltip
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>
