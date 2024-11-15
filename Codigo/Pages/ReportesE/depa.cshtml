@@ -1,7 +1,7 @@
 @page
 @model proyecto1bases.Pages.depa
 @{
-    ViewData["Title"] = "Gráfico de Planilla por Departamento y Mes";
+    ViewData["Title"] = "Gráfico de Planilla por Departamento y Año";
 }
 
 <!DOCTYPE html>
@@ -10,89 +10,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@ViewData["Title"]</title>
+ 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Librería -->
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f4ff;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 90%;
-            max-width: 800px;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin: 50px auto;
-        }
-        h1 {
-            font-size: 2rem;
-            color: #004085;
-            text-align: center;
-        }
-        form {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        label {
-            font-size: 1rem;
-            color: #333;
-        }
-        input, select, button {
-            padding: 10px;
-            font-size: 1rem;
-            margin-top: 10px;
-        }
-    </style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f0f4ff;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        width: 90%;
+        max-width: 600px;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin: 50px auto;
+    }
+    h1 {
+        font-size: 1.5rem;
+        color: #004085;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    form {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    label {
+        font-size: 0.9rem;
+        color: #333;
+        display: block;
+        margin-top: 10px;
+    }
+    input, select {
+        padding: 8px;
+        font-size: 0.9rem;
+        margin-top: 5px;
+        width: 50%;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .form-group {
+        margin-bottom: 10px;
+    }
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+    .button-container button {
+        width: 48%;
+        padding: 10px 15px;
+        font-size: 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .button-container .submit-button {
+        background-color: #007bff;
+        color: white;
+        border: 1px solid #007bff;
+    }
+    .button-container .submit-button:hover {
+        background-color: #0056b3;
+    }
+    .button-container .back-button {
+        background-color: #6c757d;
+        color: white;
+        border: 1px solid #6c757d;
+    }
+    .button-container .back-button:hover {
+        background-color: #5a6268;
+    }
+    canvas {
+        margin-top: 30px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+
 </head>
 <body>
     <div class="container">
         <h1>@ViewData["Title"]</h1>
         <form method="get">
-            <label for="departamento">Departamento:</label>
-            <input type="text" id="departamento" name="departamento">
+            <div class="form-group">
+                <label for="departamento">Departamento:</label>
+                <input type="text" id="departamento" name="departamento" required>
+            </div>
 
-            <label for="año_inicio">Año Inicio:</label>
-            <input type="number" id="año_inicio" name="año_inicio">
+            <div class="form-group">
+                <label for="año_inicio">Año Inicio:</label>
+                <input type="number" id="año_inicio" name="año_inicio" required>
+            </div>
 
-            <label for="mes_inicio">Mes Inicio:</label>
-            <select id="mes_inicio" name="mes_inicio">
-                <option value="Enero">Enero</option>
-                <option value="Febrero">Febrero</option>
-                <option value="Marzo">Marzo</option>
-                <option value="Abril">Abril</option>
-                <option value="Mayo">Mayo</option>
-                <option value="Junio">Junio</option>
-                <option value="Julio">Julio</option>
-                <option value="Agosto">Agosto</option>
-                <option value="Septiembre">Septiembre</option>
-                <option value="Octubre">Octubre</option>
-                <option value="Noviembre">Noviembre</option>
-                <option value="Diciembre">Diciembre</option>
-            </select>
+            <div class="form-group">
+                <label for="año_final">Año Final:</label>
+                <input type="number" id="año_final" name="año_final" required>
+            </div>
 
-            <label for="año_final">Año Final:</label>
-            <input type="number" id="año_final" name="año_final">
-
-            <label for="mes_final">Mes Final:</label>
-            <select id="mes_final" name="mes_final">
-                <option value="Enero">Enero</option>
-                <option value="Febrero">Febrero</option>
-                <option value="Marzo">Marzo</option>
-                <option value="Abril">Abril</option>
-                <option value="Mayo">Mayo</option>
-                <option value="Junio">Junio</option>
-                <option value="Julio">Julio</option>
-                <option value="Agosto">Agosto</option>
-                <option value="Septiembre">Septiembre</option>
-                <option value="Octubre">Octubre</option>
-                <option value="Noviembre">Noviembre</option>
-                <option value="Diciembre">Diciembre</option>
-            </select>
-
-            <button type="submit">Ver Planilla</button>
+            <div class="button-container">
+                <button type="submit" class="submit-button">Ver Planilla</button>
+                <a href="javascript:history.back()" class="back-button">
+                    <button type="button" class="back-button">Volver</button>
+                </a>
+            </div>
         </form>
 
         <canvas id="planillaChart" width="400" height="400"></canvas>
@@ -102,7 +128,7 @@
             var planillaChart = new Chart(ctx, {
                 type: 'pie', // Tipo de diagrama circular
                 data: {
-                    labels: @Html.Raw(Json.Serialize(Model.Planilla.Select(p => p.Departamento + " - " + p.Mes +  " - " + p.Año).ToList())),
+                    labels: @Html.Raw(Json.Serialize(Model.Planilla.Select(p => p.Departamento + " - " + p.Año).ToList())),
                     datasets: [{
                         label: 'Total Salario',
                         data: @Html.Raw(Json.Serialize(Model.Planilla.Select(p => p.TotalSalario).ToList())),

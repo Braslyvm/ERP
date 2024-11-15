@@ -12,69 +12,89 @@
     <title>@ViewData["Title"]</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f0f4ff;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
-    .container {
-        width: 90%;
-        max-width: 800px;
-        padding: 20px;
-        background-color: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        text-align: center;
-    }
-    h1 {
-        font-size: 2rem;
-        color: #004085;
-        margin-bottom: 20px;
-    }
-    .back-button {
-        margin-top: 20px;
-        padding: 10px 20px;
-        font-size: 1rem;
-        background-color: #004085;
-        color: #ffffff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    .back-button:hover {
-        background-color: #002952;
-    }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4ff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        h1 {
+            font-size: 2rem;
+            color: #004085;
+            margin-bottom: 20px;
+        }
+        .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #004085;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .back-button:hover {
+            background-color: #002952;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>@ViewData["Title"]</h1>
+
+        <form method="get">
+            <label for="fechaInicio">Fecha Inicio:</label>
+            <input type="date" id="fechaInicio" name="FechaInicio" value="@Model.FechaInicio?.ToString("yyyy-MM-dd")" />
+
+            <label for="fechaFin">Fecha Fin:</label>
+            <input type="date" id="fechaFin" name="FechaFin" value="@Model.FechaFin?.ToString("yyyy-MM-dd")" />
+
+            <button type="submit">Filtrar</button>
+        </form>
+
         <canvas id="cotizacionesVentasChart" width="400" height="300"></canvas>
 
         <button class="back-button" onclick="history.back()">Volver</button>
 
         <script>
+            // Comprobación de datos
+            const departamentos = @Html.Raw(Json.Serialize(Model.Departamentos.Select(d => d.Departamento).Distinct()));
+            const cantidadCotizacion = @Html.Raw(Json.Serialize(Model.Departamentos.Select(d => d.CantidadCotizacion)));
+            const cantidadVentas = @Html.Raw(Json.Serialize(Model.Departamentos.Select(d => d.CantidadVentas)));
+
+            console.log("Departamentos:", departamentos);
+            console.log("Cantidad de Cotizaciones:", cantidadCotizacion);
+            console.log("Cantidad de Ventas:", cantidadVentas);
+
             var ctx = document.getElementById('cotizacionesVentasChart').getContext('2d');
             var cotizacionesVentasChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: @Html.Raw(Json.Serialize(Model.Departamentos.Select(d => d.Departamento))),
+                    labels: departamentos,
                     datasets: [
                         {
                             label: 'Cantidad de Cotizaciones',
-                            data: @Html.Raw(Json.Serialize(Model.Departamentos.Select(d => d.CantidadCotizacion))),
+                            data: cantidadCotizacion,
                             backgroundColor: 'rgba(54, 162, 235, 0.2)',
                             borderColor: 'rgba(54, 162, 235, 1)',
                             borderWidth: 1
                         },
                         {
                             label: 'Cantidad de Ventas',
-                            data: @Html.Raw(Json.Serialize(Model.Departamentos.Select(d => d.CantidadVentas))),
+                            data: cantidadVentas,
                             backgroundColor: 'rgba(255, 99, 132, 0.2)',
                             borderColor: 'rgba(255, 99, 132, 1)',
                             borderWidth: 1

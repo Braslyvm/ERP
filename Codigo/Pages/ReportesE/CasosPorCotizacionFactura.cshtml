@@ -38,21 +38,30 @@
     <div class="container">
         <h1>@ViewData["Title"]</h1>
 
+        <!-- Formulario para seleccionar el rango de fechas -->
+        <form method="get">
+            <label for="FechaInicio">Fecha de inicio:</label>
+            <input type="date" id="FechaInicio" name="FechaInicio" value="@Model.FechaInicio?.ToString("yyyy-MM-dd")">
+            
+            <label for="FechaFin">Fecha de fin:</label>
+            <input type="date" id="FechaFin" name="FechaFin" value="@Model.FechaFin?.ToString("yyyy-MM-dd")">
+            
+            <button type="submit">Filtrar</button>
+        </form>
+
         <canvas id="casosChart" width="400" height="300"></canvas>
 
         <script>
             var ctx = document.getElementById('casosChart').getContext('2d');
             var casosChart = new Chart(ctx, {
-                type: 'bar', // Gráfico de barras comparativo
+                type: 'bar',
                 data: {
-                    // Usamos Distinct() para asegurarnos de que las fechas sean únicas
                     labels: @Html.Raw(Json.Serialize(Model.Casos.Select(c => c.mesAño).Distinct().ToList())),
                     datasets: [{
                         label: 'Casos de Cotización',
-                        // Filtrar y organizar los datos por fecha sin repeticiones
                         data: @Html.Raw(Json.Serialize(Model.Casos.Where(c => c.tipo == "cotizacion")
-                            .GroupBy(c => c.mesAño)  // Agrupamos por mesAño
-                            .Select(g => g.Sum(c => c.cantidad))  // Sumamos la cantidad de cada grupo
+                            .GroupBy(c => c.mesAño)
+                            .Select(g => g.Sum(c => c.cantidad))
                             .ToList())),
                         backgroundColor: 'rgba(54, 162, 235, 0.2)',
                         borderColor: 'rgba(54, 162, 235, 1)',
@@ -60,7 +69,6 @@
                     },
                     {
                         label: 'Casos de Factura',
-                        // Igual que para los casos de cotización
                         data: @Html.Raw(Json.Serialize(Model.Casos.Where(c => c.tipo == "factura")
                             .GroupBy(c => c.mesAño)
                             .Select(g => g.Sum(c => c.cantidad))

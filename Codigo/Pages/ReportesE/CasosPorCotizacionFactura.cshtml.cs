@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using proyecto1bases.Models;
 using System;
-using System.Globalization;
 
 namespace proyecto1bases.Pages
 {
@@ -17,6 +16,12 @@ namespace proyecto1bases.Pages
         private readonly string _connectionString;
 
         public List<CasosData> Casos { get; set; } = new List<CasosData>();
+
+        [BindProperty(SupportsGet = true)]
+        public DateTime? FechaInicio { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public DateTime? FechaFin { get; set; }
 
         public CASOS(IConfiguration configuration)
         {
@@ -28,8 +33,12 @@ namespace proyecto1bases.Pages
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                using (var command = new SqlCommand("SELECT * FROM dbo.casos_cotizacion_factura()", connection))
+
+                using (var command = new SqlCommand("SELECT * FROM dbo.casos_cotizacion_factura(@fecha_inicio, @fecha_fin)", connection))
                 {
+                    command.Parameters.AddWithValue("@fecha_inicio", FechaInicio.HasValue ? (object)FechaInicio.Value : DBNull.Value);
+                    command.Parameters.AddWithValue("@fecha_fin", FechaFin.HasValue ? (object)FechaFin.Value : DBNull.Value);
+
                     using (var reader = await command.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
@@ -48,20 +57,6 @@ namespace proyecto1bases.Pages
             }
             return Page();
         }
-         public static int ObtenerNumeroDeMes(string nombreMes)
-    {
-        try
-        {
-            // Convierte el nombre del mes a número usando la cultura actual
-            DateTime fecha = DateTime.ParseExact(nombreMes, "MMMM", CultureInfo.CurrentCulture, DateTimeStyles.None);
-            return fecha.Month;
-        }
-        catch (FormatException)
-        {
-            // Retorna -1 si el nombre del mes no es válido
-            return -1;
-        }
-    }
     }
 
     public class CasosData
