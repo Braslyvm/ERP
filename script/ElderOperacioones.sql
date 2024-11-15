@@ -182,7 +182,9 @@ return
 go
 
 /*Cuenta cantidad de movimientos entrada salida*/
-create function gestion_inventario.cantidadmovimientos()
+
+create function gestion_inventario.cantidadmovimientos( @fecha_inicio date = null,
+    @fecha_fin date = null)
 returns table
 as
 return
@@ -194,7 +196,10 @@ return
     from 
         gestion_inventario.detalle_movimiento c
 		join gestion_inventario.movimientos_inventario gi on c.id_movimiento=gi.id_movimiento
-    where c.bodega_destino is null
+    where c.bodega_destino is null and 
+	(@fecha_inicio is null or gi.fecha >= @fecha_inicio) 
+        and 
+        (@fecha_fin is null or gi.fecha  <= @fecha_fin)
     group by c.bodega_origen
     union all
 
@@ -204,13 +209,21 @@ return
         count( c.id_movimiento) as cantidad_casos
     from 
         gestion_inventario.detalle_movimiento c
+	join gestion_inventario.movimientos_inventario gi on c.id_movimiento=gi.id_movimiento
     where c.bodega_origen is null
     group by c.bodega_destino
 
 );
+go
 
 
-create view top10 as
+/*	top10 articulos cotizados*/
+create function top10 (
+    @fecha_inicio date = null,
+    @fecha_fin date = null
+)
+returns table 
+as return (
 select top 10 
     count(cl.c_producto) as cantidad,
     ga.nombre,
@@ -218,13 +231,25 @@ select top 10
     ga.c_articulo
 from [cotizaciones].[lista_articulos_cotizacion] cl
 join gestion_inventario.articulos ga on cl.c_producto = ga.c_articulo
+join cotizaciones.cotizaciones cc on cl.id_cotizacion = cc.id_cotizacion
+where 
+(@fecha_inicio is null or cc.fecha_corizacion >= @fecha_inicio) 
+        and 
+        (@fecha_fin is null or cc.fecha_corizacion  <= @fecha_fin)
 group by ga.nombre, ga.descripcion, ga.c_articulo
-order by cantidad desc;
+order by cantidad desc)
+go 
 
 
 
-
-create  view CotizacionesyVentas as 
+/*Cotizaciones y ventas por departamento*/
+create  function CotizacionesyVentas (
+    @fecha_inicio date = null,
+    @fecha_fin date = null
+)
+returns table 
+as 
+return(
 	
 select 
     coalesce(cotizaciones.departamento_actual, ventas.departamento_actual) as departamento_actual,
@@ -239,6 +264,10 @@ from
             cotizaciones.cotizaciones cc
         join 
             usuarios.empleados ue on cc.empleado = ue.cedula
+			 where 
+        (@fecha_inicio is null or cc.fecha_corizacion >= @fecha_inicio) 
+        and 
+        (@fecha_fin is null or cc.fecha_corizacion <= @fecha_fin)
         group by 
             ue.departamento_actual,cc.fecha_corizacion
     ) as cotizaciones
@@ -251,17 +280,27 @@ full outer join
             facturación.facturas ff
         join 
             usuarios.empleados ue on ff.id_empleado = ue.cedula
+		 where 
+        (@fecha_inicio is null or ff.fecha_factura >= @fecha_inicio) 
+        and 
+        (@fecha_fin is null or ff.fecha_factura <= @fecha_fin)
         group by 
             ue.departamento_actual,ff.fecha_factura
     ) as ventas 
+
 on 
-    cotizaciones.departamento_actual = ventas.departamento_actual;
+    cotizaciones.departamento_actual = ventas.departamento_actual)
 
 
 
-
-create  view ventasycotizaciones as 
-	
+/* ventas y cotizaciones cuenta*/
+create  function ventasycotizaciones  (
+    @fecha_inicio date = null,
+    @fecha_fin date = null
+)
+returns table 
+as 
+return (
 select 
     coalesce(cotizaciones.departamento_actual, ventas.departamento_actual) as departamento_actual,
     cotizaciones.cantidadCotizacion,
@@ -275,8 +314,13 @@ from
             cotizaciones.cotizaciones cc
         join 
             usuarios.empleados ue on cc.empleado = ue.cedula
+			where 
+        (@fecha_inicio is null or cc.fecha_corizacion >= @fecha_inicio) 
+        and 
+        (@fecha_fin is null or cc.fecha_corizacion <= @fecha_fin)
         group by 
             ue.departamento_actual,cc.fecha_corizacion
+
     ) as cotizaciones
 full outer join 
     (
@@ -287,12 +331,18 @@ full outer join
             facturación.facturas ff
         join 
             usuarios.empleados ue on ff.id_empleado = ue.cedula
+			where 
+        (@fecha_inicio is null or ff.fecha_factura >= @fecha_inicio) 
+        and 
+        (@fecha_fin is null or ff.fecha_factura <= @fecha_fin)
+
         group by 
             ue.departamento_actual,ff.fecha_factura
     ) as ventas 
 on 
-    cotizaciones.departamento_actual = ventas.departamento_actual;
+    cotizaciones.departamento_actual = ventas.departamento_actual)
 
+go
 
 /*ventas y cotizaciones por mes y año*/
 
