@@ -168,10 +168,12 @@ begin
         set @mensaje = 'empleado insertado exitosamente.';
     end try
     begin catch
-        set @mensaje = 'error al insertar el empleado';
+        set @mensaje = 'Error al insertar el empleado: ' + ERROR_MESSAGE();
     end catch
 end;
 go
+
+
 
 -------------------modificar empleado -------------------------
 create procedure usuarios.actualizar_empleado
@@ -450,13 +452,26 @@ begin
     update gestion_inventario.inventario
     set cantidad = cantidad + @cantidad
     where c_bodega = @c_bodega and c_articulo = @c_articulo;
-PRINT 'suma hecha';
 end;
 go
 
 
-----------------------------------Crear movimiento bodega----------------------------------------
+-- Crear la función correctamente, asegurándose de que esté en el esquema correcto (dbo)----------------------
+create function dbo.getfecha_Factura (
+	@id_Factura int
+)
+returns date 
+as 
+begin
+	declare @fecha date;
+	select @fecha = fecha_factura
+	from facturación.facturas
+	where @id_Factura = n_factura;
+	return @fecha;
+end;
+go
 
+-- insertar el movimiento en inventario------------------------
 create procedure gestion_inventario.insertar_movimiento (
     @n_factura int,
     @tipo varchar(30),
@@ -465,11 +480,15 @@ create procedure gestion_inventario.insertar_movimiento (
 )
 as
 begin
+   
     insert into gestion_inventario.movimientos_inventario (n_factura, tipo, fecha, usuario)
-    values (@n_factura, @tipo, getdate(), @usuario);
-    set @mensaje = 'movimiento creado.';
+    values (@n_factura,  @tipo,  COALESCE(dbo.getfecha_Factura(@n_factura), GETDATE()),  @usuario);
+
+    set @mensaje = 'Movimiento creado.';
 end;
 go
+
+
 
 ------------------------------------- detalle de movimiento --------------------------------------------
 create procedure gestion_inventario.insertar_detalle_movimiento (
@@ -534,6 +553,7 @@ create procedure cotizaciones.insertar_cotizacion
     @probabilidad int,
     @tipo varchar(180),
     @descripcion varchar(180),
+	@fecha date,
     @mensaje nvarchar(200) output
 as
 begin
@@ -546,7 +566,7 @@ begin
         where cedula = @cliente;
 
         insert into cotizaciones.cotizaciones (cliente, empleado, fecha_corizacion, m_cierre, probabilidad, tipo, descripción, zona, sector, estado)
-        values (@cliente, @empleado, GETDATE() , @m_cierre, @probabilidad, @tipo, @descripcion, @zona, @sector, 'abierta');
+        values (@cliente, @empleado, @fecha , @m_cierre, @probabilidad, @tipo, @descripcion, @zona, @sector, 'abierta');
         
         set @mensaje = 'Cotización insertada exitosamente.';
     end try
@@ -735,14 +755,15 @@ create procedure cotizaciones.insertar_tarea
     @id_cotizacion int,
     @descripcion varchar(255),
     @usuario int,
-    @fecha_limite datetime,
+    @fecha_limite date,
     @estado varchar(180),
+	@fecha_inicio date,
     @mensaje nvarchar(200) output
 as
 begin
     begin try
         insert into cotizaciones.tareas (id_cotizacion, descripcion, usuario, fecha_inicio, fecha_limite, estado)
-        values (@id_cotizacion, @descripcion, @usuario, getdate(), @fecha_limite, @estado);
+        values (@id_cotizacion, @descripcion, @usuario,@fecha_inicio, @fecha_limite, @estado);
         
         set @mensaje = 'Tarea insertada.';
     end try
@@ -1131,7 +1152,7 @@ create procedure facturación.insertar_factura
     @id_cliente int, 
     @id_cotizacion int = null, 
     @id_empleado int,
-    @fecha_factura datetime,
+    @fecha_factura date,
     @estado varchar(20), 
     @motivo_anulacion varchar(200),
     @total int = null,        
@@ -1642,11 +1663,12 @@ create procedure registro_caso.insertar_caso
     @descripcion_caso varchar(1000),
     @estado varchar(180),
     @tipo_caso varchar(180),
-    @prioridad varchar(180)
+    @prioridad varchar(180),
+	@fecha date
 as
 begin
-    insert into registro_caso.casos (id_empleado, id_cotizacion, id_factura, nombre_cuenta, nombre_contacto, asunto, direccion, descripcion, estado, tipo_caso, prioridad)
-    values (@id_empleado, @id_cotizacion, @id_factura, @nombre_cuenta, @nombre_contacto, @asunto, @direccion, @descripcion_caso, @estado, @tipo_caso, @prioridad);
+    insert into registro_caso.casos (id_empleado, id_cotizacion, id_factura, nombre_cuenta, nombre_contacto, asunto, direccion, descripcion, estado, tipo_caso, prioridad,fecha_creacion)
+    values (@id_empleado, @id_cotizacion, @id_factura, @nombre_cuenta, @nombre_contacto, @asunto, @direccion, @descripcion_caso, @estado, @tipo_caso, @prioridad,@fecha);
 end;
 go
 
@@ -1656,60 +1678,14 @@ go
 create procedure registro_caso.insertar_tarea_caso
     @id_caso int,
     @id_empleado int,
-    @descripcion_tarea nvarchar(1000)
+    @descripcion_tarea nvarchar(1000),
+	@fecha date
 as
 begin
     insert into registro_caso.tarea_casos (id_caso, id_empleado, fecha, descripcion) 
-    values (@id_caso, @id_empleado, getdate(), @descripcion_tarea);
+    values (@id_caso, @id_empleado, @fecha, @descripcion_tarea);
 end;
 go
 
 
 
-
-
----------------------------crear rol y persmisos -----------------
-EXEC  CrearRol 'rol' , 1
-go
-
-EXEC usuarios.InsertarPermisosInventario 'rol' , 1 , 1, 1
-go
-
-EXEC usuarios.InsertarPermisosUsuarios 'rol' , 1 , 1, 1
-go
-
-
-EXEC usuarios.InsertarPermisosCotizaciones 'rol' , 1 , 1, 1
-go
-
-EXEC usuarios.InsertarPermisosFacturas 'rol' , 1 , 1, 1
-go
-
-EXEC usuarios.InsertarPermisosCasos 'rol', 1, 0, 1;
-go 
-
-EXEC usuarios.InsertarPermisosReportes 'rol' , 1 , 1, 1
-go
-
--------------- crear empleado de prueba-------------------------
-DECLARE @mensaje NVARCHAR(200);
-
-EXEC usuarios.insertar_empleado
-    @cedula = 987654321 ,
-    @nombre = 'Pedro',
-    @apellido1 = 'Ramírez',
-    @apellido2 = 'González',
-    @correo_electronico = 'pedro.ramirez@mail.com',
-    @contraseña = 'entrar',
-    @género = 'Masculino',
-    @fecha_nacimiento = '1990-05-10',
-    @lugar_residencia = 'San José',
-    @telefono = 22223333,
-    @fecha_ingreso = '2023-01-15',
-    @salario_actual = 1500,
-    @puesto_actual = 'gerente',
-    @departamento_actual = 'recursos humanos',
-    @rol = 'rol',  
-    @mensaje = @mensaje OUTPUT;
-
-	GO 

@@ -147,6 +147,53 @@ values
 ('B004', '019', 80),
 ('B004', '020', 150);
 
+---------------------------crear rol y persmisos -----------------
+EXEC  CrearRol 'rol' , 1
+go
+
+EXEC usuarios.InsertarPermisosInventario 'rol' , 1 , 1, 1
+go
+
+EXEC usuarios.InsertarPermisosUsuarios 'rol' , 1 , 1, 1
+go
+
+
+EXEC usuarios.InsertarPermisosCotizaciones 'rol' , 1 , 1, 1
+go
+
+EXEC usuarios.InsertarPermisosFacturas 'rol' , 1 , 1, 1
+go
+
+EXEC usuarios.InsertarPermisosCasos 'rol', 1, 0, 1;
+go 
+
+EXEC usuarios.InsertarPermisosReportes 'rol' , 1 , 1, 1
+go
+
+-------------- crear empleado de prueba-------------------------
+DECLARE @mensaje NVARCHAR(200);
+
+EXEC usuarios.insertar_empleado
+    @cedula = 987654321,
+    @nombre = 'Pedro',
+    @apellido1 = 'Ramírez',
+    @apellido2 = 'González',
+    @correo_electronico = 'pedro.ramirez@mail.com',
+    @contraseña = 'entrar',
+    @género = 'Masculino',
+    @fecha_nacimiento = '1990-05-10',
+    @lugar_residencia = 'San José',
+    @telefono = 22223333,
+    @fecha_ingreso = '2023-01-15',
+    @salario_actual = 1500,
+    @puesto_actual = 'gerente',
+    @departamento_actual = 'recursos humanos',
+    @rol = 'rol',  
+    @mensaje = @mensaje OUTPUT;
+	print @mensaje
+go
+
+
 
 declare @mensaje nvarchar(200);
 --Empleados 
@@ -1089,7 +1136,7 @@ exec usuarios.insertar_plantilla
     @cedula = 12345678,
     @mes = 'Junio',
     @año = 2022,
-    @fecha_pago  = '2022-6-12',
+    @fecha_pago  = '2022-06-12',
     @h_normales = 160,
     @h_extras = 10,
     @mensaje = @mensaje output;
@@ -1102,7 +1149,7 @@ exec usuarios.insertar_plantilla
     @cedula = 23456789,
     @mes = 'Marzo',
     @año = 2023,
-    @fecha_pago  = '2023-3-12',
+    @fecha_pago  = '2023-03-12',
     @h_normales = 160,
     @h_extras = 15,
     @mensaje = @mensaje output;
@@ -1115,7 +1162,7 @@ exec usuarios.insertar_plantilla
     @cedula = 56789012,
     @mes = 'Marzo',
     @año = 2023,
-     @fecha_pago  = '2023-3-12',
+     @fecha_pago  = '2023-03-12',
     @h_normales = 160,
     @h_extras = 12,
     @mensaje = @mensaje output;
@@ -1126,7 +1173,7 @@ exec usuarios.insertar_plantilla
     @cedula = 45678901,
     @mes = 'Abril',
     @año = 2023,
-    @fecha_pago  = '2023-4-12',
+    @fecha_pago  = '2023-04-12',
     @h_normales = 160,
     @h_extras = 8,
     @mensaje = @mensaje output;
@@ -1137,7 +1184,7 @@ exec usuarios.insertar_plantilla
     @cedula = 56789012,
     @mes = 'Mayo',
     @año = 2023,
-    @fecha_pago  = '2023-5-12',
+    @fecha_pago  = '2023-05-12',
     @h_normales = 160,
     @h_extras = 20,
     @mensaje = @mensaje output;
@@ -1148,7 +1195,7 @@ exec usuarios.insertar_plantilla
     @cedula = 67890123,
     @mes = 'Junio',
     @año = 2023,
-    @fecha_pago  = '2023-6-12',
+    @fecha_pago  = '2023-06-12',
     @h_normales = 160,
     @h_extras = 5,
     @mensaje = @mensaje output;
@@ -1159,7 +1206,7 @@ exec usuarios.insertar_plantilla
     @cedula = 87654321,
     @mes = 'Julio',
     @año = 2023,
-     @fecha_pago  = '2023-7-12',
+     @fecha_pago  = '2023-07-12',
     @h_normales = 160,
     @h_extras = 18,
     @mensaje = @mensaje output;
@@ -1170,7 +1217,7 @@ exec usuarios.insertar_plantilla
     @cedula = 987654321,
     @mes = 'Agosto',
     @año = 2023,
-     @fecha_pago  = '2023-8-12',
+     @fecha_pago  = '2023-08-12',
     @h_normales = 160,
     @h_extras = 22,
     @mensaje = @mensaje output;
@@ -1185,7 +1232,7 @@ exec usuarios.insertar_plantilla
     @cedula = 12345678,
     @mes = 'Febrero',
     @año = 2024,
-    @fecha_pago  = '2024-2-12',
+    @fecha_pago  = '2024-02-12',
     @h_normales = 160,
     @h_extras = 5,
     @mensaje = @mensaje output;
@@ -1196,7 +1243,7 @@ exec usuarios.insertar_plantilla
     @cedula = 23456789,
     @mes = 'Febrero',
     @año = 2024,
-     @fecha_pago  = '2024-2-12',
+     @fecha_pago  = '2024-02-12',
     @h_normales = 150,
     @h_extras = 10,
     @mensaje = @mensaje output;
@@ -1207,7 +1254,7 @@ exec usuarios.insertar_plantilla
     @cedula = 34567890,
     @mes = 'Marzo',
     @año = 2024,
-    @fecha_pago  = '2024-3-12',
+    @fecha_pago  = '2024-03-12',
     @h_normales = 160,
     @h_extras = 15,
     @mensaje = @mensaje output;
@@ -1218,7 +1265,7 @@ exec usuarios.insertar_plantilla
     @cedula = 45678901,
     @mes = 'Mayo',
     @año = 2023,
-    @fecha_pago  = '2023-5-12',
+    @fecha_pago  = '2023-05-12',
     @h_normales = 160,
     @h_extras = 20,
     @mensaje = @mensaje output;
@@ -1229,7 +1276,7 @@ exec usuarios.insertar_plantilla
     @cedula = 56789012,
     @mes = 'Mayo',
     @año = 2023,
-     @fecha_pago  = '2023-5-12',
+     @fecha_pago  = '2023-05-12',
     @h_normales = 155,
     @h_extras = 12,
     @mensaje = @mensaje output;
@@ -1240,7 +1287,7 @@ exec usuarios.insertar_plantilla
     @cedula = 67890123,
     @mes = 'Junio',
     @año = 2023,
-    @fecha_pago  = '2023-6-12',
+    @fecha_pago  = '2023-06-12',
     @h_normales = 160,
     @h_extras = 18,
     @mensaje = @mensaje output;
@@ -1251,7 +1298,7 @@ exec usuarios.insertar_plantilla
     @cedula = 87654321,
     @mes = 'Julio',
     @año = 2024,
-      @fecha_pago  = '2024-7-12',
+      @fecha_pago  = '2024-07-12',
     @h_normales = 160,
     @h_extras = 10,
     @mensaje = @mensaje output;
@@ -1262,7 +1309,7 @@ exec usuarios.insertar_plantilla
     @cedula = 987654321,
     @mes = 'Agosto',
     @año = 2024,
-      @fecha_pago  = '2024-5-12',
+      @fecha_pago  = '2024-05-12',
     @h_normales = 160,
     @h_extras = 25,
     @mensaje = @mensaje output;
@@ -1273,7 +1320,7 @@ exec usuarios.insertar_plantilla
     @cedula = 12345678,
     @mes = 'Septiembre',
     @año = 2024,
-  @fecha_pago  = '2024-9-12',
+  @fecha_pago  = '2024-09-12',
     @h_normales = 150,
     @h_extras = 8,
     @mensaje = @mensaje output;
@@ -1292,68 +1339,63 @@ print @mensaje;
 go 
 
 declare @mensaje nvarchar(200); 
-exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B001', @c_articulo = '001', @cantidad = 100, @n_factura = NULL, @usuario = 87654321, @bodega_origen = NULL, @bodega_destino = 'B001', @mensaje = @mensaje output; print @mensaje;
-exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B002', @c_articulo = '009', @cantidad = 10, @n_factura = NULL, @usuario = 87654321, @bodega_origen = NULL, @bodega_destino = 'B002', @mensaje = @mensaje output; print @mensaje;
-exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B003', @c_articulo = '011', @cantidad = 10, @n_factura = NULL, @usuario = 87654321, @bodega_origen = NULL, @bodega_destino = 'B003', @mensaje = @mensaje output; print @mensaje;
-exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B004', @c_articulo = '016', @cantidad = 10, @n_factura = NULL, @usuario = 34567890, @bodega_origen = NULL, @bodega_destino = 'B004', @mensaje = @mensaje output; print @mensaje;
-exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B005', @c_articulo = '009', @cantidad = 10, @n_factura = NULL, @usuario = 45678901, @bodega_origen = NULL, @bodega_destino = 'B005', @mensaje = @mensaje output; print @mensaje;
-exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B001', @c_articulo = '003', @cantidad = 10, @n_factura = NULL, @usuario = 56789012, @bodega_origen = NULL, @bodega_destino = 'B001', @mensaje = @mensaje output; print @mensaje;
-exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B002', @c_articulo = '009', @cantidad = 10, @n_factura = NULL, @usuario = 34567890, @bodega_origen = NULL, @bodega_destino = 'B002', @mensaje = @mensaje output; print @mensaje;
-exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B003', @c_articulo = '012', @cantidad = 10, @n_factura = NULL, @usuario = 87654321, @bodega_origen = NULL, @bodega_destino = 'B003', @mensaje = @mensaje output; print @mensaje;
-
-
+exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B001', @c_articulo = '001', @cantidad = 100, @n_factura = NULL, @usuario = 987654321, @bodega_origen = NULL, @bodega_destino = 'B001', @mensaje = @mensaje output; print @mensaje;
+exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B002', @c_articulo = '002', @cantidad = 150, @n_factura = NULL, @usuario = 34567890, @bodega_origen = NULL, @bodega_destino = 'B002', @mensaje = @mensaje output; print @mensaje;
+exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B003', @c_articulo = '003', @cantidad = 200, @n_factura = NULL, @usuario = 45678901, @bodega_origen = NULL, @bodega_destino = 'B003', @mensaje = @mensaje output; print @mensaje;
+exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B004', @c_articulo = '004', @cantidad = 250, @n_factura = NULL, @usuario = 56789012, @bodega_origen = NULL, @bodega_destino = 'B004', @mensaje = @mensaje output; print @mensaje;
+exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B005', @c_articulo = '005', @cantidad = 300, @n_factura = NULL, @usuario = 67890123, @bodega_origen = NULL, @bodega_destino = 'B005', @mensaje = @mensaje output; print @mensaje;
+exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B001', @c_articulo = '006', @cantidad = 50, @n_factura = NULL, @usuario = 67890123, @bodega_origen = NULL, @bodega_destino = 'B001', @mensaje = @mensaje output; print @mensaje;
+exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B002', @c_articulo = '007', @cantidad = 80, @n_factura = NULL, @usuario = 87654321, @bodega_origen = NULL, @bodega_destino = 'B002', @mensaje = @mensaje output; print @mensaje;
+exec gestion_inventario.insertar_producto_y_registrar_movimiento @c_bodega = 'B003', @c_articulo = '008', @cantidad = 120, @n_factura = NULL, @usuario = 987654321, @bodega_origen = NULL, @bodega_destino = 'B003', @mensaje = @mensaje output; print @mensaje;
 
 
 
 
 
 --------------------------insertar cotizaciones----------------------------
+exec cotizaciones.insertar_cotizacion 951753852, 12345678, 'Noviembre', 80, 'Cotización de Venta', 'Compra de productos electrónicos', '2022-08-09', @mensaje;
+exec cotizaciones.insertar_cotizacion 123456789, 45678901, 'Diciembre', 75, 'Cotización de Servicio', 'Servicios para el hogar', '2022-07-11', @mensaje;
+exec cotizaciones.insertar_cotizacion 987654321, 12345678, 'Abril', 90, 'Cotización de Venta', 'Artículos para la cocina', '2022-02-09', @mensaje;
+exec cotizaciones.insertar_cotizacion 123456789, 67890123, 'Mayo', 85, 'Cotización de Servicio', 'Catering para evento', '2022-02-09', @mensaje;
+exec cotizaciones.insertar_cotizacion 654987321, 12345678, 'Junio', 70, 'Cotización de Servicio', 'Alquiler para fiesta', '2023-02-09', @mensaje;
+exec cotizaciones.insertar_cotizacion 987654321, 23456789, 'Julio', 95, 'Cotización de Venta', 'Productos de oficina', '2023-07-11', @mensaje;
+exec cotizaciones.insertar_cotizacion 123456789, 23456789, 'Agosto', 80, 'Cotización de Venta', 'Compra de herramientas', '2023-08-02', @mensaje;
+exec cotizaciones.insertar_cotizacion 321654987, 45678901, 'Septiembre', 90, 'Cotización de Venta', 'Productos para el hogar', '2023-09-15', @mensaje;
+exec cotizaciones.insertar_cotizacion 789654123, 23456789, 'Octubre', 85, 'Cotización de Venta', 'Accesorios para el hogar', '2023-10-10', @mensaje;
+exec cotizaciones.insertar_cotizacion 321654987, 45678901, 'Julio', 60, 'Cotización de Servicio', 'Servicio de transporte para evento', '2023-07-20', @mensaje;
+exec cotizaciones.insertar_cotizacion 123456789, 23456789, 'Noviembre', 92, 'Cotización de Venta', 'Suministros de oficina', '2023-11-05', @mensaje;
+exec cotizaciones.insertar_cotizacion 951753852, 12345678, 'Noviembre', 75, 'Cotización de Servicio', 'Instalación de sistemas de seguridad', '2023-11-07', @mensaje;
+exec cotizaciones.insertar_cotizacion 321654987, 23456789, 'Noviembre', 88, 'Cotización de Venta', 'Mobiliario de oficina', '2023-11-12', @mensaje;
+exec cotizaciones.insertar_cotizacion 654987321, 23456789, 'Octubre', 80, 'Cotización de Servicio', 'Asesoría empresarial', '2023-10-15', @mensaje;
+exec cotizaciones.insertar_cotizacion 123456789, 67890123, 'Noviembre', 77, 'Cotización de Venta', 'Suministros de limpieza para empresa', '2023-11-17', @mensaje;
+exec cotizaciones.insertar_cotizacion 951753852, 67890123, 'Noviembre', 68, 'Cotización de Servicio', 'Servicios de mantenimiento de equipos', '2023-11-20', @mensaje;
+exec cotizaciones.insertar_cotizacion 123456789, 12345678, 'Octubre', 85, 'Cotización de Venta', 'Compra de productos tecnológicos', '2024-10-22', @mensaje;
+exec cotizaciones.insertar_cotizacion 987654321, 87654321, 'Julio', 82, 'Cotización de Servicio', 'Servicios de reparación de electrodomésticos', '2024-07-25', @mensaje;
+exec cotizaciones.insertar_cotizacion 987654321, 87654321, 'Diciembre', 91, 'Cotización de Venta', 'Venta de productos electrónicos', '2024-12-05', @mensaje;
+exec cotizaciones.insertar_cotizacion 789654123, 12345678, 'Noviembre', 70, 'Cotización de Servicio', 'Alquiler de equipos para evento', '2024-11-22', @mensaje;
 
-GO
-declare @mensaje nvarchar(200); 
-exec cotizaciones.insertar_cotizacion 951753852, 12345678, 'Noviembre', 80, 'Cotización de Venta', 'Compra de productos electrónicos', @mensaje;
-exec cotizaciones.insertar_cotizacion 123456789, 45678901, 'Diciembre', 75, 'Cotización de Servicio', 'Servicios para el hogar', @mensaje;
-exec cotizaciones.insertar_cotizacion 987654321, 12345678, 'Abril', 90, 'Cotización de Venta', 'Artículos para la cocina', @mensaje;
-exec cotizaciones.insertar_cotizacion 123456789, 67890123, 'Mayo', 85, 'Cotización de Servicio', 'Catering para evento', @mensaje;
-exec cotizaciones.insertar_cotizacion 654987321, 12345678, 'Junio', 70, 'Cotización de Servicio', 'Alquiler para fiesta', @mensaje;
-exec cotizaciones.insertar_cotizacion 987654321, 23456789, 'Julio', 95, 'Cotización de Venta', 'Productos de oficina', @mensaje;
-exec cotizaciones.insertar_cotizacion 123456789, 23456789, 'Agosto', 80, 'Cotización de Venta', 'Compra de herramientas', @mensaje;
-exec cotizaciones.insertar_cotizacion 321654987, 45678901, 'Septiembre', 90, 'Cotización de Venta', 'Productos para el hogar', @mensaje;
-exec cotizaciones.insertar_cotizacion 789654123, 23456789, 'Octubre', 85, 'Cotización de Venta', 'Accesorios para el hogar', @mensaje;
-exec cotizaciones.insertar_cotizacion 321654987, 45678901, 'Julio', 60, 'Cotización de Servicio', 'Servicio de transporte para evento', @mensaje;
-exec cotizaciones.insertar_cotizacion 123456789, 23456789, 'Noviembre', 92, 'Cotización de Venta', 'Suministros de oficina', @mensaje;
-exec cotizaciones.insertar_cotizacion 951753852, 12345678, 'Noviembre', 75, 'Cotización de Servicio', 'Instalación de sistemas de seguridad', @mensaje;
-exec cotizaciones.insertar_cotizacion 321654987, 23456789, 'Noviembre', 88, 'Cotización de Venta', 'Mobiliario de oficina', @mensaje;
-exec cotizaciones.insertar_cotizacion 654987321, 23456789, 'Octubre', 80, 'Cotización de Servicio', 'Asesoría empresarial', @mensaje;
-exec cotizaciones.insertar_cotizacion 123456789, 67890123, 'Noviembre', 77, 'Cotización de Venta', 'Suministros de limpieza para empresa', @mensaje;
-exec cotizaciones.insertar_cotizacion 951753852, 67890123, 'Noviembre', 68, 'Cotización de Servicio', 'Servicios de mantenimiento de equipos', @mensaje;
-exec cotizaciones.insertar_cotizacion 123456789, 12345678, 'Octubre', 85, 'Cotización de Venta', 'Compra de productos tecnológicos', @mensaje;
-exec cotizaciones.insertar_cotizacion 987654321, 87654321, 'Julio', 82, 'Cotización de Servicio', 'Servicios de reparación de electrodomésticos', @mensaje;
-exec cotizaciones.insertar_cotizacion 987654321, 87654321, 'Diciembre', 91, 'Cotización de Venta', 'Venta de productos electrónicos', @mensaje;
-exec cotizaciones.insertar_cotizacion 789654123, 12345678, 'Noviembre', 70, 'Cotización de Servicio', 'Alquiler de equipos para evento', @mensaje;
-go 
 
-declare @mensaje nvarchar(200); 
-exec cotizaciones.insertar_tarea 1, 'Revisar productos', 12345678, '2024-12-01', 'pendiente', @mensaje;
-exec cotizaciones.insertar_tarea 2, 'Presupuesto mantenimiento', 23456789, '2024-12-01', 'en progreso', @mensaje;
-exec cotizaciones.insertar_tarea 3, 'Buscar proveedores cocina', 34567890, '2024-12-01', 'pendiente', @mensaje;
-exec cotizaciones.insertar_tarea 4, 'Propuesta catering evento', 45678901, '2024-11-28', 'en progreso', @mensaje;
-exec cotizaciones.insertar_tarea 5, 'Actualizar cotización fiesta', 56789012, '2024-12-05', 'pendiente', @mensaje;
-exec cotizaciones.insertar_tarea 6, 'Investigar productos oficina', 67890123, '2024-11-30', 'en progreso', @mensaje;
-exec cotizaciones.insertar_tarea 7, 'Revisar herramientas', 87654321, '2024-11-27', 'pendiente', @mensaje;
-exec cotizaciones.insertar_tarea 8, 'Proveedores hogar', 987654321, '2024-12-03', 'en progreso', @mensaje;
-exec cotizaciones.insertar_tarea 9, 'Cotización accesorios oficina', 12345678, '2024-11-29', 'pendiente', @mensaje;
-exec cotizaciones.insertar_tarea 10, 'Gestionar transporte', 23456789, '2024-11-25', 'en progreso', @mensaje;
-exec cotizaciones.insertar_tarea 11, 'Propuesta suministros oficina', 34567890, '2024-11-30', 'pendiente', @mensaje;
-exec cotizaciones.insertar_tarea 12, 'Revisar cotización seguridad', 45678901, '2024-12-01', 'en progreso', @mensaje;
-exec cotizaciones.insertar_tarea 13, 'Propuesta mobiliario oficina', 56789012, '2024-12-04', 'pendiente', @mensaje;
-exec cotizaciones.insertar_tarea 14, 'Asesoría empresarial', 67890123, '2024-11-30', 'en progreso', @mensaje;
-exec cotizaciones.insertar_tarea 15, 'Actualizar cotización limpieza', 87654321, '2024-12-01', 'pendiente', @mensaje;
-exec cotizaciones.insertar_tarea 16, 'Coordinar mantenimiento', 987654321, '2024-11-29', 'en progreso', @mensaje;
-exec cotizaciones.insertar_tarea 17, 'Revisar cotización tecnología', 12345678, '2024-12-06', 'pendiente', @mensaje;
-exec cotizaciones.insertar_tarea 18, 'Propuesta reparación electrodomésticos', 23456789, '2024-11-28', 'en progreso', @mensaje;
-exec cotizaciones.insertar_tarea 19, 'Revisar cotización electrónica', 34567890, '2024-12-02', 'pendiente', @mensaje;
-exec cotizaciones.insertar_tarea 20, 'Generar cotización alquiler', 45678901, '2024-11-30', 'en progreso', @mensaje;
+exec cotizaciones.insertar_tarea 1, 'Revisar productos', 12345678, '2024-11-30', 'pendiente', '2022-08-09', @mensaje;
+exec cotizaciones.insertar_tarea 2, 'Presupuesto mantenimiento', 23456789, '2024-11-25', 'en progreso', '2022-07-15', @mensaje;
+exec cotizaciones.insertar_tarea 3, 'Buscar proveedores cocina', 34567890, '2024-12-01', 'pendiente', '2023-03-20', @mensaje;
+exec cotizaciones.insertar_tarea 4, 'Propuesta catering evento', 45678901, '2024-11-28', 'en progreso', '2023-04-10', @mensaje;
+exec cotizaciones.insertar_tarea 5, 'Actualizar cotización fiesta', 56789012, '2024-12-05', 'pendiente', '2023-05-01', @mensaje;
+exec cotizaciones.insertar_tarea 6, 'Investigar productos oficina', 67890123, '2024-11-30', 'en progreso', '2023-06-18', @mensaje;
+exec cotizaciones.insertar_tarea 7, 'Revisar herramientas', 87654321, '2024-11-27', 'pendiente', '2023-07-12', @mensaje;
+exec cotizaciones.insertar_tarea 8, 'Proveedores hogar', 987654321, '2024-12-03', 'en progreso', '2023-08-10', @mensaje;
+exec cotizaciones.insertar_tarea 9, 'Cotización accesorios oficina', 12345678, '2024-11-29', 'pendiente', '2023-09-05', @mensaje;
+exec cotizaciones.insertar_tarea 10, 'Gestionar transporte', 23456789, '2024-11-25', 'en progreso', '2023-10-08', @mensaje;
+exec cotizaciones.insertar_tarea 11, 'Propuesta suministros oficina', 34567890, '2024-11-30', 'pendiente', '2023-11-01', @mensaje;
+exec cotizaciones.insertar_tarea 12, 'Revisar cotización seguridad', 45678901, '2024-12-02', 'en progreso', '2023-12-15', @mensaje;
+exec cotizaciones.insertar_tarea 13, 'Propuesta mobiliario oficina', 56789012, '2024-12-04', 'pendiente', '2024-01-20', @mensaje;
+exec cotizaciones.insertar_tarea 14, 'Asesoría empresarial', 67890123, '2024-11-30', 'en progreso', '2024-02-10', @mensaje;
+exec cotizaciones.insertar_tarea 15, 'Actualizar cotización limpieza', 87654321, '2024-12-01', 'pendiente', '2024-03-05', @mensaje;
+exec cotizaciones.insertar_tarea 16, 'Coordinar mantenimiento', 987654321, '2024-11-29', 'en progreso', '2024-04-15', @mensaje;
+exec cotizaciones.insertar_tarea 17, 'Revisar cotización tecnología', 12345678, '2024-12-06', 'pendiente', '2024-05-20', @mensaje;
+exec cotizaciones.insertar_tarea 18, 'Propuesta reparación electrodomésticos', 23456789, '2024-11-28', 'en progreso', '2024-06-01', @mensaje;
+exec cotizaciones.insertar_tarea 19, 'Revisar cotización electrónica', 34567890, '2024-12-02', 'pendiente', '2024-07-10', @mensaje;
+exec cotizaciones.insertar_tarea 20, 'Generar cotización alquiler', 45678901, '2024-11-30', 'en progreso', '2024-08-25', @mensaje;
+
 
 ----------------------------insertar productos cotizacion -------------------
 
@@ -1438,53 +1480,52 @@ EXEC cotizaciones.insertar_articulo_cotizacion 20, '003', 6, 'B001', @mensaje;
 EXEC cotizaciones.insertar_articulo_cotizacion 20, '004', 4, 'B001', @mensaje;
 
 
-
------------------------ inserts de casos de cotizaciones-------------------------
-
-exec registro_caso.insertar_caso 12345678, 1, null, 'cotizacion 1', 'cliente 1', 'asunto 1', 'direccion 1', 'cliente interesado en obtener más detalles', 'abierto', 'tipo caso 1', 'alta';
-exec registro_caso.insertar_caso 23456789, 2, null, 'cotizacion 2', 'cliente 2', 'asunto 2', 'direccion 2', 'cliente tiene preguntas sobre la cotización', 'abierto', 'tipo caso 2', 'alta';
-exec registro_caso.insertar_caso 12345678, 3, null, 'cotizacion 3', 'cliente 3', 'asunto 3', 'direccion 3', 'cliente requiere más información sobre el servicio', 'abierto', 'tipo caso 3', 'media';
-exec registro_caso.insertar_caso 34567890, 4, null, 'cotizacion 4', 'cliente 4', 'asunto 4', 'direccion 4', 'solicitud de información adicional sobre el producto', 'abierto', 'tipo caso 4', 'baja';
-exec registro_caso.insertar_caso 45678901, 5, null, 'cotizacion 5', 'cliente 5', 'asunto 5', 'direccion 5', 'cliente tiene dudas sobre el precio', 'abierto', 'tipo caso 5', 'baja';
-exec registro_caso.insertar_caso 56789012, 6, null, 'cotizacion 6', 'cliente 6', 'asunto 6', 'direccion 6', 'cliente consulta tiempos de entrega', 'abierto', 'tipo caso 6', 'media';
-exec registro_caso.insertar_caso 67890123, 7, null, 'cotizacion 7', 'cliente 7', 'asunto 7', 'direccion 7', 'cliente revisando los detalles del contrato', 'abierto', 'tipo caso 7', 'alta';
-exec registro_caso.insertar_caso 12345678, 8, null, 'cotizacion 8', 'cliente 8', 'asunto 8', 'direccion 8', 'cliente necesita reprogramar la entrega', 'abierto', 'tipo caso 8', 'alta';
-exec registro_caso.insertar_caso 87654321, 9, null, 'cotizacion 9', 'cliente 9', 'asunto 9', 'direccion 9', 'cliente tiene preguntas sobre la cotización', 'abierto', 'tipo caso 9', 'baja';
-exec registro_caso.insertar_caso 45678901, 10, null, 'cotizacion 10', 'cliente 10', 'asunto 10', 'direccion 10', 'cliente solicita cambios en los términos', 'abierto', 'tipo caso 10', 'baja';
-
+------------------------inserts de casos de cotizaciones--------------------------------------------------
+exec registro_caso.insertar_caso 12345678, 1, null, 'cotizacion 1', 'cliente 1', 'asunto 1', 'direccion 1', 'cliente interesado en obtener más detalles', 'abierto', 'tipo caso 1', 'alta', '2020-03-15';
+exec registro_caso.insertar_caso 23456789, 2, null, 'cotizacion 2', 'cliente 2', 'asunto 2', 'direccion 2', 'cliente tiene preguntas sobre la cotización', 'abierto', 'tipo caso 2', 'alta', '2021-06-22';
+exec registro_caso.insertar_caso 12345678, 3, null, 'cotizacion 3', 'cliente 3', 'asunto 3', 'direccion 3', 'cliente requiere más información sobre el servicio', 'abierto', 'tipo caso 3', 'media', '2022-01-14';
+exec registro_caso.insertar_caso 34567890, 4, null, 'cotizacion 4', 'cliente 4', 'asunto 4', 'direccion 4', 'solicitud de información adicional sobre el producto', 'abierto', 'tipo caso 4', 'baja', '2021-09-05';
+exec registro_caso.insertar_caso 45678901, 5, null, 'cotizacion 5', 'cliente 5', 'asunto 5', 'direccion 5', 'cliente tiene dudas sobre el precio', 'abierto', 'tipo caso 5', 'baja', '2023-03-18';
+exec registro_caso.insertar_caso 56789012, 6, null, 'cotizacion 6', 'cliente 6', 'asunto 6', 'direccion 6', 'cliente consulta tiempos de entrega', 'abierto', 'tipo caso 6', 'media', '2022-11-29';
+exec registro_caso.insertar_caso 67890123, 7, null, 'cotizacion 7', 'cliente 7', 'asunto 7', 'direccion 7', 'cliente revisando los detalles del contrato', 'abierto', 'tipo caso 7', 'alta', '2020-07-08';
+exec registro_caso.insertar_caso 12345678, 8, null, 'cotizacion 8', 'cliente 8', 'asunto 8', 'direccion 8', 'cliente necesita reprogramar la entrega', 'abierto', 'tipo caso 8', 'alta', '2023-05-17';
+exec registro_caso.insertar_caso 87654321, 9, null, 'cotizacion 9', 'cliente 9', 'asunto 9', 'direccion 9', 'cliente tiene preguntas sobre la cotización', 'abierto', 'tipo caso 9', 'baja', '2021-02-03';
+exec registro_caso.insertar_caso 45678901, 10, null, 'cotizacion 10', 'cliente 10', 'asunto 10', 'direccion 10', 'cliente solicita cambios en los términos', 'abierto', 'tipo caso 10', 'baja', '2020-12-12';
 
 ------------------------inserts de casos de facturas--------------------------------------------------
-exec registro_caso.insertar_caso 12345678, null, 1, 'factura 1', 'cliente 1', 'asunto factura 1', 'direccion factura 1', 'cliente solicita información adicional sobre la factura', 'abierto', 'tipo caso factura', 'alta';
-exec registro_caso.insertar_caso 23456789, null, 2, 'factura 2', 'cliente 2', 'asunto factura 2', 'direccion factura 2', 'cliente tiene dudas sobre los cargos', 'abierto', 'tipo caso factura', 'alta';
-exec registro_caso.insertar_caso 34567890, null, 3, 'factura 3', 'cliente 3', 'asunto factura 3', 'direccion factura 3', 'cliente quiere discutir el método de pago', 'abierto', 'tipo caso factura', 'media';
-exec registro_caso.insertar_caso 12345678, null, 5, 'factura 5', 'cliente 4', 'asunto factura 4', 'direccion factura 4', 'cliente requiere una aclaración de la fecha de vencimiento', 'abierto', 'tipo caso factura', 'baja';
-exec registro_caso.insertar_caso 45678901, null, 4, 'factura 4', 'cliente 5', 'asunto factura 5', 'direccion factura 5', 'cliente consulta descuentos aplicados', 'abierto', 'tipo caso factura', 'baja';
-exec registro_caso.insertar_caso 56789012, null, 7, 'factura 7', 'cliente 6', 'asunto factura 6', 'direccion factura 6', 'cliente solicita una copia de la factura', 'abierto', 'tipo caso factura', 'media';
-exec registro_caso.insertar_caso 67890123, null, 6, 'factura 6', 'cliente 7', 'asunto factura 7', 'direccion factura 7', 'cliente tiene preguntas sobre el monto total', 'abierto', 'tipo caso factura', 'alta';
-exec registro_caso.insertar_caso 12345678, null, 8, 'factura 8', 'cliente 8', 'asunto factura 8', 'direccion factura 8', 'cliente necesita corregir los datos de la factura', 'abierto', 'tipo caso factura', 'alta';
-exec registro_caso.insertar_caso 87654321, null, 9, 'factura 9', 'cliente 9', 'asunto factura 9', 'direccion factura 9', 'cliente requiere una reimpresión de la factura', 'abierto', 'tipo caso factura', 'baja';
-exec registro_caso.insertar_caso 45678901, null, 10, 'factura 10', 'cliente 10', 'asunto factura 10', 'direccion factura 10', 'cliente tiene dudas sobre los impuestos aplicados', 'abierto', 'tipo caso factura', 'baja';
+exec registro_caso.insertar_caso 12345678, null, 1, 'factura 1', 'cliente 1', 'asunto factura 1', 'direccion factura 1', 'cliente solicita información adicional sobre la factura', 'abierto', 'tipo caso factura', 'alta', '2019-04-25';
+exec registro_caso.insertar_caso 23456789, null, 2, 'factura 2', 'cliente 2', 'asunto factura 2', 'direccion factura 2', 'cliente tiene dudas sobre los cargos', 'abierto', 'tipo caso factura', 'alta', '2020-08-16';
+exec registro_caso.insertar_caso 34567890, null, 3, 'factura 3', 'cliente 3', 'asunto factura 3', 'direccion factura 3', 'cliente quiere discutir el método de pago', 'abierto', 'tipo caso factura', 'media', '2022-10-10';
+exec registro_caso.insertar_caso 12345678, null, 5, 'factura 5', 'cliente 4', 'asunto factura 4', 'direccion factura 4', 'cliente requiere una aclaración de la fecha de vencimiento', 'abierto', 'tipo caso factura', 'baja', '2021-01-30';
+exec registro_caso.insertar_caso 45678901, null, 4, 'factura 4', 'cliente 5', 'asunto factura 5', 'direccion factura 5', 'cliente consulta descuentos aplicados', 'abierto', 'tipo caso factura', 'baja', '2023-09-14';
+exec registro_caso.insertar_caso 56789012, null, 7, 'factura 7', 'cliente 6', 'asunto factura 6', 'direccion factura 6', 'cliente solicita una copia de la factura', 'abierto', 'tipo caso factura', 'media', '2022-06-11';
+exec registro_caso.insertar_caso 67890123, null, 6, 'factura 6', 'cliente 7', 'asunto factura 7', 'direccion factura 7', 'cliente tiene preguntas sobre el monto total', 'abierto', 'tipo caso factura', 'alta', '2021-12-20';
+exec registro_caso.insertar_caso 12345678, null, 8, 'factura 8', 'cliente 8', 'asunto factura 8', 'direccion factura 8', 'cliente necesita corregir los datos de la factura', 'abierto', 'tipo caso factura', 'alta', '2020-05-28';
+exec registro_caso.insertar_caso 87654321, null, 9, 'factura 9', 'cliente 9', 'asunto factura 9', 'direccion factura 9', 'cliente requiere una reimpresión de la factura', 'abierto', 'tipo caso factura', 'baja', '2019-11-09';
+exec registro_caso.insertar_caso 45678901, null, 10, 'factura 10', 'cliente 10', 'asunto factura 10', 'direccion factura 10', 'cliente tiene dudas sobre los impuestos aplicados', 'abierto', 'tipo caso factura', 'baja', '2023-07-22';
+
 
 -- Tareas para los casos de cotización------------------------------------------
-exec registro_caso.insertar_tarea_caso 1, 12345678, 'Revisión de los detalles de la cotización para el cliente 1';
-exec registro_caso.insertar_tarea_caso 2, 23456789, 'Respuesta a las dudas sobre la cotización del cliente 2';
-exec registro_caso.insertar_tarea_caso 3, 34567890, 'Proporcionar más información sobre los servicios solicitados por el cliente 3';
-exec registro_caso.insertar_tarea_caso 4, 45678901, 'Brindar información adicional sobre el producto para el cliente 4';
-exec registro_caso.insertar_tarea_caso 5, 56789012, 'Explicar el precio de la cotización al cliente 5';
-exec registro_caso.insertar_tarea_caso 6, 67890123, 'Responde consulta sobre tiempos de entrega para el cliente 6';
-exec registro_caso.insertar_tarea_caso 7, 87654321, 'Revisar contrato con el cliente 7 en relación con la cotización';
-exec registro_caso.insertar_tarea_caso 8, 12345678, 'Reprogramar la entrega de la cotización para el cliente 8';
-exec registro_caso.insertar_tarea_caso 9, 23456789, 'Aclarar dudas adicionales sobre la cotización para el cliente 9';
-exec registro_caso.insertar_tarea_caso 10, 34567890, 'Ajustar los términos de la cotización con el cliente 10';
+exec registro_caso.insertar_tarea_caso 1, 12345678, 'Revisión de los detalles de la cotización para el cliente 1', '2023-01-05';
+exec registro_caso.insertar_tarea_caso 2, 23456789, 'Respuesta a las dudas sobre la cotización del cliente 2', '2023-02-15';
+exec registro_caso.insertar_tarea_caso 3, 34567890, 'Proporcionar más información sobre los servicios solicitados por el cliente 3', '2023-03-10';
+exec registro_caso.insertar_tarea_caso 4, 45678901, 'Brindar información adicional sobre el producto para el cliente 4', '2023-04-18';
+exec registro_caso.insertar_tarea_caso 5, 56789012, 'Explicar el precio de la cotización al cliente 5', '2023-05-12';
+exec registro_caso.insertar_tarea_caso 6, 67890123, 'Responde consulta sobre tiempos de entrega para el cliente 6', '2023-06-20';
+exec registro_caso.insertar_tarea_caso 7, 87654321, 'Revisar contrato con el cliente 7 en relación con la cotización', '2023-07-25';
+exec registro_caso.insertar_tarea_caso 8, 12345678, 'Reprogramar la entrega de la cotización para el cliente 8', '2023-08-15';
+exec registro_caso.insertar_tarea_caso 9, 23456789, 'Aclarar dudas adicionales sobre la cotización para el cliente 9', '2023-09-05';
+exec registro_caso.insertar_tarea_caso 10, 34567890, 'Ajustar los términos de la cotización con el cliente 10', '2023-10-22';
 
 -- Tareas para los casos de facturas--------------------------------------------------
-exec registro_caso.insertar_tarea_caso 11, 12345678, 'Brindar información adicional sobre la factura al cliente 1';
-exec registro_caso.insertar_tarea_caso 12, 23456789, 'Resolver dudas sobre los cargos en la factura del cliente 2';
-exec registro_caso.insertar_tarea_caso 13, 34567890, 'Discutir el método de pago de la factura con el cliente 3';
-exec registro_caso.insertar_tarea_caso 14, 45678901, 'Aclarar la fecha de vencimiento de la factura con el cliente 4';
-exec registro_caso.insertar_tarea_caso 15, 56789012, 'Revisar los descuentos aplicados en la factura del cliente 5';
-exec registro_caso.insertar_tarea_caso 16, 67890123, 'Proporcionar una copia de la factura al cliente 6';
-exec registro_caso.insertar_tarea_caso 17, 87654321, 'Responder preguntas sobre el monto total de la factura del cliente 7';
-exec registro_caso.insertar_tarea_caso 18, 12345678, 'Corregir los datos de la factura para el cliente 8';
-exec registro_caso.insertar_tarea_caso 19, 23456789, 'Reimprimir la factura solicitada por el cliente 9';
-exec registro_caso.insertar_tarea_caso 20, 34567890, 'Aclarar las dudas sobre los impuestos aplicados en la factura del cliente 10';
+exec registro_caso.insertar_tarea_caso 11, 12345678, 'Brindar información adicional sobre la factura al cliente 1', '2023-01-10';
+exec registro_caso.insertar_tarea_caso 12, 23456789, 'Resolver dudas sobre los cargos en la factura del cliente 2', '2023-02-20';
+exec registro_caso.insertar_tarea_caso 13, 34567890, 'Discutir el método de pago de la factura con el cliente 3', '2023-03-25';
+exec registro_caso.insertar_tarea_caso 14, 45678901, 'Aclarar la fecha de vencimiento de la factura con el cliente 4', '2023-04-14';
+exec registro_caso.insertar_tarea_caso 15, 56789012, 'Revisar los descuentos aplicados en la factura del cliente 5', '2023-05-30';
+exec registro_caso.insertar_tarea_caso 16, 67890123, 'Proporcionar una copia de la factura al cliente 6', '2023-06-08';
+exec registro_caso.insertar_tarea_caso 17, 87654321, 'Responder preguntas sobre el monto total de la factura del cliente 7', '2023-07-15';
+exec registro_caso.insertar_tarea_caso 18, 12345678, 'Corregir los datos de la factura para el cliente 8', '2023-08-23';
+exec registro_caso.insertar_tarea_caso 19, 23456789, 'Reimprimir la factura solicitada por el cliente 9', '2023-09-10';
+exec registro_caso.insertar_tarea_caso 20, 34567890, 'Aclarar las dudas sobre los impuestos aplicados en la factura del cliente 10', '2023-10-28';
+
