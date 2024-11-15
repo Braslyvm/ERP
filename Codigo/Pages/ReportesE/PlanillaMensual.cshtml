@@ -54,16 +54,19 @@
         <form method="get">
             <label for="anioInicio">Año Inicio:</label>
             <input type="number" id="anioInicio" name="anioInicio" value="@Model.AnioInicio" />
-            <label for="mesInicio">Mes Inicio:</label>
-            <input type="number" id="mesInicio" name="mesInicio" value="@Model.MesInicio" min="1" max="12" />
+          
+          
             <label for="anioFin">Año Fin:</label>
             <input type="number" id="anioFin" name="anioFin" value="@Model.AnioFin" />
-            <label for="mesFin">Mes Fin:</label>
-            <input type="number" id="mesFin" name="mesFin" value="@Model.MesFin" min="1" max="12" />
+            
+            
             <button type="submit">Filtrar</button>
         </form>
         
         <canvas id="salarioChart" width="400" height="200"></canvas>
+<a href="/menus/Reportes">
+            <button class="back-button">Volver a Reportes</button>
+        </a>
 
         <script>
             var ctx = document.getElementById('salarioChart').getContext('2d');

@@ -23,7 +23,10 @@ namespace proyecto1bases.Pages
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
-
+          /// <summary>
+          /// Lee la informacion de la tabla y la retorna a la clase del tipo de la tabla , permite valores null
+          /// </summary>
+          /// <returns></returns>
         public async Task<IActionResult> OnGetAsync(int? anioInicio = null, int? mesInicio = null, 
                                                     int? anioFin = null, int? mesFin = null)
         {

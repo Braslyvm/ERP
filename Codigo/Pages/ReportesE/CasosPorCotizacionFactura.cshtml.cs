@@ -13,7 +13,10 @@ namespace proyecto1bases.Pages
 {
     public class CASOS : PageModel
     {
-        private readonly string _connectionString;
+        /// <summary>
+                /// atributos
+                /// </summary>
+                private readonly string _connectionString;
 
         public List<CasosData> Casos { get; set; } = new List<CasosData>();
 
@@ -28,7 +31,11 @@ namespace proyecto1bases.Pages
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
-        public async Task<IActionResult> OnGetAsync()
+        /// <summary>
+                /// Lee la informacion de la tabla y la retorna a la clase del tipo de la tabla 
+                /// </summary>
+                /// <returns></returns>
+                public async Task<IActionResult> OnGetAsync()
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -59,7 +66,10 @@ namespace proyecto1bases.Pages
         }
     }
 
-    public class CasosData
+    /// <summary>
+        /// clase de la funcion
+        /// </summary>
+        public class CasosData
     {
         public string año { get; set; }
         public string mes { get; set; }

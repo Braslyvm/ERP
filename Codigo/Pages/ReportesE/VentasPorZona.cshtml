@@ -32,13 +32,65 @@
             color: #004085;
             text-align: center;
         }
+        form {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        input[type="date"] {
+            padding: 5px;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #004085;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .back-button {
+            background-color: #28a745;
+        }
+        .back-button:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>@ViewData["Title"]</h1>
 
+        <!-- Formulario para seleccionar fechas -->
+        <form method="get">
+            <div>
+                <label for="fechaInicio">Fecha Inicio:</label>
+                <input type="date" id="fechaInicio" name="fechaInicio" value="@Model.FechaInicio?.ToString("yyyy-MM-dd")" />
+            </div>
+            <div>
+                <label for="fechaFin">Fecha Fin:</label>
+                <input type="date" id="fechaFin" name="fechaFin" value="@Model.FechaFin?.ToString("yyyy-MM-dd")" />
+            </div>
+            <button type="submit">Filtrar</button>
+        </form>
+
+        <!-- Gráfico de Ventas por Sector -->
         <canvas id="ventaSectorChart" width="400" height="400"></canvas>
+
+        <!-- Botón de Volver -->
+        <a href="/menus/Reportes">
+            <button class="back-button">Volver a Reportes</button>
+        </a>
 
         <script>
             var ctx = document.getElementById('ventaSectorChart').getContext('2d');

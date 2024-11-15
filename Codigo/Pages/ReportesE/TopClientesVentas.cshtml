@@ -13,34 +13,55 @@
     <link rel="stylesheet" href="~/css/index.css">
     <style>
         .styled-table {
-            width: 100%; 
-            border-collapse: collapse; 
-            margin-top: 15px; /* Reducción de márgenes */
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
         }
-
         .styled-table th, .styled-table td {
-            padding: 8px; /* Espaciado interno más pequeño */
-            text-align: left; 
-            border-bottom: 1px solid #ddd; 
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
         }
-
         .styled-table th {
-            background-color: #4CAF50; 
-            color: white; 
+            background-color: #4CAF50;
+            color: white;
         }
-
         .styled-table tr:hover {
-            background-color: #f1f1f1; 
+            background-color: #f1f1f1;
         }
-
         .styled-table tbody tr:nth-child(even) {
-            background-color: #f9f9f9; 
+            background-color: #f9f9f9;
+        }
+        .boton-volver {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .boton-volver:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>@ViewData["Title"]</h1>
+
+        <!-- Formulario para capturar el rango de fechas -->
+        <form method="get">
+            <label for="fecha_inicio">Fecha Inicio:</label>
+            <input type="date" id="fecha_inicio" name="fechaInicio" value="@Model.FechaInicio?.ToString("yyyy-MM-dd")" />
+            
+            <label for="fecha_fin">Fecha Fin:</label>
+            <input type="date" id="fecha_fin" name="fechaFin" value="@Model.FechaFin?.ToString("yyyy-MM-dd")" />
+
+            <button type="submit">Filtrar</button>
+        </form>
+
+        <!-- Tabla para mostrar los resultados -->
         <table class="styled-table">
             <thead>
                 <tr>
@@ -53,14 +74,20 @@
                 {
                     <tr>
                         <td>@datos.cliente</td>
-                        <td>@datos.Monto</td>
+                        <td>@String.Format("{0}", datos.Monto)</td>
                     </tr>
                 }
             </tbody>
         </table>
+
+        <a href="/menus/Reportes">
+            <button class="back-button">Volver a Reportes</button>
+        </a>
+
+       
+       
+       
+
     </div>
-    <form method="get" action="/menus/Reportes">
-        <button type="submit" class="boton-volver">Volver</button>
-    </form>
 </body>
-</html>
+</html>  

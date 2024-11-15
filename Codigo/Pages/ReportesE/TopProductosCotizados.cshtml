@@ -41,6 +41,17 @@
 <body>
     <div class="container">
         <h1>@ViewData["Title"]</h1>
+
+        <form method="get">
+            <label for="fechaInicio">Fecha Inicio:</label>
+            <input type="date" id="fechaInicio" name="fechaInicio" value="@Request.Query["fechaInicio"]" />
+
+            <label for="fechaFin">Fecha Fin:</label>
+            <input type="date" id="fechaFin" name="fechaFin" value="@Request.Query["fechaFin"]" />
+
+            <button type="submit">Filtrar</button>
+        </form>
+
         <table class="styled-table">
             <thead>
                 <tr>

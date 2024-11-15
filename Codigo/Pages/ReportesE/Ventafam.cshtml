@@ -32,12 +32,42 @@
             color: #004085;
             text-align: center;
         }
+        .filters {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .filters label, .filters input {
+            margin: 5px;
+        }
+        .filters button {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .filters button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>@ViewData["Title"]</h1>
+        
+        <!-- Formulario de Filtro -->
+        <div class="filters">
+            <form method="get">
+                <label for="fechaInicio">Fecha Inicio:</label>
+                <input type="date" id="fechaInicio" name="fechaInicio" value="@Request.Query["fechaInicio"]" />
+                <label for="fechaFin">Fecha Fin:</label>
+                <input type="date" id="fechaFin" name="fechaFin" value="@Request.Query["fechaFin"]" />
+                <button type="submit">Filtrar</button>
+            </form>
+        </div>
 
+        <!-- Gráfico -->
         <canvas id="familiaProductosChart" width="400" height="400"></canvas>
 
         <script>
@@ -77,7 +107,7 @@
                         tooltip: {
                             callbacks: {
                                 label: function(tooltipItem) {
-                                    return tooltipItem.label + ": $" + tooltipItem.raw.toLocaleString();
+                                    return tooltipItem.label + ": " + tooltipItem.raw.toLocaleString();
                                 }
                             }
                         }
@@ -85,6 +115,11 @@
                 }
             });
         </script>
+
+       
+        <form method="get" action="/menus/Reportes">
+            <button type="submit">Volver</button>
+        </form>
     </div>
 </body>
 </html>

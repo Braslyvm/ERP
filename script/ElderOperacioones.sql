@@ -183,38 +183,54 @@ go
 
 /*Cuenta cantidad de movimientos entrada salida*/
 
-create function gestion_inventario.cantidadmovimientos( @fecha_inicio date = null,
-    @fecha_fin date = null)
-returns table
-as
-return
+
+CREATE FUNCTION gestion_inventario.cantidadmovimientos( 
+    @fecha_inicio DATE = NULL,
+    @fecha_fin DATE = NULL
+)
+RETURNS TABLE
+AS
+RETURN
 (
-    select 
-        c.bodega_origen as bodega,
-       'salida' as tipo,
-        count( c.id_movimiento) as cantidad_casos
-    from 
+    -- Consulta para movimientos de salida
+    SELECT 
+        c.bodega_origen AS bodega,
+        'salida' AS tipo,
+        COUNT(c.id_movimiento) AS cantidad_casos
+    FROM 
         gestion_inventario.detalle_movimiento c
-		join gestion_inventario.movimientos_inventario gi on c.id_movimiento=gi.id_movimiento
-    where c.bodega_destino is null and 
-	(@fecha_inicio is null or gi.fecha >= @fecha_inicio) 
-        and 
-        (@fecha_fin is null or gi.fecha  <= @fecha_fin)
-    group by c.bodega_origen
-    union all
+    JOIN 
+        gestion_inventario.movimientos_inventario gi 
+        ON c.id_movimiento = gi.id_movimiento
+    WHERE 
+        c.bodega_destino IS NULL 
+        AND (@fecha_inicio IS NULL OR gi.fecha >= @fecha_inicio) 
+        AND (@fecha_fin IS NULL OR gi.fecha <= @fecha_fin)
 
-    select 
-        c.bodega_destino as bodega,
-       'Entrada' as tipo,
-        count( c.id_movimiento) as cantidad_casos
-    from 
+    GROUP BY 
+        c.bodega_origen
+    
+    UNION ALL
+
+    -- Consulta para movimientos de entrada
+    SELECT 
+        c.bodega_destino AS bodega,
+        'entrada' AS tipo,
+        COUNT(c.id_movimiento) AS cantidad_casos
+    FROM 
         gestion_inventario.detalle_movimiento c
-	join gestion_inventario.movimientos_inventario gi on c.id_movimiento=gi.id_movimiento
-    where c.bodega_origen is null
-    group by c.bodega_destino
-
-);
-go
+    JOIN 
+        gestion_inventario.movimientos_inventario gi 
+        ON c.id_movimiento = gi.id_movimiento
+    WHERE 
+        c.bodega_origen IS NULL
+        AND (@fecha_inicio IS NULL OR gi.fecha >= @fecha_inicio) 
+        AND (@fecha_fin IS NULL OR gi.fecha <= @fecha_fin)
+    GROUP BY 
+        c.bodega_destino
+)
+SELECT * 
+FROM gestion_inventario.cantidadmovimientos(NULL, NULL);
 
 
 /*	top10 articulos cotizados*/
@@ -243,7 +259,7 @@ go
 
 
 /*Cotizaciones y ventas por departamento*/
-create  function CotizacionesyVentas (
+create function CotizacionesyVentas (
     @fecha_inicio date = null,
     @fecha_fin date = null
 )
@@ -291,10 +307,11 @@ full outer join
 on 
     cotizaciones.departamento_actual = ventas.departamento_actual)
 
+	go
 
 
 /* ventas y cotizaciones cuenta*/
-create  function ventasycotizaciones  (
+create function ventasycotizacionesdepa  (
     @fecha_inicio date = null,
     @fecha_fin date = null
 )
@@ -346,7 +363,7 @@ go
 
 /*ventas y cotizaciones por mes y año*/
 
-create view ventasycotizaciones as 
+create view ventasycotizacionesmeas as 
 
 
 select 

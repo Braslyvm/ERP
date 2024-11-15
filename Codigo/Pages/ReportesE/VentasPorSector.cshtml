@@ -32,11 +32,36 @@
             color: #004085;
             text-align: center;
         }
+        .filters {
+            margin-bottom: 20px;
+        }
+        .filters label {
+            margin-right: 10px;
+        }
+        .filters input {
+            margin-right: 15px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>@ViewData["Title"]</h1>
+
+        <!-- Filters -->
+        <div class="filters">
+            <form method="get">
+                <label for="fecha_inicio">Fecha de inicio:</label>
+                <input type="date" id="fecha_inicio" name="fecha_inicio" value="@Model.FechaInicio?.ToString("yyyy-MM-dd")" />
+                
+                <label for="fecha_fin">Fecha de fin:</label>
+                <input type="date" id="fecha_fin" name="fecha_fin" value="@Model.FechaFin?.ToString("yyyy-MM-dd")" />
+                
+                <button type="submit">Aplicar filtros</button>
+            </form>
+        </div>
+
+        <!-- Back Button -->
+        <a href="/menus/Reportes" class="btn btn-primary">Volver a Reportes</a>
 
         <canvas id="ventaSectorChart" width="400" height="400"></canvas>
 

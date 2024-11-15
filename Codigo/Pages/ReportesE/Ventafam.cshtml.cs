@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
@@ -19,14 +20,21 @@ namespace proyecto1bases.Pages
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
-
-        public async Task<IActionResult> OnGetAsync()
+          /// <summary>
+          /// Lee la informacion de la tabla y la retorna a la clase del tipo de la tabla 
+          /// </summary>
+          /// <returns></returns>
+        public async Task<IActionResult> OnGetAsync(DateTime? fechaInicio, DateTime? fechaFin)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                using (var command = new SqlCommand("SELECT * FROM FamiliaProductos", connection))
+                using (var command = new SqlCommand("SELECT * FROM FamiliaProductos(@fecha_inicio, @fecha_fin)", connection))
                 {
+                    // Parámetros de las fechas
+                    command.Parameters.AddWithValue("@fecha_inicio", fechaInicio.HasValue ? fechaInicio.Value : (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@fecha_fin", fechaFin.HasValue ? fechaFin.Value : (object)DBNull.Value);
+
                     using (var reader = await command.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())

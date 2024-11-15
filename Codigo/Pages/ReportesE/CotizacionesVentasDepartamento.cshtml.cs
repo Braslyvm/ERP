@@ -25,7 +25,10 @@ namespace proyecto1bases.Pages
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
-
+          /// <summary>
+          /// Lee la informacion de la tabla y la retorna a la clase del tipo de la tabla 
+          /// </summary>
+          /// <returns></returns>
         public async Task<IActionResult> OnGetAsync()
         {
             using (var connection = new SqlConnection(_connectionString))

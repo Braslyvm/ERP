@@ -55,6 +55,7 @@ return
 );
 go
 
+
 -----------------------------------Cantidad de clientes por zona y monto ventas por zona------------------------
 create  function dbo.clientes_zona(
 @fecha_inicio date = null,

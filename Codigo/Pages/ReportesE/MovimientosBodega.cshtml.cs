@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Data.SqlClient;
 
 namespace proyecto1bases.Pages.ReportesE
 {
@@ -14,22 +15,32 @@ namespace proyecto1bases.Pages.ReportesE
 
         public string? TipoMovimiento { get; set; }
         public List<MovimientoData> Movimientos { get; set; } = new List<MovimientoData>();
+        public DateTime? FechaInicio { get; set; }
+        public DateTime? FechaFin { get; set; }
 
         public MovimientosBodegaModel(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
-
-        public async Task OnGetAsync(string tipoMovimiento)
+          /// <summary>
+          /// Lee la informacion de la tabla y la retorna a la clase del tipo de la tabla 
+          /// </summary>
+          /// <returns></returns>
+        public async Task OnGetAsync(string? tipoMovimiento, DateTime? fechaInicio, DateTime? fechaFin)
         {
             TipoMovimiento = tipoMovimiento; // Captura el filtro de tipo de movimiento
+            FechaInicio = fechaInicio; // Captura la fecha de inicio
+            FechaFin = fechaFin; // Captura la fecha de fin
 
-            // Llama a la función para obtener los movimientos filtrados según el tipo
+            // Llama a la función para obtener los movimientos filtrados según el tipo y las fechas
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                using (var command = new SqlCommand("SELECT * FROM gestion_inventario.cantidadmovimientos()", connection))
+                using (var command = new SqlCommand("SELECT * FROM gestion_inventario.cantidadmovimientos(@fecha_inicio, @fecha_fin)", connection))
                 {
+                    command.Parameters.AddWithValue("@fecha_inicio", FechaInicio ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@fecha_fin", FechaFin ?? (object)DBNull.Value);
+
                     using (var reader = await command.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())

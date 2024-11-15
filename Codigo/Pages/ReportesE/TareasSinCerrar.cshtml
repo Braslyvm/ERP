@@ -12,14 +12,15 @@
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/css/index.css">
     <style>
+        /* Estilos de tabla simplificados */
         .styled-table {
             width: 100%; 
             border-collapse: collapse; 
-            margin-top: 15px; /* Reducción de márgenes */
+            margin-top: 15px;
         }
 
         .styled-table th, .styled-table td {
-            padding: 8px; /* Espaciado interno más pequeño */
+            padding: 8px;
             text-align: left; 
             border-bottom: 1px solid #ddd; 
         }
@@ -41,13 +42,24 @@
 <body>
     <div class="container">
         <h1>@ViewData["Title"]</h1>
+        
+        <!-- Formulario para seleccionar rango de fechas -->
+        <form method="get">
+            <label for="FechaInicio">Fecha Inicio:</label>
+            <input type="date" id="FechaInicio" name="FechaInicio" value="@Model.FechaInicio?.ToString("yyyy-MM-dd")" />
+
+            <label for="FechaFin">Fecha Fin:</label>
+            <input type="date" id="FechaFin" name="FechaFin" value="@Model.FechaFin?.ToString("yyyy-MM-dd")" />
+
+            <button type="submit">Buscar</button>
+        </form>
+
         <table class="styled-table">
             <thead>
                 <tr>
                     <th>ID Tarea</th>
                     <th>ID Cotización</th>
-                    <th>Descripción</th>
-                    <th>Usuario</th>
+                    <th>Descripción</th>                    
                     <th>Fecha Inicio</th>
                     <th>Fecha Límite</th>
                     <th>Estado</th>
@@ -60,7 +72,6 @@
                         <td>@tarea.id_tarea</td>
                         <td>@tarea.id_cotizacion</td>
                         <td>@tarea.descripcion</td>
-                        <td>@tarea.usuario</td>
                         <td>@tarea.fecha_inicio.ToString("yyyy-MM-dd HH:mm:ss")</td>
                         <td>@tarea.fecha_limite.ToString("yyyy-MM-dd HH:mm:ss")</td>
                         <td>@tarea.estado</td>
@@ -69,6 +80,7 @@
             </tbody>
         </table>
     </div>
+    
     <form method="get" action="/menus/Reportes">
         <button type="submit" class="boton-volver">Volver</button>
     </form>

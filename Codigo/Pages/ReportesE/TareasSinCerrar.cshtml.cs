@@ -13,8 +13,13 @@ namespace proyecto1bases.Pages
     {
         private readonly string _connectionString;
 
-        // Propiedad para almacenar las tareas obtenidas
         public List<(int id_tarea, int id_cotizacion, string descripcion, int usuario, DateTime fecha_inicio, DateTime fecha_limite, string estado)> topTareasList { get; set; } = new List<(int, int, string, int, DateTime, DateTime, string)>();
+
+        [BindProperty(SupportsGet = true)]
+        public DateTime? FechaInicio { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public DateTime? FechaFin { get; set; }
 
         public topTareas(IConfiguration configuration)
         {
@@ -23,35 +28,36 @@ namespace proyecto1bases.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
-            // Llamamos a la función que obtiene las tareas
-            topTareasList = GetTopTareas();
+            topTareasList = GetTopTareas(FechaInicio, FechaFin);
             return Page();
         }
 
-        public List<(int id_tarea, int id_cotizacion, string descripcion, int usuario, DateTime fecha_inicio, DateTime fecha_limite, string estado)> GetTopTareas()
+        public List<(int id_tarea, int id_cotizacion, string descripcion, int usuario, DateTime fecha_inicio, DateTime fecha_limite, string estado)> GetTopTareas(DateTime? fechaInicio, DateTime? fechaFin)
         {
             var tareasList = new List<(int, int, string, int, DateTime, DateTime, string)>();
 
             using (var conexion = new SqlConnection(_connectionString))
             {
-                var command = new SqlCommand("SELECT id_tarea, id_cotizacion, descripcion, usuario, fecha_inicio, fecha_limite, estado FROM cotizaciones.top15_tareas()", conexion);
+                // Construimos la consulta con los parámetros opcionales de fechas
+                var command = new SqlCommand("SELECT * FROM cotizaciones.top15_tareas(@fecha_inicio, @fecha_fin)", conexion);
+                command.Parameters.AddWithValue("@fecha_inicio", (object)fechaInicio ?? DBNull.Value);
+                command.Parameters.AddWithValue("@fecha_fin", (object)fechaFin ?? DBNull.Value);
+                
                 conexion.Open();
 
                 using (var leer = command.ExecuteReader())
                 {
                     while (leer.Read())
                     {
-                        // Lectura correcta de las columnas según su tipo
-                        var idTarea = leer.GetInt32(0); // id_tarea es int
-                        var idCotizacion = leer.GetInt32(1); // id_cotizacion es int
-                        var descripcion = leer.GetString(2); // descripcion es string
-                        var usuario = leer.GetInt32(3); // usuario es int
-                        var fechaInicio = leer.GetDateTime(4); // fecha_inicio es DateTime
-                        var fechaLimite = leer.GetDateTime(5); // fecha_limite es DateTime
-                        var estado = leer.GetString(6); // estado es string
+                        var idTarea = leer.GetInt32(0);
+                        var idCotizacion = leer.GetInt32(1);
+                        var descripcion = leer.GetString(2);
+                        var usuario = leer.GetInt32(3);
+                        var fechaInicioTarea = leer.GetDateTime(4);
+                        var fechaLimite = leer.GetDateTime(5);
+                        var estado = leer.GetString(6);
 
-                        // Agregamos la tarea a la lista
-                        tareasList.Add((idTarea, idCotizacion, descripcion, usuario, fechaInicio, fechaLimite, estado));
+                        tareasList.Add((idTarea, idCotizacion, descripcion, usuario, fechaInicioTarea, fechaLimite, estado));
                     }
                 }
             }
