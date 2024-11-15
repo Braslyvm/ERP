@@ -229,8 +229,7 @@ RETURN
     GROUP BY 
         c.bodega_destino
 )
-SELECT * 
-FROM gestion_inventario.cantidadmovimientos(NULL, NULL);
+GO
 
 
 /*	top10 articulos cotizados*/
@@ -257,7 +256,7 @@ order by cantidad desc)
 go 
 
 
-
+GO
 /*Cotizaciones y ventas por departamento*/
 create function CotizacionesyVentas (
     @fecha_inicio date = null,

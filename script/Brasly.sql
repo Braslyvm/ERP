@@ -110,7 +110,7 @@ return
         (@fecha_fin is null or c.fecha_creacion <= @fecha_fin)
     group by year(c.fecha_creacion), month(c.fecha_creacion)
 );
-
+GO
 
 -- Función para obtener el top de bodegas con más artículos transados
 create function dbo.top_transados()
@@ -129,7 +129,7 @@ return
 	group by b.c_bodega, b.nombre
 	order by total_transacciones desc
 );
-
+GO
 create function gestion_inventario.total_movimientos (
     @tipo_movimiento varchar(30), 
     @fecha_inicio date = null,     
