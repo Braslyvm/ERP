@@ -32,14 +32,34 @@
             color: #004085;
             text-align: center;
         }
-        .filters {
-            margin-bottom: 20px;
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
         }
-        .filters label {
-            margin-right: 10px;
+        label {
+            font-weight: bold;
         }
-        .filters input {
-            margin-right: 15px;
+        input[type="date"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .btn {
+            padding: 10px 15px;
+            background-color: #004085;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background-color: #003366;
+        }
+        canvas {
+            margin-top: 30px;
         }
     </style>
 </head>
@@ -48,20 +68,23 @@
         <h1>@ViewData["Title"]</h1>
 
         <!-- Filters -->
-        <div class="filters">
-            <form method="get">
-                <label for="fecha_inicio">Fecha de inicio:</label>
-                <input type="date" id="fecha_inicio" name="fecha_inicio" value="@Model.FechaInicio?.ToString("yyyy-MM-dd")" />
-                
-                <label for="fecha_fin">Fecha de fin:</label>
-                <input type="date" id="fecha_fin" name="fecha_fin" value="@Model.FechaFin?.ToString("yyyy-MM-dd")" />
-                
-                <button type="submit">Aplicar filtros</button>
-            </form>
-        </div>
+        <form method="get">
+            <div class="form-group">
+                <label for="fecha_inicio">Fecha Inicio:</label>
+                <input type="date" id="fecha_inicio" name="fecha_inicio" value="@Model.FechaInicio?.ToString("yyyy-MM-dd")">
+            </div>
+            <div class="form-group">
+                <label for="fecha_fin">Fecha Fin:</label>
+                <input type="date" id="fecha_fin" name="fecha_fin" value="@Model.FechaFin?.ToString("yyyy-MM-dd")">
+            </div>
+            <button type="submit" class="btn">Aplicar filtros</button>
+        </form>
 
-        <!-- Back Button -->
-        <a href="/menus/Reportes" class="btn btn-primary">Volver a Reportes</a>
+        <br>
+
+        <a href="/menus/Reportes" class="btn">Volver a Reportes</a>
+
+        <br><br>
 
         <canvas id="ventaSectorChart" width="400" height="400"></canvas>
 

@@ -1,7 +1,11 @@
 @page
 @model proyecto1bases.Pages.depa
 @{
-    ViewData["Title"] = "Gráfico de Planilla por Departamento y Mes";
+    ViewData["Title"] = "Gráfico de Planilla por Departamento";
+    var planillaData = Model.Planilla.Select(p => new {
+        label = p.TotalSalario + " - " + p.Departamento + " - " + p.Mes + " - " + p.Año,
+        totalSalario = p.TotalSalario
+    }).ToList();
 }
 
 <!DOCTYPE html>
@@ -57,7 +61,6 @@
             <label for="año_inicio">Año Inicio:</label>
             <input type="number" id="año_inicio" name="año_inicio">
 
-
             <label for="año_final">Año Final:</label>
             <input type="number" id="año_final" name="año_final">
 
@@ -65,7 +68,7 @@
         </form>
 
         <canvas id="planillaChart" width="400" height="400"></canvas>
-          <a href="/menus/Reportes">
+        <a href="/menus/Reportes">
             <button class="back-button">Volver a Reportes</button>
         </a>
 
@@ -74,10 +77,10 @@
             var planillaChart = new Chart(ctx, {
                 type: 'pie', // Tipo de diagrama circular
                 data: {
-                    labels: @Html.Raw(Json.Serialize(Model.Planilla.Select(p => p.Departamento + " - " + p.Mes +  " - " + p.Año).ToList())),
+                    labels: @Html.Raw(Json.Serialize(planillaData.Select(p => p.label).ToList())),
                     datasets: [{
                         label: 'Total Salario',
-                        data: @Html.Raw(Json.Serialize(Model.Planilla.Select(p => p.TotalSalario).ToList())),
+                        data: @Html.Raw(Json.Serialize(planillaData.Select(p => p.totalSalario).ToList())),
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
                             'rgba(54, 162, 235, 0.2)',
@@ -101,7 +104,10 @@
                     responsive: true,
                     plugins: {
                         legend: {
-                            position: 'top',
+                            
+                              display: false // Oculta la leyenda
+ 
+                            
                         },
                         tooltip: {
                             callbacks: {
@@ -113,8 +119,6 @@
                     }
                 }
             });
-          
-
         </script>
     </div>
 </body>

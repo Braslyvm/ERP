@@ -46,7 +46,14 @@ namespace proyecto1bases.Pages
             return Page();
         }
 
-        public List<(string bodega, string nombre_bodega, int cantidad_movimientos)> getCantidad(string movimiento, string? fechainicio, string? fechafin)
+       /// <summary>
+              ///  Almacena los datos de la tabla en caso de recibir parametros de fecha se filtra
+              /// </summary>
+              /// <param name="movimiento"></param>
+              /// <param name="fechainicio"></param>
+              /// <param name="fechafin"></param>
+              /// <returns></returns>
+              public List<(string bodega, string nombre_bodega, int cantidad_movimientos)> getCantidad(string movimiento, string? fechainicio, string? fechafin)
         {
             var movimientos = new List<(string, string, int)>();
             

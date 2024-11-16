@@ -9,7 +9,10 @@ using proyecto1bases.Models;
 
 namespace proyecto1bases.Pages
 {
-    public class Ventadepartamento : PageModel
+    /// <summary>
+        /// calcula el total de ventas por cada departamento
+        /// </summary>
+        public class Ventadepartamento : PageModel
     {
         private readonly string _connectionString;
 

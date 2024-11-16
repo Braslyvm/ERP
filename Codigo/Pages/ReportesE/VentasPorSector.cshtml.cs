@@ -10,7 +10,10 @@ using proyecto1bases.Models;
 
 namespace proyecto1bases.Pages
 {
-    public class VentaSector : PageModel
+    /// <summary>
+        /// calcaula el total de ventas por sector
+        /// </summary>
+        public class VentaSector : PageModel
     {
         private readonly string _connectionString;
 
@@ -59,7 +62,10 @@ namespace proyecto1bases.Pages
         }
     }
 
-    public class VentaSectorData
+    /// <summary>
+        /// clase del tipoo de la tabla
+        /// </summary>
+        public class VentaSectorData
     {
         public string Sector { get; set; }
         public decimal TotalVenta { get; set; }

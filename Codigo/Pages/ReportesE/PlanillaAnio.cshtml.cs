@@ -22,7 +22,13 @@ namespace proyecto1bases.Pages
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
-        public async Task<IActionResult> OnGetAsync(int? anioInicio, int? anioFin)
+        /// <summary>
+                ///  al iniiciar la pagina se carga la informacion y puede ser filtrada
+                /// </summary>
+                /// <param name="anioInicio"></param>
+                /// <param name="anioFin"></param>
+                /// <returns> grafico de barras con informacion de la tabla</returns>
+                public async Task<IActionResult> OnGetAsync(int? anioInicio, int? anioFin)
         {
             // Asignar los valores de los filtros a las propiedades
             AnioInicio = anioInicio ?? 2000; // Valor predeterminado de inicio

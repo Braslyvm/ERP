@@ -9,29 +9,45 @@ using proyecto1bases.Models;
 
 namespace proyecto1bases.Pages
 {
-    public class depa : PageModel
+   /// <summary>
+      /// clase que muestra la planilla generada por cada departamenteo
+      /// </summary>
+      public class depa : PageModel
     {
         private readonly string _connectionString;
 
         public List<PlanillaDataDeptoMes> Planilla { get; set; } = new List<PlanillaDataDeptoMes>();
 
-        public depa(IConfiguration configuration)
+        /// <summary>
+                /// string de conexion
+                /// </summary>
+               
+                public depa(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
-          /// <summary>
-          /// Lee la informacion de la tabla y la retorna a la clase del tipo de la tabla 
-          /// </summary>
-          /// <returns></returns>
+        /// <summary>
+        /// al iniciar la pagina se muestra toda la informacion en caso de recibir parametros se filtra
+        /// </summary>
+        /// <param name="departamento"></param>
+        /// <param name="año_inicio"></param>
+        /// <param name="mes_inicio"></param>
+        /// <param name="año_final"></param>
+        /// <param name="mes_final"></param>
+        /// <returns></returns>
         public async Task<IActionResult> OnGetAsync(string? departamento, int? año_inicio, int? mes_inicio, int? año_final, int? mes_final)
         {
-
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                using (var command = new SqlCommand("usuarios.planilla_por_departamentos", connection))
+
+                // Consulta a la función con valores de tabla
+                var query = @"
+                    SELECT departamento, mes, año, total_salario
+                    FROM usuarios.planilla_por_departamentos(@departamento, @año_inicio, @mes_inicio, @año_final, @mes_final)";
+
+                using (var command = new SqlCommand(query, connection))
                 {
-                    command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@departamento", (object)departamento ?? DBNull.Value);
                     command.Parameters.AddWithValue("@año_inicio", (object)año_inicio ?? DBNull.Value);
                     command.Parameters.AddWithValue("@mes_inicio", (object)mes_inicio ?? DBNull.Value);
@@ -57,7 +73,10 @@ namespace proyecto1bases.Pages
         }
     }
 
-    public class PlanillaDataDeptoMes
+    /// <summary>
+        /// clase que almacena los tipos de datos
+        /// </summary>
+        public class PlanillaDataDeptoMes
     {
         public string Departamento { get; set; }
         public string Mes { get; set; }

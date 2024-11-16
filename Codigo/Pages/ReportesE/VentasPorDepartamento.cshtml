@@ -32,13 +32,13 @@
             color: #004085;
             text-align: center;
         }
-        .form-group {
-            margin-bottom: 15px;
+        canvas {
+            margin-top: 30px;
         }
         .btn {
+            padding: 10px 15px;
             background-color: #004085;
             color: white;
-            padding: 10px 15px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
@@ -46,12 +46,37 @@
         .btn:hover {
             background-color: #003366;
         }
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="date"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>@ViewData["Title"]</h1>
 
+        <!-- Formulario de filtro por rango de fechas -->
         <form method="get">
             <div class="form-group">
                 <label for="fecha_inicio">Fecha Inicio:</label>
@@ -64,18 +89,19 @@
             <button type="submit" class="btn">Filtrar</button>
         </form>
 
-        <br>
+        <!-- Botón para regresar al menú de reportes -->
+        <div class="btn-container">
+            <a href="/menus/Reportes" class="btn">Volver</a>
+        </div>
 
-        <a href="/menus/Reportes" class="btn">Volver</a>
-
-        <br><br>
-
-        <canvas id="ventaDepartamentoChart" width="400" height="400"></canvas>
+        <!-- Gráfico de ventas por departamento -->
+        <canvas id="ventaDepartamentoChart" width="300" height="300"></canvas>
 
         <script>
+            // Datos para el gráfico
             var ctx = document.getElementById('ventaDepartamentoChart').getContext('2d');
             var ventaDepartamentoChart = new Chart(ctx, {
-                type: 'pie', // Cambiado de pie a barras
+                type: 'pie', // Tipo de gráfico: Pie
                 data: {
                     labels: @Html.Raw(Json.Serialize(Model.Ventas.Select(v => v.departamento).ToList())),
                     datasets: [{

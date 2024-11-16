@@ -2656,7 +2656,7 @@ from
     (
         select 
             count(distinct cc.id_cotizacion) as cantidadCotizacion,
-            ue.departamento_actual,cc.fecha_corizacion
+            ue.departamento_actual
         from 
             cotizaciones.cotizaciones cc
         join 
@@ -2666,14 +2666,14 @@ from
         and 
         (@fecha_fin is null or cc.fecha_corizacion <= @fecha_fin)
         group by 
-            ue.departamento_actual,cc.fecha_corizacion
+            ue.departamento_actual
 
     ) as cotizaciones
 full outer join 
     (
         select 
             count(distinct ff.n_factura) as cantidadVentas,
-            ue.departamento_actual,ff.fecha_factura
+            ue.departamento_actual
         from 
             facturación.facturas ff
         join 
@@ -2684,7 +2684,7 @@ full outer join
         (@fecha_fin is null or ff.fecha_factura <= @fecha_fin)
 
         group by 
-            ue.departamento_actual,ff.fecha_factura
+            ue.departamento_actual
     ) as ventas 
 on 
     cotizaciones.departamento_actual = ventas.departamento_actual)
@@ -2697,41 +2697,54 @@ go
 -- Paramentros: Ninguno
 -- retorna: Vista con las cotizaciones y ventas por mes y año
 -- ================================================
-create view ventasycotizacionesmeas as 
-
-
-select 
-    coalesce(cotizaciones.anio, ventas.anio) as anio,
-    coalesce(cotizaciones.mes, ventas.mes) as mes,
-    cotizaciones.cantidadcotizacion,
-    ventas.cantidadventas
-from 
-    (
-        select 
-            count(distinct cc.id_cotizacion) as cantidadcotizacion,
-            year(cc.fecha_corizacion) as anio,
-            month(cc.fecha_corizacion) as mes
-        from 
-            cotizaciones.cotizaciones cc
-        group by 
-            year(cc.fecha_corizacion),
-            month(cc.fecha_corizacion)
-    ) as cotizaciones
-full outer join 
-    (
-        select 
-            count(distinct ff.n_factura) as cantidadventas,
-            year(ff.fecha_factura) as anio,
-            month(ff.fecha_factura) as mes
-        from 
-            facturación.facturas ff
-        group by 
-            year(ff.fecha_factura),
-            month(ff.fecha_factura)
-    ) as ventas 
-on 
-    cotizaciones.anio = ventas.anio
-    and cotizaciones.mes = ventas.mes;
+create function dbo.ventasycotizacionesmeasZ
+(
+    @fecha_inicio date = null,
+    @fecha_fin date = null
+)
+returns table
+as
+return
+(
+    select 
+        coalesce(cotizaciones.anio, ventas.anio) as anio,
+        coalesce(cotizaciones.mes, ventas.mes) as mes,
+        cotizaciones.cantidadcotizacion,
+        ventas.cantidadventas
+    from 
+        (
+            select 
+                count(distinct cc.id_cotizacion) as cantidadcotizacion,
+                year(cc.fecha_corizacion) as anio,
+                month(cc.fecha_corizacion) as mes
+            from 
+                cotizaciones.cotizaciones cc
+            where 
+                (@fecha_inicio is null or cc.fecha_corizacion >= @fecha_inicio)
+                and (@fecha_fin is null or cc.fecha_corizacion <= @fecha_fin)
+            group by 
+                year(cc.fecha_corizacion),
+                month(cc.fecha_corizacion)
+        ) as cotizaciones
+    full outer join 
+        (
+            select 
+                count(distinct ff.n_factura) as cantidadventas,
+                year(ff.fecha_factura) as anio,
+                month(ff.fecha_factura) as mes
+            from 
+                facturación.facturas ff
+            where 
+                (@fecha_inicio is null or ff.fecha_factura >= @fecha_inicio)
+                and (@fecha_fin is null or ff.fecha_factura <= @fecha_fin)
+            group by 
+                year(ff.fecha_factura),
+                month(ff.fecha_factura)
+        ) as ventas 
+    on 
+        cotizaciones.anio = ventas.anio
+        and cotizaciones.mes = ventas.mes
+);
 go
 
 -----------------------------retorna el top 15 tareas -----------------------------------------

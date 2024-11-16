@@ -27,15 +27,16 @@ namespace proyecto1bases.Pages
         }
           /// <summary>
           /// Lee la informacion de la tabla y la retorna a la clase del tipo de la tabla 
+          /// si recibe fehca sfiltrta los datos 
           /// </summary>
-          /// <returns></returns>
+          /// <returns>retirna grafico de barras comparativo</returns>
         public async Task<IActionResult> OnGetAsync()
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
                 
-                using (var command = new SqlCommand("SELECT * FROM CotizacionesyVentas(@fecha_inicio, @fecha_fin)", connection))
+                using (var command = new SqlCommand("SELECT * FROM ventasycotizacionesdepa(@fecha_inicio, @fecha_fin)", connection))
                 {
                     command.Parameters.AddWithValue("@fecha_inicio", (object)FechaInicio ?? DBNull.Value);
                     command.Parameters.AddWithValue("@fecha_fin", (object)FechaFin ?? DBNull.Value);

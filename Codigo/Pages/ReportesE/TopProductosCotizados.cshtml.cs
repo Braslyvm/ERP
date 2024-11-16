@@ -29,11 +29,17 @@ namespace proyecto1bases.Pages
             TopProductos = await GetTopProductosAsync(FechaInicio, FechaFin);
             return Page();
         }
-          /// <summary>
-          /// Lee la informacion de la tabla y la retorna ala lista top
-          /// </summary>
-          /// <returns></returns>
-        private async Task<List<(string, string, int)>> GetTopProductosAsync(string fechaInicio, string fechaFin)
+         
+      
+         
+         
+        /// <summary>
+                ///  pbtiene y filtra los productos mas cotizacos en rango de fechas
+                /// </summary>
+                /// <param name="fechaInicio"></param>
+                /// <param name="fechaFin"></param>
+                /// <returns> tabla con la informacion y cantidad</returns>
+                private async Task<List<(string, string, int)>> GetTopProductosAsync(string fechaInicio, string fechaFin)
         {
             var productos = new List<(string, string, int)>();
 

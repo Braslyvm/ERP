@@ -32,7 +32,13 @@ namespace proyecto1bases.Pages
             return Page();
         }
 
-        public List<(int id_tarea, int id_cotizacion, string descripcion, int usuario, DateTime fecha_inicio, DateTime fecha_limite, string estado)> GetTopTareas(DateTime? fechaInicio, DateTime? fechaFin)
+        /// <summary>
+                ///  almacena los datos al iniciar la pagina 
+                /// </summary>
+                /// <param name="fechaInicio"></param>
+                /// <param name="fechaFin"></param>
+                /// <returns>tabla con las tareas mas viejas</returns>
+                public List<(int id_tarea, int id_cotizacion, string descripcion, int usuario, DateTime fecha_inicio, DateTime fecha_limite, string estado)> GetTopTareas(DateTime? fechaInicio, DateTime? fechaFin)
         {
             var tareasList = new List<(int, int, string, int, DateTime, DateTime, string)>();
 

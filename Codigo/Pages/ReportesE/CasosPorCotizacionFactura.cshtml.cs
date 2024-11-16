@@ -11,11 +11,14 @@ using System;
 
 namespace proyecto1bases.Pages
 {
-    public class CASOS : PageModel
+    /// <summary>
+        /// clase que calcula y retona los casos por cotixacion
+        /// </summary>
+        public class CASOS : PageModel
     {
-        /// <summary>
-                /// atributos
-                /// </summary>
+     
+     
+     
                 private readonly string _connectionString;
 
         public List<CasosData> Casos { get; set; } = new List<CasosData>();
@@ -31,11 +34,15 @@ namespace proyecto1bases.Pages
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
-        /// <summary>
-                /// Lee la informacion de la tabla y la retorna a la clase del tipo de la tabla 
-                /// </summary>
-                /// <returns></returns>
-                public async Task<IActionResult> OnGetAsync()
+        
+    
+        
+        
+                /// <summary>
+                                /// calcula los caso por coti cada reiuncion de apagina
+                                /// </summary>
+                                /// <returns></returns>
+        public async Task<IActionResult> OnGetAsync()
         {
             using (var connection = new SqlConnection(_connectionString))
             {

@@ -32,12 +32,16 @@ namespace proyecto1bases.Pages
             Transadostop = GetTransados("","");
             return Page();
         }
-        /// <OnPostAsync>
-        /// 
-        /// Recibe los datos solicitados de la intefaz 
-        /// 
-        /// 
-        public async Task<IActionResult> OnPostAsync(){
+      
+      
+      
+        
+    
+            /// <summary>
+                        /// recibe y fltra los productos mas transados 
+                        /// </summary>
+                        /// <returns>tabla con las entradas salidas y total</returns>
+                        public async Task<IActionResult> OnPostAsync(){
             fechainicio = Request.Form["fechaInicio"];
             fechaFin = Request.Form["fechaFinal"];
             Transadostop = GetTransados( fechainicio, fechaFin);

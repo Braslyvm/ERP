@@ -8,23 +8,32 @@ using Microsoft.Data.SqlClient;
 
 namespace proyecto1bases.Pages
 {
-    public class Ventazona : PageModel
+   /// <summary>
+      /// clase que calcula las ventas por zona
+      /// </summary>
+      public class Ventazona : PageModel
     {
         private readonly string _connectionString;
 
         public List<VentazonaData> Ventas { get; set; } = new List<VentazonaData>();
-        public DateTime? FechaInicio { get; set; }  // Fecha de inicio opcional
-        public DateTime? FechaFin { get; set; }    // Fecha de fin opcional
+        public DateTime? FechaInicio { get; set; }  
+        public DateTime? FechaFin { get; set; }    
 
         public Ventazona(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
-          /// <summary>
-          /// Lee la informacion de la tabla y la retorna a la clase del tipo de la tabla 
-          /// </summary>
-          /// <returns></returns>
-        public async Task<IActionResult> OnGetAsync(DateTime? fechaInicio = null, DateTime? fechaFin = null)
+         
+    
+         
+         
+        /// <summary>
+                /// calcula la informacion si las fecha sson null retorna todo
+                /// </summary>
+                /// <param name="fechaInicio"></param>
+                /// <param name="fechaFin"></param>
+                /// <returns></returns>
+                public async Task<IActionResult> OnGetAsync(DateTime? fechaInicio = null, DateTime? fechaFin = null)
         {
             FechaInicio = fechaInicio;
             FechaFin = fechaFin;
@@ -57,7 +66,10 @@ namespace proyecto1bases.Pages
         }
     }
 
-    public class VentazonaData
+/// <summary>
+/// clase del tipo de la tabla
+/// </summary>
+public class VentazonaData
     {
         public string zona { get; set; }
         public decimal TotalVenta { get; set; }

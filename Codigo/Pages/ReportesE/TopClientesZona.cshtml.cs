@@ -29,11 +29,18 @@ namespace proyecto1bases.Pages
             topClientezona = GetClientesZona(FechaInicio, FechaFin);
             return Page();
         }
-          /// <summary>
-          /// Lee la informacion de la tabla y la almacena apiancando el top
-          /// </summary>
-          /// <returns></returns>
-        public List<(string Zona, int cantidad_clientes, int monto_total)> GetClientesZona(DateTime? fechaInicio, DateTime? fechaFin)
+         
+         
+         
+         
+        /// <summary>
+                /// Muestra el top de clientes por zona
+                /// 
+                /// </summary>
+                /// <param name="fechaInicio"></param>
+                /// <param name="fechaFin"></param>
+                /// <returns> tabla con el cliene y la zona y ttal</returns>
+                public List<(string Zona, int cantidad_clientes, int monto_total)> GetClientesZona(DateTime? fechaInicio, DateTime? fechaFin)
         {
             var clienteZona = new List<(string, int, int)>();
 
