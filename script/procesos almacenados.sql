@@ -1054,6 +1054,8 @@ begin
 
         insert into cotizaciones.lista_articulos_cotizacion (id_cotizacion, c_producto, cantidad, monto,c_bodega)
         values (@id_cotizacion, @c_producto, @cantidad, @monto,@c_Bodega);
+
+		EXEC cotizaciones.actualizar_monto_total_cotizacion @id_cotizacion
         
         set @mensaje = 'Artículo enlistado.';
     end try
