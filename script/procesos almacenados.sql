@@ -2157,14 +2157,14 @@ go
 -- funcion: Registra un producto en el inventario y el movimiento correspondiente en el sistema.
 -- ================================================
 create procedure gestion_inventario.insertar_producto_y_registrar_movimiento (
-    @c_bodega varchar(180),
-    @c_articulo varchar(180),
-    @cantidad int,
-    @n_factura int,
-    @usuario int,
-    @bodega_origen varchar(180) = NULL,
-    @bodega_destino varchar(180),
-    @mensaje nvarchar(200) output
+   @c_bodega VARCHAR(180),
+    @c_articulo VARCHAR(180),
+    @cantidad INT,
+    @n_factura INT = NULL,
+    @usuario INT,
+    @bodega_origen VARCHAR(180) = NULL,
+    @bodega_destino VARCHAR(180),
+    @mensaje NVARCHAR(200) OUTPUT
 )
 as
 begin
@@ -2906,6 +2906,7 @@ return
 );
 go
 
+
 -- ================================================
 -- nombre: gestion_inventario.total_movimientos
 -- Paramentros: 
@@ -2937,3 +2938,5 @@ return
     group by 
         b.c_bodega, b.nombre
 );
+
+
