@@ -2194,9 +2194,6 @@ exec usuarios.insertar_plantilla
     @mensaje = @mensaje output;
 print @mensaje;
 
----MAS
--- Declaración de la variable para el mensaje
-declare @mensaje nvarchar(200);
 
 
 exec usuarios.insertar_plantilla 
