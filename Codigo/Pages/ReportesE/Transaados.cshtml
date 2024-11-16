@@ -1,5 +1,5 @@
 @page
-@model proyecto1bases.Pages.MovimientosBodegaModel
+@model proyecto1bases.Pages.Transados
 @{
     ViewData["Title"] = "Movimientos";
 }
@@ -43,14 +43,6 @@
     <div class="container">
         <h1>@ViewData["Title"]</h1>
         <form method="post">
-            <div class="form-group">
-                <label for="tipoMovimiento">Tipo de Movimiento</label>
-                <select id="tipoMovimiento" name="tipoMovimiento">
-                    <option value="">Seleccionar opción</option>
-                    <option value="entrada">Entrada</option>
-                    <option value="salida">Salida</option>
-                </select>
-            </div>
             <label for="fechaInicio">Fecha Inicial</label>
             <input type="date" id="fechaInicio" name="fechaInicio" />
             <label for="fechaFinal">Fecha Final</label>
@@ -58,23 +50,27 @@
             <button type="submit">Filtrar</button>
         </form>
 
-        @if (Model.contarMovimientos != null && Model.contarMovimientos.Any())
+        @if (Model.Transadostop != null && Model.Transadostop.Any())
         {
             <table class="styled-table">
                 <thead>
                     <tr>
                         <th>Codigo entrada bodega</th>
                         <th>Nombre de bodedad</th>
-                        <th>total movimientos</th>
+                        <th>Entradas</th>
+                        <th>Salidas</th>
+                        <th>total</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var datos in Model.contarMovimientos)
+                    @foreach (var datos in Model.Transadostop)
                     {
                         <tr>
                             <td>@datos.bodega</td>
                             <td>@datos.nombre_bodega</td>
-                            <td>@datos.cantidad_movimientos</td>
+                            <td>@datos.Entradas</td>
+                            <td>@datos.Salidas</td>
+                            <td>@datos.total</td>
                         </tr>
                     }
                 </tbody>

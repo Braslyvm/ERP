@@ -10,7 +10,7 @@ returns table
 as
 return
 (
-    select top 15 
+    select
         id_tarea,
         ct.id_cotizacion,
         descripcion,
@@ -113,7 +113,10 @@ return
 GO
 
 -- Función para obtener el top de bodegas con más artículos transados
-create function dbo.top_transados()
+create function dbo.top_transados(
+	@fecha_inicio date = null,
+	@fecha_fin date = null
+)
 returns table
 as
 return
@@ -121,15 +124,21 @@ return
 	select top 10
 		b.c_bodega,
 		b.nombre as nombre_bodega,
-		sum(case when mi.tipo = 'entrada' then dm.cantidad else 0 end) - 
+		sum(case when mi.tipo = 'entrada' then dm.cantidad else 0 end) as Entrada,
+		sum(case when mi.tipo = 'salida' then dm.cantidad else 0 end) as Salida,
+		sum(case when mi.tipo = 'entrada' then dm.cantidad else 0 end) + 
 		sum(case when mi.tipo = 'salida' then dm.cantidad else 0 end) as total_transacciones
 	from gestion_inventario.detalle_movimiento as dm
 	join gestion_inventario.movimientos_inventario as mi on dm.id_movimiento = mi.id_movimiento
 	join gestion_inventario.bodegas as b on b.c_bodega = dm.bodega_origen or b.c_bodega = dm.bodega_destino
+	where 
+		(@fecha_inicio is null or @fecha_fin is null or mi.fecha between @fecha_inicio and @fecha_fin)
 	group by b.c_bodega, b.nombre
 	order by total_transacciones desc
 );
-GO
+go
+
+
 create function gestion_inventario.total_movimientos (
     @tipo_movimiento varchar(30), 
     @fecha_inicio date = null,     
