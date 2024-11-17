@@ -92,7 +92,7 @@
             <label for="mesFin">Mes Fin:</label>
             <select id="mesFin" name="mesFin">
                 <option value="">Seleccione</option>
-                <option value="Enero" @(Model.MesFin == "Enero" ? "selected" : "")>Enero</option>
+                <option value="Enero" @(Model.MesFin == "Enero"  : "")>Enero</option>
                 <option value="Febrero" @(Model.MesFin == "Febrero" ? "selected" : "")>Febrero</option>
                 <option value="Marzo" @(Model.MesFin == "Marzo" ? "selected" : "")>Marzo</option>
                 <option value="Abril" @(Model.MesFin == "Abril" ? "selected" : "")>Abril</option>
