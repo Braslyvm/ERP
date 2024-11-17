@@ -2298,26 +2298,25 @@ GO
 -- ================================================
 CREATE FUNCTION usuarios.planilla_por_departamentos (
     @departamento VARCHAR(180) = NULL,
-    @año_inicio INT = NULL,
-    @mes_inicio INT = NULL,
-    @año_final INT = NULL,
-    @mes_final INT = NULL
+    @mes VARCHAR(180) = NULL
 )
 RETURNS TABLE
 AS
 RETURN
 (
     SELECT 
-           a.departamento,
-           SUM(a.total_salario) AS total_salario,
-           a.año, a.mes
-    FROM usuarios.plantilla a
-    WHERE  (@departamento IS NULL OR a.departamento = @departamento)
-        AND (@año_inicio IS NULL OR a.año >= @año_inicio)
-        AND (@mes_inicio IS NULL OR (a.año = @año_inicio AND a.mes >= @mes_inicio))
-        AND (@año_final IS NULL OR a.año <= @año_final)
-        AND (@mes_final IS NULL OR (a.año = @año_final AND a.mes <= @mes_final))
-    GROUP BY a.año, a.mes, a.departamento
+           departamento,
+           SUM(total_salario) AS total_salario,
+           año, mes
+     FROM 
+        usuarios.plantilla
+    WHERE 
+        (@departamento IS NULL OR departamento = @departamento)
+        AND (@mes IS NULL OR mes = @mes)
+    GROUP BY 
+        departamento, mes, año
+    ORDER BY 
+        año, mes, departamento
 );
 go
 
@@ -2810,7 +2809,7 @@ go
 -- retorna: Tabla con las 15 tareas más recientes completadas o en progreso
 -- ================================================
 create function cotizaciones.top15_tareas(
-@fecha_inicio date = null,
+    @fecha_inicio date = null,
     @fecha_fin date = null
 )
 returns table
@@ -2820,23 +2819,21 @@ return
     select top 15
         id_tarea,
         ct.id_cotizacion,
-        descripcion,
-        usuario,
-        fecha_inicio,
-        fecha_limite,
+        ct.descripcion,
+        ct.usuario,
+        ct.fecha_inicio,
+        ct.fecha_limite,
         ct.estado
     from cotizaciones.tareas ct
-	join cotizaciones.cotizaciones on ct.id_cotizacion=ct.id_cotizacion
-    where ct.estado = 'completada' or ct.estado = 'en progreso' and 
-	  (@fecha_inicio is null or ct.fecha_inicio >= @fecha_inicio) 
-        and 
-        (@fecha_fin is null or ct.fecha_inicio <= @fecha_fin)
-
-
+    join cotizaciones.cotizaciones c on ct.id_cotizacion = c.id_cotizacion
+    where (ct.estado = 'completada' or ct.estado = 'en progreso') 
+          and 
+          (@fecha_inicio is null or ct.fecha_inicio >= @fecha_inicio) 
+          and 
+          (@fecha_fin is null or ct.fecha_inicio <= @fecha_fin)
     order by 
-        fecha_inicio asc
+        ct.fecha_inicio asc
 );
-go
 
 -----------------------------------Top 10 de clientes con mayores ventas-------------------------------
 -- ================================================
@@ -3007,5 +3004,4 @@ return
 );
 
 
-select 
 

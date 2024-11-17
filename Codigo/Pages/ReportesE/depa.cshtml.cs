@@ -30,12 +30,9 @@ namespace proyecto1bases.Pages
         /// al iniciar la pagina se muestra toda la informacion en caso de recibir parametros se filtra
         /// </summary>
         /// <param name="departamento"></param>
-        /// <param name="año_inicio"></param>
-        /// <param name="mes_inicio"></param>
-        /// <param name="año_final"></param>
-        /// <param name="mes_final"></param>
+        /// <param name="mes"></param>
         /// <returns></returns>
-        public async Task<IActionResult> OnGetAsync(string? departamento, int? año_inicio, int? mes_inicio, int? año_final, int? mes_final)
+        public async Task<IActionResult> OnGetAsync(string? departamento, string?  mes)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -44,15 +41,12 @@ namespace proyecto1bases.Pages
                 // Consulta a la función con valores de tabla
                 var query = @"
                     SELECT departamento, mes, año, total_salario
-                    FROM usuarios.planilla_por_departamentos(@departamento, @año_inicio, @mes_inicio, @año_final, @mes_final)";
+                    FROM usuarios.planilla_por_departamentos(@departamento, @mes)";
 
                 using (var command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@departamento", (object)departamento ?? DBNull.Value);
-                    command.Parameters.AddWithValue("@año_inicio", (object)año_inicio ?? DBNull.Value);
-                    command.Parameters.AddWithValue("@mes_inicio", (object)mes_inicio ?? DBNull.Value);
-                    command.Parameters.AddWithValue("@año_final", (object)año_final ?? DBNull.Value);
-                    command.Parameters.AddWithValue("@mes_final", (object)mes_final ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@mes", (object)mes ?? DBNull.Value);
 
                     using (var reader = await command.ExecuteReaderAsync())
                     {
