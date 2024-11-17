@@ -10,7 +10,10 @@ using proyecto1bases.Models;
 
 namespace proyecto1bases.Pages
 {
-    public class MAño : PageModel
+    /// <summary>
+        /// clase que filtra por mes y año
+        /// </summary>
+        public class MAño : PageModel
     {
         private readonly string _connectionString;
 
@@ -22,7 +25,15 @@ namespace proyecto1bases.Pages
         }
 
 
-        public async Task<IActionResult> OnGetAsync(int? año_inicio, string? mes_inicio, int? año_fin, string? mes_fin){  
+        /// <summary>
+                /// recibe parametros si son null musetra toda la informacion sino filtra segun los criterios
+                /// </summary>
+                /// <param name="año_inicio"></param>
+                /// <param name="mes_inicio"></param>
+                /// <param name="año_fin"></param>
+                /// <param name="mes_fin"></param>
+                /// <returns>retorna grafico de barras en interfaz</returns>
+                public async Task<IActionResult> OnGetAsync(int? año_inicio, string? mes_inicio, int? año_fin, string? mes_fin){  
 
             // Consultar los datos de la base de datos
             using (var connection = new SqlConnection(_connectionString))
@@ -58,7 +69,10 @@ namespace proyecto1bases.Pages
         }
     }
 
-    public class PlanillaDataAnio
+    /// <summary>
+        /// clase del tipo de la tabla.
+        /// </summary>
+        public class PlanillaDataAnio
     {
         public string Año { get; set; }
         public string Mes { get; set; }

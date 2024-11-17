@@ -2831,7 +2831,7 @@ return
     order by 
         ct.fecha_inicio asc
 );
-
+go
 -----------------------------------Top 10 de clientes con mayores ventas-------------------------------
 -- ================================================
 -- nombre: dbo.top_clientes
