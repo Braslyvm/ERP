@@ -10,7 +10,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@ViewData["Title"]</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="~/css/index.css">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -32,44 +33,6 @@
             color: #004085;
             text-align: center;
         }
-        canvas {
-            margin-top: 30px;
-        }
-        .btn {
-            padding: 10px 15px;
-            background-color: #004085;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .btn:hover {
-            background-color: #003366;
-        }
-        form {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: center;
-        }
-        label {
-            font-weight: bold;
-        }
-        input[type="date"] {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        .btn-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
@@ -78,22 +41,16 @@
 
         <!-- Formulario de filtro por rango de fechas -->
         <form method="get">
-            <div class="form-group">
-                <label for="fecha_inicio">Fecha Inicio:</label>
-                <input type="date" id="fecha_inicio" name="fecha_inicio" value="@Model.FechaInicio" class="form-control">
-            </div>
-            <div class="form-group">
-                <label for="fecha_fin">Fecha Fin:</label>
-                <input type="date" id="fecha_fin" name="fecha_fin" value="@Model.FechaFin" class="form-control">
-            </div>
+            
+            <label for="fecha_inicio">Fecha Inicio:</label>
+            <input type="date" id="fecha_inicio" name="fecha_inicio" value="@Model.FechaInicio" class="form-control">
+            
+            
+            <label for="fecha_fin">Fecha Fin:</label>
+            <input type="date" id="fecha_fin" name="fecha_fin" value="@Model.FechaFin" class="form-control">
+            
             <button type="submit" class="btn">Filtrar</button>
         </form>
-
-        <!-- Botón para regresar al menú de reportes -->
-        <div class="btn-container">
-            <a href="/menus/Reportes" class="btn">Volver</a>
-        </div>
-
         <!-- Gráfico de ventas por departamento -->
         <canvas id="ventaDepartamentoChart" width="300" height="300"></canvas>
 
@@ -144,5 +101,8 @@
             });
         </script>
     </div>
+    <form method="get" action="/menus/Reportes">
+        <button type="submit" class="boton-volver">Volver</button>
+    </form>
 </body>
 </html>
