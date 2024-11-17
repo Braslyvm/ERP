@@ -2320,39 +2320,75 @@ RETURN
     GROUP BY a.año, a.mes, a.departamento
 );
 go
-
+-- ================================================
+-- nombre: obtenerfecha
+--  Paramentros: 
+--       @año int
+--       @mes  varchar(180)
+-- retorna: Retorna una fecha dependiendo del año y mes
+-- ================================================
+create function obtenerfecha(
+    @año int,
+    @mes  varchar(180)
+)
+returns date
+as
+begin
+    declare @fecha date;
+    declare @mesnumero int;
+    set @mesnumero = case 
+                        when lower(@mes) = 'enero' then 1
+                        when lower(@mes) = 'febrero' then 2
+                        when lower(@mes) = 'marzo' then 3
+                        when lower(@mes) = 'abril' then 4
+                        when lower(@mes) = 'mayo' then 5
+                        when lower(@mes) = 'junio' then 6
+                        when lower(@mes) = 'julio' then 7
+                        when lower(@mes) = 'agosto' then 8
+                        when lower(@mes) = 'septiembre' then 9
+                        when lower(@mes) = 'octubre' then 10
+                        when lower(@mes) = 'noviembre' then 11
+                        when lower(@mes) = 'diciembre' then 12
+                        else null
+                    end;
+    if @mesnumero is null
+    begin
+        return null;
+    end
+    set @fecha = datefromparts(@año, @mesnumero, 1);
+    return @fecha;
+end;
+go
 
 -- ================================================
 -- nombre: PlanillaMesse
 --  Paramentros: 
---      @anio_inicio INT = NULL, 
---      @mes_inicio INT = NULL, 
---      @anio_fin INT = NULL, 
---      @mes_fin INT = NULL
+--          @año_inicio int = null, 
+--          @mes_inicio varchar(180) = null, 
+--          @año_fin int = null, 
+--           @mes_fin varchar(180) = null
 -- retorna: Retorna el total de salario por mes en el periodo especificado.
 -- ================================================
-CREATE  FUNCTION usuarios.PlanillaMesse(
-    @anio_inicio INT = NULL, 
-    @mes_inicio INT = NULL, 
-    @anio_fin INT = NULL, 
-    @mes_fin INT = NULL
+create function usuarios.PlanillaMesse(
+    @año_inicio int = null, 
+    @mes_inicio varchar(180) = null, 
+    @año_fin int = null, 
+    @mes_fin varchar(180) = null
 )
-RETURNS TABLE
-AS
-RETURN
+returns table
+as
+return
 (
-    SELECT 
-        SUM(a.total_salario) AS total_salario,
+    select 
+        sum(a.total_salario) as total_salario,
         a.mes,
         a.año
-    FROM usuarios.plantilla a
-    WHERE 
-        -- Filtro por el rango de fechas, si no son NULL
-        (@anio_inicio IS NULL OR a.año >= @anio_inicio)
-        AND (@mes_inicio IS NULL OR (a.año = @anio_inicio AND a.mes >= @mes_inicio))
-        AND (@anio_fin IS NULL OR a.año <= @anio_fin)
-        AND (@mes_fin IS NULL OR (a.año = @anio_fin AND a.mes <= @mes_fin))
-    GROUP BY a.año, a.mes
+    from usuarios.plantilla a
+    where 
+        ((@año_inicio is null and @mes_inicio is null)  or (dbo.obtenerfecha(a.año, a.mes) >= dbo.obtenerfecha(@año_inicio, @mes_inicio)) )
+        and 
+        ((@año_fin is null and @mes_fin is null)  or  (dbo.obtenerfecha(a.año, a.mes) <= dbo.obtenerfecha(@año_fin, @mes_fin)))
+    group by a.año, a.mes
 );
 go
 
