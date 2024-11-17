@@ -10,6 +10,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <link rel="stylesheet" href="~/css/index.css">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -31,34 +33,6 @@
             color: #004085;
             text-align: center;
         }
-        canvas {
-            margin-top: 30px;
-        }
-        .btn {
-            padding: 10px 15px;
-            background-color: #004085;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .btn:hover {
-            background-color: #003366;
-        }
-        form {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: center;
-        }
-        label {
-            font-weight: bold;
-        }
-        input[type="date"] {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
     </style>
 </head>
 <body>
@@ -67,14 +41,10 @@
 
         <!-- Formulario para filtrar por rango de fechas -->
         <form method="get" class="mb-4">
-            <div>
                 <label for="fecha_inicio">Fecha de inicio:</label>
                 <input type="date" id="fecha_inicio" name="FechaInicio" value="@Model.FechaInicio?.ToString("yyyy-MM-dd")" />
-            </div>
-            <div>
                 <label for="fecha_fin">Fecha de fin:</label>
                 <input type="date" id="fecha_fin" name="FechaFin" value="@Model.FechaFin?.ToString("yyyy-MM-dd")" />
-            </div>
             <button type="submit" class="btn">Filtrar</button>
         </form>
 
@@ -89,7 +59,6 @@
         {
             <p>No hay datos disponibles para el rango de fechas seleccionado.</p>
         }
-        <button class="back-button" onclick="window.location.href='/menus/Reportes'">Volver</button>
     </div>
 
     <!-- Script para generar el gráfico -->

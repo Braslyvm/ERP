@@ -12,6 +12,26 @@
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/css/index.css">
     <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4ff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 50px auto;
+        }
+        h1 {
+            font-size: 2rem;
+            color: #004085;
+            text-align: center;
+        }
         .styled-table {
             width: 100%;
             border-collapse: collapse;
@@ -31,18 +51,6 @@
         }
         .styled-table tbody tr:nth-child(even) {
             background-color: #f9f9f9;
-        }
-        .boton-volver {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .boton-volver:hover {
-            background-color: #45a049;
         }
     </style>
 </head>
@@ -80,16 +88,10 @@
                     </tr>
                 }
             </tbody>
-        </table>
-
-        <a href="/menus/Reportes">
-            <button class="back-button">Volver a Reportes</button>
-        </a>
-
-       
-       
-       
-
+        </table>  
     </div>
+    <form method="get" action="/menus/Reportes">
+        <button type="submit" class="boton-volver">Volver</button>
+    </form>
 </body>
 </html>
