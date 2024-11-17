@@ -66,44 +66,55 @@
 
         <!-- Formulario para Filtrar por Año y Mes -->
         <form method="get">
-            <label for="anioInicio">Año Inicio:</label>
-            <input type="number" id="anioInicio" name="anioInicio" min="2000" value="@Request.Query["anioInicio"]">
+            <label for="año_inicio">Año Inicio:</label>
+            <input type="number" id="año_inicio" name="año_inicio" min="2000" value="@Model.AñoInicio">
 
-            <label for="mesInicio">Mes Inicio:</label>
-            <select id="mesInicio" name="mesInicio">
-                <option value="">Seleccione</option>
-                <option value="Enero" @(Model.MesInicio == "Enero" ? "selected" : "")>Enero</option>
-                <option value="Febrero" @(Model.MesInicio == "Febrero" ? "selected" : "")>Febrero</option>
-                <option value="Marzo" @(Model.MesInicio == "Marzo" ? "selected" : "")>Marzo</option>
-                <option value="Abril" @(Model.MesInicio == "Abril" ? "selected" : "")>Abril</option>
-                <option value="Mayo" @(Model.MesInicio == "Mayo" ? "selected" : "")>Mayo</option>
-                <option value="Junio" @(Model.MesInicio == "Junio" ? "selected" : "")>Junio</option>
-                <option value="Julio" @(Model.MesInicio == "Julio" ? "selected" : "")>Julio</option>
-                <option value="Agosto" @(Model.MesInicio == "Agosto" ? "selected" : "")>Agosto</option>
-                <option value="Septiembre" @(Model.MesInicio == "Septiembre" ? "selected" : "")>Septiembre</option>
-                <option value="Octubre" @(Model.MesInicio == "Octubre" ? "selected" : "")>Octubre</option>
-                <option value="Noviembre" @(Model.MesInicio == "Noviembre" ? "selected" : "")>Noviembre</option>
-                <option value="Diciembre" @(Model.MesInicio == "Diciembre" ? "selected" : "")>Diciembre</option>
+            <label for="mes_inicio">Seleccione el mes de inicio:</label>
+            <select name="mes_inicio" id="mes_inicio">
+                <option value="Enero" selected="@((Model.MesInicio == "Enero") ? "selected" : "")">Enero</option>
+<option value="Febrero" selected="@((Model.MesInicio == "Febrero") ? "selected" : "")">Febrero</option>
+<option value="Marzo" selected="@((Model.MesInicio == "Marzo") ? "selected" : "")">Marzo</option>
+<option value="Abril" selected="@((Model.MesInicio == "Abril") ? "selected" : "")">Abril</option>
+<option value="Mayo" selected="@((Model.MesInicio == "Mayo") ? "selected" : "")">Mayo</option>
+<option value="Junio" selected="@((Model.MesInicio == "Junio") ? "selected" : "")">Junio</option>
+<option value="Julio" selected="@((Model.MesInicio == "Julio") ? "selected" : "")">Julio</option>
+<option value="Agosto" selected="@((Model.MesInicio == "Agosto") ? "selected" : "")">Agosto</option>
+<option value="Septiembre" selected="@((Model.MesInicio == "Septiembre") ? "selected" : "")">Septiembre</option>
+<option value="Octubre" selected="@((Model.MesInicio == "Octubre") ? "selected" : "")">Octubre</option>
+<option value="Noviembre" selected="@((Model.MesInicio == "Noviembre") ? "selected" : "")">Noviembre</option>
+<option value="Diciembre" selected="@((Model.MesInicio == "Diciembre") ? "selected" : "")">Diciembre</option>
+
             </select>
 
-            <label for="anioFin">Año Fin:</label>
-            <input type="number" id="anioFin" name="anioFin" min="2000" value="@Request.Query["anioFin"]">
+            <label for="año_fin">Año Fin:</label>
+            <input type="number" id="año_fin" name="año_fin" min="2000" value="@Model.AñoFin">
 
-            <label for="mesFin">Mes Fin:</label>
-            <select id="mesFin" name="mesFin">
-                <option value="">Seleccione</option>
-                <option value="Enero" @(Model.MesFin == "Enero"  : "")>Enero</option>
-                <option value="Febrero" @(Model.MesFin == "Febrero" ? "selected" : "")>Febrero</option>
-                <option value="Marzo" @(Model.MesFin == "Marzo" ? "selected" : "")>Marzo</option>
-                <option value="Abril" @(Model.MesFin == "Abril" ? "selected" : "")>Abril</option>
-                <option value="Mayo" @(Model.MesFin == "Mayo" ? "selected" : "")>Mayo</option>
-                <option value="Junio" @(Model.MesFin == "Junio" ? "selected" : "")>Junio</option>
-                <option value="Julio" @(Model.MesFin == "Julio" ? "selected" : "")>Julio</option>
-                <option value="Agosto" @(Model.MesFin == "Agosto" ? "selected" : "")>Agosto</option>
-                <option value="Septiembre" @(Model.MesFin == "Septiembre" ? "selected" : "")>Septiembre</option>
-                <option value="Octubre" @(Model.MesFin == "Octubre" ? "selected" : "")>Octubre</option>
-                <option value="Noviembre" @(Model.MesFin == "Noviembre" ? "selected" : "")>Noviembre</option>
-                <option value="Diciembre" @(Model.MesFin == "Diciembre" ? "selected" : "")>Diciembre</option>
+            <label for="mes_fin">Seleccione el mes final:</label>
+            <select name="mes_fin" id="mes_fin">
+               
+               <option value="Enero" selected="@((Model.MesInicio == "Enero") ? "selected" : "")">Enero</option>
+<option value="Febrero" selected="@((Model.MesInicio == "Febrero") ? "selected" : "")">Febrero</option>
+<option value="Marzo" selected="@((Model.MesInicio == "Marzo") ? "selected" : "")">Marzo</option>
+<option value="Abril" selected="@((Model.MesInicio == "Abril") ? "selected" : "")">Abril</option>
+<option value="Mayo" selected="@((Model.MesInicio == "Mayo") ? "selected" : "")">Mayo</option>
+<option value="Junio" selected="@((Model.MesInicio == "Junio") ? "selected" : "")">Junio</option>
+<option value="Julio" selected="@((Model.MesInicio == "Julio") ? "selected" : "")">Julio</option>
+<option value="Agosto" selected="@((Model.MesInicio == "Agosto") ? "selected" : "")">Agosto</option>
+<option value="Septiembre" selected="@((Model.MesInicio == "Septiembre") ? "selected" : "")">Septiembre</option>
+<option value="Octubre" selected="@((Model.MesInicio == "Octubre") ? "selected" : "")">Octubre</option>
+<option value="Noviembre" selected="@((Model.MesInicio == "Noviembre") ? "selected" : "")">Noviembre</option>
+<option value="Diciembre" selected="@((Model.MesInicio == "Diciembre") ? "selected" : "")">Diciembre</option>
+
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
             </select>
 
             <button type="submit">Filtrar</button>
@@ -111,33 +122,31 @@
 
         <!-- Gráfico de salarios por año y mes -->
         <canvas id="salarioChart" width="400" height="200"></canvas>
-        <a href="/menus/Reportes">
-            <button class="back-button">Volver a Reportes</button>
-        </a>
+        <a href="/menus/Reportes" class="back-button">Volver a Reportes</a>
+    </div>
 
-        <script>
-            const ctx = document.getElementById('salarioChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: @Html.Raw(Json.Serialize(Model.Planilla.Select(p => $"{p.Mes} {p.Año}"))),
-                    datasets: [{
-                        label: 'Total Salario',
-                        data: @Html.Raw(Json.Serialize(Model.Planilla.Select(p => p.TotalSalario))),
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+    <script>
+        var ctx = document.getElementById('salarioChart').getContext('2d');
+        var salarioChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.Planilla.Select(p => p.Mes+" "+p.Año).ToArray())),
+                datasets: [{
+                    label: 'Total Salario',
+                    data: @Html.Raw(Json.Serialize(Model.Planilla.Select(p => p.TotalSalario).ToArray())),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
                 }
-            });
-        </script>
-    </div>
+            }
+        });
+    </script>
 </body>
 </html>
