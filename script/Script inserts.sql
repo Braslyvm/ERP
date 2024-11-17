@@ -266,6 +266,28 @@ values
 ('B020', '017'),
 ('B020', '023');
 GO
+declare @mensaje nvarchar(200);
+--Empleados 
+exec usuarios.insertar_empleado
+    @cedula = 12345678,
+    @nombre = 'Juan',
+    @apellido1 = 'Pérez',
+    @apellido2 = 'López',
+    @correo_electronico = 'juan.perez@example.com',
+    @contraseña = 'ContraseñaSegura123',
+    @género = 'Masculino',
+    @fecha_nacimiento = '1990-05-15',
+    @lugar_residencia = 'San José',
+    @telefono = 88887777,
+    @fecha_ingreso = '2023-01-01',
+    @salario_actual = 3000,
+    @puesto_actual = 'gerente',
+    @departamento_actual = 'recursos humanos',
+    @rol = 'rol',
+    @mensaje = @mensaje output;
+
+select @mensaje as MensajeResultado;
+
 -- Crear una tabla temporal para simular las inserciones
 declare @productos table (
     c_bodega varchar(180),
@@ -447,27 +469,6 @@ go
 
 
 
-declare @mensaje nvarchar(200);
---Empleados 
-exec usuarios.insertar_empleado
-    @cedula = 12345678,
-    @nombre = 'Juan',
-    @apellido1 = 'Pérez',
-    @apellido2 = 'López',
-    @correo_electronico = 'juan.perez@example.com',
-    @contraseña = 'ContraseñaSegura123',
-    @género = 'Masculino',
-    @fecha_nacimiento = '1990-05-15',
-    @lugar_residencia = 'San José',
-    @telefono = 88887777,
-    @fecha_ingreso = '2023-01-01',
-    @salario_actual = 3000,
-    @puesto_actual = 'gerente',
-    @departamento_actual = 'recursos humanos',
-    @rol = 'rol',
-    @mensaje = @mensaje output;
-
-select @mensaje as MensajeResultado;
 
 -- Ejemplo 1
 exec usuarios.insertar_empleado

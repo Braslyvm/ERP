@@ -9,65 +9,70 @@ using proyecto1bases.Models;
 
 namespace proyecto1bases.Pages
 {
-    public class MAño : PageModel
+   
+   
+   public class MAño : PageModel
+{
+    private readonly string _connectionString;
+
+    public List<PlanillaDataAnio> Planilla { get; set; } = new List<PlanillaDataAnio>();
+    public int? AnioInicio { get; set; }
+    public string? MesInicio { get; set; }
+    public int? AnioFin { get; set; }
+    public string? MesFin { get; set; }
+
+    public MAño(IConfiguration configuration)
     {
-        private readonly string _connectionString;
+        _connectionString = configuration.GetConnectionString("DefaultConnection");
+    }
 
-        public List<PlanillaDataAnio> Planilla { get; set; } = new List<PlanillaDataAnio>();
-        public int? AnioInicio { get; set; }
-        public int? AnioFin { get; set; }
+    public async Task<IActionResult> OnGetAsync(int? anioInicio, string? mesInicio, int? anioFin, string? mesFin)
+    {
+        AnioInicio = anioInicio;
+        MesInicio = mesInicio;
+        AnioFin = anioFin;
+        MesFin = mesFin;
 
-        public MAño(IConfiguration configuration)
+        using (var connection = new SqlConnection(_connectionString))
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
-        }
+            await connection.OpenAsync();
 
-        /// <summary>
-                ///  al iniiciar la pagina se carga la informacion y puede ser filtrada
-                /// </summary>
-                /// <param name="anioInicio"></param>
-                /// <param name="anioFin"></param>
-                /// <returns> grafico de barras con informacion de la tabla</returns>
-                public async Task<IActionResult> OnGetAsync(int? anioInicio, int? anioFin)
-        {
-            // Asignar los valores de los filtros a las propiedades
-            AnioInicio = anioInicio ?? 2000; // Valor predeterminado de inicio
-            AnioFin = anioFin ?? 2024; // Valor predeterminado de fin
+            // Consulta SQL con parámetros para los años y meses
+            var query = "SELECT * FROM usuarios.PlanillaMesse(@anioInicio, @mesInicio, @anioFin, @mesFin)";
 
-            using (var connection = new SqlConnection(_connectionString))
+            using (var command = new SqlCommand(query, connection))
             {
-                await connection.OpenAsync();
+                command.Parameters.AddWithValue("@anioInicio", (object)AnioInicio ?? DBNull.Value);
+                command.Parameters.AddWithValue("@mesInicio", (object)MesInicio ?? DBNull.Value);
+                command.Parameters.AddWithValue("@anioFin", (object)AnioFin ?? DBNull.Value);
+                command.Parameters.AddWithValue("@mesFin", (object)MesFin ?? DBNull.Value);
 
-                // Consulta SQL con parámetros para los años
-                var query = "SELECT * FROM usuarios.planillaaños(@anioInicio, @anioFin)";
-
-                using (var command = new SqlCommand(query, connection))
+                using (var reader = await command.ExecuteReaderAsync())
                 {
-                    // Agregar los parámetros a la consulta
-                    command.Parameters.AddWithValue("@anioInicio", AnioInicio);
-                    command.Parameters.AddWithValue("@anioFin", AnioFin);
-
-                    using (var reader = await command.ExecuteReaderAsync())
+                    while (await reader.ReadAsync())
                     {
-                        while (await reader.ReadAsync())
+                        Planilla.Add(new PlanillaDataAnio
                         {
-                            Planilla.Add(new PlanillaDataAnio
-                            {
-                                Año = reader["año"].ToString(),
-                                TotalSalario = decimal.Parse(reader["total_salario"].ToString())
-                            });
-                        }
+                            Año = reader["año"].ToString(),
+                            Mes = reader["mes"].ToString(),
+                            TotalSalario = reader["total_salario"] != DBNull.Value ? decimal.Parse(reader["total_salario"].ToString()) : 0
+                        });
                     }
                 }
             }
-            return Page();
         }
+        return Page();
     }
+}
 
-    // Clase para representar los datos de la planilla por año
-    public class PlanillaDataAnio
-    {
-        public string Año { get; set; }
-        public decimal TotalSalario { get; set; }
-    }
+public class PlanillaDataAnio
+{
+    public string Año { get; set; }
+    public string Mes { get; set; }
+    public decimal TotalSalario { get; set; }
+}
+
+
+
+   
 }
