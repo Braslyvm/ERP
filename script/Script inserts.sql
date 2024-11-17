@@ -266,162 +266,6 @@ values
 ('B020', '017'),
 ('B020', '023');
 GO
-declare @mensaje nvarchar(200);
---Empleados 
-exec usuarios.insertar_empleado
-    @cedula = 12345678,
-    @nombre = 'Juan',
-    @apellido1 = 'Pérez',
-    @apellido2 = 'López',
-    @correo_electronico = 'juan.perez@example.com',
-    @contraseña = 'ContraseñaSegura123',
-    @género = 'Masculino',
-    @fecha_nacimiento = '1990-05-15',
-    @lugar_residencia = 'San José',
-    @telefono = 88887777,
-    @fecha_ingreso = '2023-01-01',
-    @salario_actual = 3000,
-    @puesto_actual = 'gerente',
-    @departamento_actual = 'recursos humanos',
-    @rol = 'rol',
-    @mensaje = @mensaje output;
-
-select @mensaje as MensajeResultado;
-go
-
--- Crear una tabla temporal para simular las inserciones
-declare @productos table (
-    c_bodega varchar(180),
-    c_articulo varchar(180),
-    cantidad int,
-    bodega_destino varchar(180)
-);
-
--- Insertar los datos en la tabla temporal
-insert into @productos (c_bodega, c_articulo, cantidad, bodega_destino)
-values
-('B001', '001', 500, 'B001'),
-('B001', '002', 200, 'B001'),
-('B001', '003', 100, 'B001'),
-('B001', '004', 150, 'B001'),
-('B002', '005', 250, 'B002'),
-('B002', '006', 50, 'B002'),
-('B003', '007', 300, 'B003'),
-('B003', '008', 400, 'B003'),
-('B004', '009', 500, 'B004'),
-('B004', '010', 350, 'B004'),
-('B005', '011', 200, 'B005'),
-('B005', '012', 150, 'B005'),
-('B001', '013', 600, 'B001'),
-('B001', '014', 450, 'B001'),
-('B002', '015', 700, 'B002'),
-('B002', '016', 500, 'B002'),
-('B003', '017', 100, 'B003'),
-('B003', '018', 120, 'B003'),
-('B004', '019', 80, 'B004'),
-('B004', '020', 150, 'B004'),
-('B001', '010', 100, 'B001'),
-('B001', '011', 100, 'B001'),
-('B002', '012', 100, 'B002'),
-('B002', '013', 100, 'B002'),
-('B002', '014', 100, 'B002'),
-('B003', '015', 100, 'B003'),
-('B003', '016', 100, 'B003'),
-('B004', '018', 100, 'B004'),
-('B005', '020', 100, 'B005'),
-('B005', '021', 100, 'B005'),
-('B005', '022', 100, 'B005'),
-('B006', '003', 100, 'B006'),
-('B006', '008', 100, 'B006'),
-('B006', '009', 100, 'B006'),
-('B007', '011', 100, 'B007'),
-('B007', '012', 100, 'B007'),
-('B007', '018', 100, 'B007'),
-('B008', '006', 100, 'B008'),
-('B008', '014', 100, 'B008'),
-('B009', '013', 100, 'B009'),
-('B009', '019', 100, 'B009'),
-('B010', '004', 100, 'B010'),
-('B010', '007', 100, 'B010'),
-('B010', '016', 100, 'B010'),
-('B011', '002', 100, 'B011'),
-('B011', '005', 100, 'B011'),
-('B011', '020', 100, 'B011'),
-('B012', '010', 100, 'B012'),
-('B012', '017', 100, 'B012'),
-('B012', '021', 100, 'B012'),
-('B013', '001', 100, 'B013'),
-('B013', '022', 100, 'B013'),
-('B013', '023', 100, 'B013'),
-('B014', '009', 100, 'B014'),
-('B014', '015', 100, 'B014'),
-('B014', '018', 100, 'B014'),
-('B015', '003', 100, 'B015'),
-('B015', '014', 100, 'B015'),
-('B015', '020', 100, 'B015'),
-('B016', '007', 100, 'B016'),
-('B016', '011', 100, 'B016'),
-('B016', '012', 100, 'B016'),
-('B017', '019', 100, 'B017'),
-('B017', '013', 100, 'B017'),
-('B017', '005', 100, 'B017'),
-('B018', '021', 100, 'B018'),
-('B018', '006', 100, 'B018'),
-('B018', '010', 100, 'B018'),
-('B019', '002', 100, 'B019'),
-('B019', '004', 100, 'B019'),
-('B019', '022', 100, 'B019'),
-('B020', '008', 100, 'B020'),
-('B020', '017', 100, 'B020'),
-('B020', '023', 100, 'B020');
-
-
-declare @c_bodega varchar(180);
-declare @c_articulo varchar(180);
-declare @cantidad int;
-declare @bodega_destino varchar(180);
-declare @usuario int = 12345678;
-declare @mensaje nvarchar(200);
-
--- Cursor para recorrer la tabla de productos
-declare productos_cursor cursor for
-select c_bodega, c_articulo, cantidad, bodega_destino
-from @productos;
-
-open productos_cursor;
-
-fetch next from productos_cursor into @c_bodega, @c_articulo, @cantidad, @bodega_destino;
-
-while @@fetch_status = 0
-begin
-    -- Generar una fecha aleatoria dentro de un rango específico
-    declare @fecha date = dateadd(day, abs(checksum(newid()) % 365), '2023-01-01');
-
-    -- Llamar al procedimiento almacenado
-    exec gestion_inventario.insertar_producto_y_registrar_movimiento 
-        @c_bodega = @c_bodega, 
-        @c_articulo = @c_articulo, 
-        @cantidad = @cantidad, 
-        @n_factura = null, 
-        @usuario = @usuario, 
-        @bodega_origen = NULL, 
-        @bodega_destino = @bodega_destino, 
-        @mensaje = @mensaje output;
-
-    -- Imprimir el mensaje de salida
-    print @mensaje;
-
-    fetch next from productos_cursor into @c_bodega, @c_articulo, @cantidad, @bodega_destino;
-end;
-
-close productos_cursor;
-deallocate productos_cursor;
-
-
-
-GO
-
-
 ---------------------------crear rol y persmisos -----------------
 EXEC  CrearRol 'rol' , 1
 go
@@ -445,6 +289,28 @@ go
 EXEC usuarios.InsertarPermisosReportes 'rol' , 1 , 1, 1
 go
 
+declare @mensaje nvarchar(200);
+--Empleados 
+exec usuarios.insertar_empleado
+    @cedula = 12345678,
+    @nombre = 'Juan',
+    @apellido1 = 'Pérez',
+    @apellido2 = 'López',
+    @correo_electronico = 'juan.perez@example.com',
+    @contraseña = 'ContraseñaSegura123',
+    @género = 'Masculino',
+    @fecha_nacimiento = '1990-05-15',
+    @lugar_residencia = 'San José',
+    @telefono = 88887777,
+    @fecha_ingreso = '2023-01-01',
+    @salario_actual = 3000,
+    @puesto_actual = 'gerente',
+    @departamento_actual = 'recursos humanos',
+    @rol = 'rol',
+    @mensaje = @mensaje output;
+
+select @mensaje as MensajeResultado;
+go
 -------------- crear empleado de prueba-------------------------
 DECLARE @mensaje NVARCHAR(200);
 
@@ -684,6 +550,142 @@ EXEC usuarios.insertar_empleado
     @mensaje = @mensaje OUTPUT;
 	print @mensaje
 go
+
+-- Crear una tabla temporal para simular las inserciones
+declare @productos table (
+    c_bodega varchar(180),
+    c_articulo varchar(180),
+    cantidad int,
+    bodega_destino varchar(180)
+);
+
+-- Insertar los datos en la tabla temporal
+insert into @productos (c_bodega, c_articulo, cantidad, bodega_destino)
+values
+('B001', '001', 500, 'B001'),
+('B001', '002', 200, 'B001'),
+('B001', '003', 100, 'B001'),
+('B001', '004', 150, 'B001'),
+('B002', '005', 250, 'B002'),
+('B002', '006', 50, 'B002'),
+('B003', '007', 300, 'B003'),
+('B003', '008', 400, 'B003'),
+('B004', '009', 500, 'B004'),
+('B004', '010', 350, 'B004'),
+('B005', '011', 200, 'B005'),
+('B005', '012', 150, 'B005'),
+('B001', '013', 600, 'B001'),
+('B001', '014', 450, 'B001'),
+('B002', '015', 700, 'B002'),
+('B002', '016', 500, 'B002'),
+('B003', '017', 100, 'B003'),
+('B003', '018', 120, 'B003'),
+('B004', '019', 80, 'B004'),
+('B004', '020', 150, 'B004'),
+('B001', '010', 100, 'B001'),
+('B001', '011', 100, 'B001'),
+('B002', '012', 100, 'B002'),
+('B002', '013', 100, 'B002'),
+('B002', '014', 100, 'B002'),
+('B003', '015', 100, 'B003'),
+('B003', '016', 100, 'B003'),
+('B004', '018', 100, 'B004'),
+('B005', '020', 100, 'B005'),
+('B005', '021', 100, 'B005'),
+('B005', '022', 100, 'B005'),
+('B006', '003', 100, 'B006'),
+('B006', '008', 100, 'B006'),
+('B006', '009', 100, 'B006'),
+('B007', '011', 100, 'B007'),
+('B007', '012', 100, 'B007'),
+('B007', '018', 100, 'B007'),
+('B008', '006', 100, 'B008'),
+('B008', '014', 100, 'B008'),
+('B009', '013', 100, 'B009'),
+('B009', '019', 100, 'B009'),
+('B010', '004', 100, 'B010'),
+('B010', '007', 100, 'B010'),
+('B010', '016', 100, 'B010'),
+('B011', '002', 100, 'B011'),
+('B011', '005', 100, 'B011'),
+('B011', '020', 100, 'B011'),
+('B012', '010', 100, 'B012'),
+('B012', '017', 100, 'B012'),
+('B012', '021', 100, 'B012'),
+('B013', '001', 100, 'B013'),
+('B013', '022', 100, 'B013'),
+('B013', '023', 100, 'B013'),
+('B014', '009', 100, 'B014'),
+('B014', '015', 100, 'B014'),
+('B014', '018', 100, 'B014'),
+('B015', '003', 100, 'B015'),
+('B015', '014', 100, 'B015'),
+('B015', '020', 100, 'B015'),
+('B016', '007', 100, 'B016'),
+('B016', '011', 100, 'B016'),
+('B016', '012', 100, 'B016'),
+('B017', '019', 100, 'B017'),
+('B017', '013', 100, 'B017'),
+('B017', '005', 100, 'B017'),
+('B018', '021', 100, 'B018'),
+('B018', '006', 100, 'B018'),
+('B018', '010', 100, 'B018'),
+('B019', '002', 100, 'B019'),
+('B019', '004', 100, 'B019'),
+('B019', '022', 100, 'B019'),
+('B020', '008', 100, 'B020'),
+('B020', '017', 100, 'B020'),
+('B020', '023', 100, 'B020');
+
+
+declare @c_bodega varchar(180);
+declare @c_articulo varchar(180);
+declare @cantidad int;
+declare @bodega_destino varchar(180);
+declare @usuario int = 12345678;
+declare @mensaje nvarchar(200);
+
+-- Cursor para recorrer la tabla de productos
+declare productos_cursor cursor for
+select c_bodega, c_articulo, cantidad, bodega_destino
+from @productos;
+
+open productos_cursor;
+
+fetch next from productos_cursor into @c_bodega, @c_articulo, @cantidad, @bodega_destino;
+
+while @@fetch_status = 0
+begin
+    -- Generar una fecha aleatoria dentro de un rango específico
+    declare @fecha date = dateadd(day, abs(checksum(newid()) % 365), '2023-01-01');
+
+    -- Llamar al procedimiento almacenado
+    exec gestion_inventario.insertar_producto_y_registrar_movimiento 
+        @c_bodega = @c_bodega, 
+        @c_articulo = @c_articulo, 
+        @cantidad = @cantidad, 
+        @n_factura = null, 
+        @usuario = @usuario, 
+        @bodega_origen = NULL, 
+        @bodega_destino = @bodega_destino, 
+        @mensaje = @mensaje output;
+
+    -- Imprimir el mensaje de salida
+    print @mensaje;
+
+    fetch next from productos_cursor into @c_bodega, @c_articulo, @cantidad, @bodega_destino;
+end;
+
+close productos_cursor;
+deallocate productos_cursor;
+
+
+
+GO
+
+
+
+
 
 
 ---------------------INGRESO DE FACTURAS-----
