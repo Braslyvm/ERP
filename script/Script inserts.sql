@@ -287,6 +287,7 @@ exec usuarios.insertar_empleado
     @mensaje = @mensaje output;
 
 select @mensaje as MensajeResultado;
+go
 
 -- Crear una tabla temporal para simular las inserciones
 declare @productos table (
@@ -465,10 +466,6 @@ EXEC usuarios.insertar_empleado
     @rol = 'rol',  
     @mensaje = @mensaje OUTPUT;
 	print @mensaje
-go
-
-
-
 
 -- Ejemplo 1
 exec usuarios.insertar_empleado
