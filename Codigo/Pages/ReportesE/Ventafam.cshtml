@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@ViewData["Title"]</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <link rel="stylesheet" href="~/css/index.css">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -32,32 +33,13 @@
             color: #004085;
             text-align: center;
         }
-        .filters {
-            margin: 20px 0;
-            text-align: center;
-        }
-        .filters label, .filters input {
-            margin: 5px;
-        }
-        .filters button {
-            padding: 8px 15px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .filters button:hover {
-            background-color: #45a049;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>@ViewData["Title"]</h1>
         
-        <!-- Formulario de Filtro -->
-        <div class="filters">
+
             <form method="get">
                 <label for="fechaInicio">Fecha Inicio:</label>
                 <input type="date" id="fechaInicio" name="fechaInicio" value="@Request.Query["fechaInicio"]" />
@@ -65,7 +47,7 @@
                 <input type="date" id="fechaFin" name="fechaFin" value="@Request.Query["fechaFin"]" />
                 <button type="submit">Filtrar</button>
             </form>
-        </div>
+
 
         <!-- Gráfico -->
         <canvas id="familiaProductosChart" width="400" height="400"></canvas>
