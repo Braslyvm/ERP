@@ -658,8 +658,8 @@ fetch next from productos_cursor into @c_bodega, @c_articulo, @cantidad, @bodega
 
 while @@fetch_status = 0
 begin
-   insert into @productos (c_bodega, c_articulo, cantidad, bodega_destino)
-    values (@c_bodega, @c_articulo, 0, @bodega_destino);
+    insert into gestion_inventario.inventario (c_bodega, c_articulo, cantidad)
+    values (@c_bodega, @c_articulo, 0);
    
    -- Generar una fecha aleatoria dentro de un rango específico
     declare @fecha date = dateadd(day, abs(checksum(newid()) % 365), '2023-01-01');
@@ -683,9 +683,6 @@ end;
 
 close productos_cursor;
 deallocate productos_cursor;
-
-
-
 GO
 
 
