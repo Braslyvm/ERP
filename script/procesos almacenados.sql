@@ -2320,6 +2320,8 @@ RETURN
     GROUP BY a.año, a.mes, a.departamento
 );
 go
+
+
 -- ================================================
 -- nombre: obtenerfecha
 --  Paramentros: 
@@ -2392,6 +2394,22 @@ return
 );
 go
 
+
+
+-- ================================================
+-- nombre: Departamentos
+-- retorna: Retorna los departamentos 
+-- ================================================
+
+create function usuarios.Departamentos()
+returns table
+as
+return
+(
+    select id_departamento
+    from usuarios.departamento
+);
+go
 
 -- ================================================
 -- nombre: FamiliaProductos

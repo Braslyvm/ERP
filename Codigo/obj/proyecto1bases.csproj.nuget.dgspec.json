@@ -1,32 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\coleg\\OneDrive\\Escritorio\\ERP\\Codigo\\proyecto1bases.csproj": {}
+    "C:\\Users\\brasl\\Downloads\\ERP\\Codigo\\proyecto1bases.csproj": {}
   },
   "projects": {
-    "C:\\Users\\coleg\\OneDrive\\Escritorio\\ERP\\Codigo\\proyecto1bases.csproj": {
+    "C:\\Users\\brasl\\Downloads\\ERP\\Codigo\\proyecto1bases.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\coleg\\OneDrive\\Escritorio\\ERP\\Codigo\\proyecto1bases.csproj",
+        "projectUniqueName": "C:\\Users\\brasl\\Downloads\\ERP\\Codigo\\proyecto1bases.csproj",
         "projectName": "proyecto1bases",
-        "projectPath": "C:\\Users\\coleg\\OneDrive\\Escritorio\\ERP\\Codigo\\proyecto1bases.csproj",
-        "packagesPath": "C:\\Users\\coleg\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\coleg\\OneDrive\\Escritorio\\ERP\\Codigo\\obj\\",
+        "projectPath": "C:\\Users\\brasl\\Downloads\\ERP\\Codigo\\proyecto1bases.csproj",
+        "packagesPath": "C:\\Users\\brasl\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\brasl\\Downloads\\ERP\\Codigo\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\coleg\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\brasl\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
