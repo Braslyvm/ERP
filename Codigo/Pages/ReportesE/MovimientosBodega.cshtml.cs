@@ -46,7 +46,7 @@ namespace proyecto1bases.Pages
             return Page();
         }
 
-       /// <summary>
+            /// <summary>
               ///  Almacena los datos de la tabla en caso de recibir parametros de fecha se filtra
               /// </summary>
               /// <param name="movimiento"></param>

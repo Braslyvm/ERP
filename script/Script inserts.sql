@@ -3008,3 +3008,6 @@ exec registro_caso.insertar_tarea_caso 37, 45678901, 'Revisar la factura por car
 exec registro_caso.insertar_tarea_caso 38, 56789012, 'Aclarar el importe final de la factura con el cliente 19', '2024-07-01';
 exec registro_caso.insertar_tarea_caso 39, 67890123, 'Confirmar que todos los pagos han sido aplicados correctamente en la factura del cliente 20', '2024-08-12';
 exec registro_caso.insertar_tarea_caso 40, 87654321, 'Verificar la validez de la factura con el cliente 21', '2024-09-25';
+
+
+

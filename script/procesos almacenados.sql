@@ -2315,11 +2315,8 @@ RETURN
         AND (@mes IS NULL OR mes = @mes)
     GROUP BY 
         departamento, mes, año
-    ORDER BY 
-        año, mes, departamento
 );
 go
-
 
 -- ================================================
 -- nombre: obtenerfecha

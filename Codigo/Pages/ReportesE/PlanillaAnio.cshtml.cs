@@ -15,10 +15,6 @@ namespace proyecto1bases.Pages
         private readonly string _connectionString;
 
         public List<PlanillaDataAnio> Planilla { get; set; } = new List<PlanillaDataAnio>();
-        public int? AñoInicio { get; set; }
-        public string? MesInicio { get; set; }
-        public int? AñoFin { get; set; }
-        public string? MesFin { get; set; }
 
         public MAño(IConfiguration configuration)
         {
@@ -26,27 +22,20 @@ namespace proyecto1bases.Pages
         }
 
 
-        public async Task<IActionResult> OnGetAsync(int? añoInicio, string? mesInicio, int? añoFin, string? mesFin)
-        {  
-            // Asignar los valores a las propiedades del modelo
-            AñoInicio = añoInicio;
-            MesInicio = mesInicio;
-            AñoFin = añoFin;
-            MesFin = mesFin;
-              Console.WriteLine($"Año Inicio: {añoInicio}, Mes Inicio: {mesInicio}, Año Fin: {añoFin}, Mes Fin: {mesFin}");
+        public async Task<IActionResult> OnGetAsync(int? año_inicio, string? mes_inicio, int? año_fin, string? mes_fin){  
 
             // Consultar los datos de la base de datos
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
 
-                var query = "SELECT * FROM [usuarios].[PlanillaMesse](@año_inicio, @mes_inicio, @año_fin, @mes_fin)";
+                var query = "SELECT * FROM usuarios.PlanillaMesse(@año_inicio, @mes_inicio, @año_fin, @mes_fin)";
                 using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@año_inicio", (object)añoInicio ?? DBNull.Value);
-                    command.Parameters.AddWithValue("@mes_inicio", (object)mesInicio ?? DBNull.Value);
-                    command.Parameters.AddWithValue("@año_fin", (object)añoFin ?? DBNull.Value);
-                    command.Parameters.AddWithValue("@mes_fin", (object)mesFin ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@año_inicio", (object)año_inicio ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@mes_inicio", (object)mes_inicio ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@año_fin", (object)año_fin ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@mes_fin", (object)mes_fin ?? DBNull.Value);
 
                     using (var reader = await command.ExecuteReaderAsync())
                     {
