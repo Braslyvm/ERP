@@ -638,6 +638,8 @@ values
 ('B020', '023', 100, 'B020');
 
 
+
+--------------
 declare @c_bodega varchar(180);
 declare @c_articulo varchar(180);
 declare @cantidad int;
@@ -656,9 +658,12 @@ fetch next from productos_cursor into @c_bodega, @c_articulo, @cantidad, @bodega
 
 while @@fetch_status = 0
 begin
-    -- Generar una fecha aleatoria dentro de un rango específico
+   insert into @productos (c_bodega, c_articulo, cantidad, bodega_destino)
+    values (@c_bodega, @c_articulo, 0, @bodega_destino);
+   
+   -- Generar una fecha aleatoria dentro de un rango específico
     declare @fecha date = dateadd(day, abs(checksum(newid()) % 365), '2023-01-01');
-
+	
     -- Llamar al procedimiento almacenado
     exec gestion_inventario.insertar_producto_y_registrar_movimiento 
         @c_bodega = @c_bodega, 
