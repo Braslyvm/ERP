@@ -658,8 +658,8 @@ fetch next from productos_cursor into @c_bodega, @c_articulo, @cantidad, @bodega
 
 while @@fetch_status = 0
 begin
-   insert into @productos (c_bodega, c_articulo, cantidad, bodega_destino)
-    values (@c_bodega, @c_articulo, 0, @bodega_destino);
+   insert into [gestion_inventario].[inventario] (c_bodega, c_articulo, cantidad)
+    values (@c_bodega, @c_articulo, 0);
    
    -- Generar una fecha aleatoria dentro de un rango específico
     declare @fecha date = dateadd(day, abs(checksum(newid()) % 365), '2023-01-01');
@@ -708,7 +708,7 @@ exec facturación.insertar_factura
     @total = null,        
     @mensaje = @mensaje output;
 
-print @mensaje;
+
 
 
 
@@ -720,7 +720,7 @@ exec facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje output;
 
-print @mensaje;
+
 -- Producto 2: Yogur bajo en grasa (Código: '002')
 exec facturación.lineasfactura 
     @c_articulo = '002',
@@ -730,7 +730,7 @@ exec facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje output;
 
-print @mensaje;
+
 
 -- Producto 3: Jugo de Naranja (Código: '003')
 exec facturación.lineasfactura 
@@ -741,7 +741,7 @@ exec facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje output;
 
-print @mensaje;
+
 
 
 
@@ -760,7 +760,7 @@ exec facturación.insertar_factura
     @total = null,        
     @mensaje = @mensaje output;
 
-print @mensaje;
+
 
 exec facturación.lineasfactura 
     @c_articulo = '004', 
@@ -770,7 +770,7 @@ exec facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje output;
 
-print @mensaje;
+
 
 exec facturación.lineasfactura 
     @c_articulo = '005', 
@@ -780,7 +780,7 @@ exec facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje output;
 
-print @mensaje;
+
 -- Factura 3
 PRINT 'Factura 3: ';
 go
@@ -796,7 +796,7 @@ exec facturación.insertar_factura
     @total = null,        
     @mensaje = @mensaje output;
 
-print @mensaje;
+
 
 exec facturación.lineasfactura 
     @c_articulo = '006', 
@@ -806,7 +806,7 @@ exec facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje output;
 
-print @mensaje;
+
 
 exec facturación.lineasfactura 
     @c_articulo = '007', 
@@ -816,7 +816,7 @@ exec facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje output;
 
-print @mensaje;
+
 
 
 -- Factura 4
@@ -834,7 +834,6 @@ exec facturación.insertar_factura
     @total = null,        
     @mensaje = @mensaje output;
 
-	print @mensaje;
 
 exec facturación.lineasfactura 
     @c_articulo = '010', 
@@ -844,7 +843,7 @@ exec facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje output;
 
-print @mensaje;
+
 
 exec facturación.lineasfactura 
     @c_articulo = '011', 
@@ -854,7 +853,6 @@ exec facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje output;
 
-print @mensaje;
 
 -- Factura 5
 PRINT 'Factura 5: ';
@@ -872,7 +870,7 @@ exec facturación.insertar_factura
     @total = null,        
     @mensaje = @mensaje output;
 
-	print @mensaje;
+
 
 
 exec facturación.lineasfactura 
@@ -883,7 +881,7 @@ exec facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje output;
 
-print @mensaje;
+
 
 exec facturación.lineasfactura 
     @c_articulo = '018', 
@@ -911,7 +909,7 @@ exec facturación.insertar_factura
     @total = null,        
     @mensaje = @mensaje output;
 
-	print @mensaje;
+
 
 exec facturación.lineasfactura 
     @c_articulo = '017', 
@@ -921,7 +919,6 @@ exec facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje output;
 
-print @mensaje;
 
 exec facturación.lineasfactura 
     @c_articulo = '020', 
@@ -931,7 +928,6 @@ exec facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje output;
 
-print @mensaje;
 
 go
 declare @mensaje nvarchar(200);
@@ -946,7 +942,6 @@ exec facturación.insertar_factura
     @total = null,        
     @mensaje = @mensaje output;
 
-	print @mensaje;
 
 exec facturación.lineasfactura 
     @c_articulo = '001', 
@@ -955,13 +950,6 @@ exec facturación.lineasfactura
     @monto_total = 3, 
     @usuario = 1, 
     @mensaje = @mensaje output;
-
-print @mensaje;
-
-
-
-
-
 
 
 -- Factura 7
@@ -979,7 +967,7 @@ exec facturación.insertar_factura
     @total = null,        
     @mensaje = @mensaje output;
 
-	print @mensaje;
+
 
 EXEC facturación.lineasfactura 
     @c_articulo = '001', 
@@ -999,7 +987,6 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
 
 -- Factura 8
 PRINT 'Factura 8: ';
@@ -1016,7 +1003,7 @@ exec facturación.insertar_factura
     @total = null,        
     @mensaje = @mensaje output;
 
-	print @mensaje;
+
 
 
 EXEC facturación.lineasfactura 
@@ -1037,8 +1024,6 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
-
 -- Factura 9
 PRINT 'Factura 9: ';
 go
@@ -1054,7 +1039,6 @@ exec facturación.insertar_factura
     @total = null,        
     @mensaje = @mensaje output;
 
-	print @mensaje;
 
 
 EXEC facturación.lineasfactura 
@@ -1065,7 +1049,6 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
 
 EXEC facturación.lineasfactura 
     @c_articulo = '012', 
@@ -1075,7 +1058,7 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 -- Factura 10
 PRINT 'Factura 10: ';
@@ -1092,7 +1075,7 @@ exec facturación.insertar_factura
     @total = null,        
     @mensaje = @mensaje output;
 
-	print @mensaje;
+
 
 EXEC facturación.lineasfactura 
     @c_articulo = '010', 
@@ -1102,7 +1085,6 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
 
 EXEC facturación.lineasfactura 
     @c_articulo = '016', 
@@ -1111,13 +1093,6 @@ EXEC facturación.lineasfactura
     @monto_total = 2, 
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
-
-PRINT @mensaje;
-
-
-
-
-
 
 
 -- Factura 11
@@ -1135,7 +1110,7 @@ exec facturación.insertar_factura
     @total = null,        
     @mensaje = @mensaje output;
 
-	print @mensaje;
+
 
 EXEC facturación.lineasfactura 
     @c_articulo = '014', 
@@ -1145,7 +1120,7 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 EXEC facturación.lineasfactura 
     @c_articulo = '009', 
@@ -1155,7 +1130,6 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
 
 -- Factura 12
 PRINT 'Factura 12: ';
@@ -1172,7 +1146,6 @@ exec facturación.insertar_factura
     @total = null,        
     @mensaje = @mensaje output;
 
-	print @mensaje;
 
 
 EXEC facturación.lineasfactura 
@@ -1183,7 +1156,6 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
 
 EXEC facturación.lineasfactura 
     @c_articulo = '011', 
@@ -1193,10 +1165,10 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 -- Factura 13
-PRINT 'Factura 13: ';
+
 go
 declare @mensaje nvarchar(200);
 exec facturación.insertar_factura 
@@ -1210,7 +1182,6 @@ exec facturación.insertar_factura
     @total = null,        
     @mensaje = @mensaje output;
 
-	print @mensaje;
 EXEC facturación.lineasfactura 
     @c_articulo = '003', 
     @cantidad = 4, 
@@ -1219,7 +1190,7 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 EXEC facturación.lineasfactura 
     @c_articulo = '019', 
@@ -1229,10 +1200,10 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 -- Factura 14
-PRINT 'Factura 14: ';
+
 go
 declare @mensaje nvarchar(200);
 exec facturación.insertar_factura 
@@ -1246,7 +1217,7 @@ exec facturación.insertar_factura
     @total = null,        
     @mensaje = @mensaje output;
 
-	print @mensaje;
+
 
 EXEC facturación.lineasfactura 
     @c_articulo = '004', 
@@ -1256,8 +1227,6 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
-
 EXEC facturación.lineasfactura 
     @c_articulo = '018', 
     @cantidad = 2, 
@@ -1266,11 +1235,9 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
 
 
--- Factura 15
-PRINT 'Factura 15: ';
+
 go
 declare @mensaje nvarchar(200);
 exec facturación.insertar_factura 
@@ -1284,7 +1251,6 @@ exec facturación.insertar_factura
     @total = null,        
     @mensaje = @mensaje output;
 
-	print @mensaje;
 EXEC facturación.lineasfactura 
     @c_articulo = '010', 
     @cantidad = 3, 
@@ -1293,7 +1259,7 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 EXEC facturación.lineasfactura 
     @c_articulo = '013', 
@@ -1303,10 +1269,9 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 -- Factura 16
-PRINT 'Factura 16: ';
 go
 declare @mensaje nvarchar(200);
 exec facturación.insertar_factura 
@@ -1320,7 +1285,7 @@ exec facturación.insertar_factura
     @total = null,        
     @mensaje = @mensaje output;
 
-	print @mensaje;
+	
 
 EXEC facturación.lineasfactura 
     @c_articulo = '007', 
@@ -1330,7 +1295,6 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
 
 EXEC facturación.lineasfactura 
     @c_articulo = '016', 
@@ -1340,10 +1304,8 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
 
 -- Factura 17
-PRINT 'Factura 17: ';
 go
 declare @mensaje nvarchar(200);
 exec facturación.insertar_factura 
@@ -1357,7 +1319,6 @@ exec facturación.insertar_factura
     @total = null,        
     @mensaje = @mensaje output;
 
-	print @mensaje;
 
 EXEC facturación.lineasfactura 
     @c_articulo = '015', 
@@ -1367,7 +1328,6 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
 
 EXEC facturación.lineasfactura 
     @c_articulo = '002', 
@@ -1377,10 +1337,9 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
 
 -- Factura 18
-PRINT 'Factura 18: ';
+
 go
 declare @mensaje nvarchar(200);
 exec facturación.insertar_factura 
@@ -1394,7 +1353,7 @@ exec facturación.insertar_factura
     @total = null,        
     @mensaje = @mensaje output;
 
-	print @mensaje;
+	
 EXEC facturación.lineasfactura 
     @c_articulo = '006', 
     @cantidad = 1, 
@@ -1403,7 +1362,7 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 EXEC facturación.lineasfactura 
     @c_articulo = '018', 
@@ -1413,10 +1372,9 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 -- Factura 19
-PRINT 'Factura 19: ';
 go
 declare @mensaje nvarchar(200);
 exec facturación.insertar_factura 
@@ -1430,7 +1388,7 @@ exec facturación.insertar_factura
     @total = null,        
     @mensaje = @mensaje output;
 
-	print @mensaje;
+	
 EXEC facturación.lineasfactura 
     @c_articulo = '003', 
     @cantidad = 8, 
@@ -1439,7 +1397,7 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 EXEC facturación.lineasfactura 
     @c_articulo = '001', 
@@ -1449,10 +1407,10 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 ----
-PRINT 'Factura 19: '; 
+
 GO
 DECLARE @mensaje NVARCHAR(200);
 EXEC facturación.insertar_factura 
@@ -1466,7 +1424,6 @@ EXEC facturación.insertar_factura
     @total = NULL,        
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
 
 EXEC facturación.lineasfactura 
     @c_articulo = '003', 
@@ -1478,7 +1435,7 @@ EXEC facturación.lineasfactura
 
 PRINT @mensaje;
 
-PRINT 'Factura 20: '; 
+
 GO
 DECLARE @mensaje NVARCHAR(200);
 EXEC facturación.insertar_factura 
@@ -1492,7 +1449,6 @@ EXEC facturación.insertar_factura
     @total = NULL,        
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
 
 EXEC facturación.lineasfactura 
     @c_articulo = '007', 
@@ -1502,9 +1458,7 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
 
-PRINT 'Factura 21: '; 
 GO
 DECLARE @mensaje NVARCHAR(200);
 EXEC facturación.insertar_factura 
@@ -1518,7 +1472,7 @@ EXEC facturación.insertar_factura
     @total = NULL,        
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 EXEC facturación.lineasfactura 
     @c_articulo = '010', 
@@ -1528,8 +1482,7 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
-PRINT 'Factura 22: '; 
+
 GO
 DECLARE @mensaje NVARCHAR(200);
 EXEC facturación.insertar_factura 
@@ -1543,7 +1496,7 @@ EXEC facturación.insertar_factura
     @total = NULL,        
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 EXEC facturación.lineasfactura 
     @c_articulo = '011', 
@@ -1553,8 +1506,7 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
-PRINT 'Factura 23: '; 
+
 GO
 DECLARE @mensaje NVARCHAR(200);
 EXEC facturación.insertar_factura 
@@ -1568,7 +1520,7 @@ EXEC facturación.insertar_factura
     @total = NULL,        
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 EXEC facturación.lineasfactura 
     @c_articulo = '020', 
@@ -1578,9 +1530,9 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
 
-PRINT 'Factura 25: '; 
+
+
 GO
 DECLARE @mensaje NVARCHAR(200);
 EXEC facturación.insertar_factura 
@@ -1594,7 +1546,7 @@ EXEC facturación.insertar_factura
     @total = NULL,        
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 EXEC facturación.lineasfactura 
     @c_articulo = '012', 
@@ -1604,9 +1556,8 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
 
-PRINT 'Factura 26: '; 
+
 GO
 DECLARE @mensaje NVARCHAR(200);
 EXEC facturación.insertar_factura 
@@ -1620,7 +1571,7 @@ EXEC facturación.insertar_factura
     @total = NULL,        
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 EXEC facturación.lineasfactura 
     @c_articulo = '016', 
@@ -1630,9 +1581,8 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
 
-PRINT 'Factura 27: '; 
+
 GO
 DECLARE @mensaje NVARCHAR(200);
 EXEC facturación.insertar_factura 
@@ -1646,7 +1596,7 @@ EXEC facturación.insertar_factura
     @total = NULL,        
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 EXEC facturación.lineasfactura 
     @c_articulo = '018', 
@@ -1656,8 +1606,7 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
-PRINT 'Factura 28: '; 
+
 GO
 DECLARE @mensaje NVARCHAR(200);
 EXEC facturación.insertar_factura 
@@ -1671,8 +1620,6 @@ EXEC facturación.insertar_factura
     @total = NULL,        
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
-
 EXEC facturación.lineasfactura 
     @c_articulo = '022', 
     @cantidad = 2, 
@@ -1681,8 +1628,7 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
-PRINT 'Factura 27: '; 
+
 GO
 DECLARE @mensaje NVARCHAR(200);
 EXEC facturación.insertar_factura 
@@ -1696,7 +1642,7 @@ EXEC facturación.insertar_factura
     @total = NULL,        
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 EXEC facturación.lineasfactura 
     @c_articulo = '018', 
@@ -1706,7 +1652,7 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 PRINT 'Factura 28: '; 
 GO
@@ -1722,7 +1668,7 @@ EXEC facturación.insertar_factura
     @total = NULL,        
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 EXEC facturación.lineasfactura 
     @c_articulo = '022', 
@@ -1732,8 +1678,8 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
-PRINT 'Factura 29: '; 
+
+
 GO
 DECLARE @mensaje NVARCHAR(200);
 EXEC facturación.insertar_factura 
@@ -1747,7 +1693,7 @@ EXEC facturación.insertar_factura
     @total = NULL,        
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 EXEC facturación.lineasfactura 
     @c_articulo = '020', 
@@ -1757,7 +1703,6 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
 
 PRINT 'Factura 30: '; 
 GO
@@ -1773,7 +1718,7 @@ EXEC facturación.insertar_factura
     @total = NULL,        
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 EXEC facturación.lineasfactura 
     @c_articulo = '021', 
@@ -1785,7 +1730,7 @@ EXEC facturación.lineasfactura
 
 PRINT @mensaje;
 
-PRINT 'Factura 31: '; 
+
 GO
 DECLARE @mensaje NVARCHAR(200);
 EXEC facturación.insertar_factura 
@@ -1799,7 +1744,7 @@ EXEC facturación.insertar_factura
     @total = NULL,        
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 EXEC facturación.lineasfactura 
     @c_articulo = '015', 
@@ -1809,8 +1754,7 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
-PRINT 'Factura 32: '; 
+
 GO
 DECLARE @mensaje NVARCHAR(200);
 EXEC facturación.insertar_factura 
@@ -1824,7 +1768,7 @@ EXEC facturación.insertar_factura
     @total = NULL,        
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
+
 
 EXEC facturación.lineasfactura 
     @c_articulo = '017', 
@@ -1834,8 +1778,7 @@ EXEC facturación.lineasfactura
     @usuario = 1, 
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
-PRINT 'Factura 33: '; 
+
 GO
 DECLARE @mensaje NVARCHAR(200);
 EXEC facturación.insertar_factura 
@@ -1849,7 +1792,6 @@ EXEC facturación.insertar_factura
     @total = NULL,        
     @mensaje = @mensaje OUTPUT;
 
-PRINT @mensaje;
 
 EXEC facturación.lineasfactura 
     @c_articulo = '014', 
@@ -1872,7 +1814,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 10,
     @mensaje = @mensaje output;
-print @mensaje;
+
 go
 declare @mensaje nvarchar(200);
 exec usuarios.insertar_plantilla 
@@ -1883,7 +1825,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 10,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 -- Ejemplo de ejecución del procedimiento con cédulas proporcionadas
 
@@ -1898,7 +1840,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 10,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 -- Cedula: 23456789
 go
@@ -1924,7 +1866,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 12,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 -- Cedula: 45678901
 exec usuarios.insertar_plantilla 
@@ -1935,7 +1877,6 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 8,
     @mensaje = @mensaje output;
-print @mensaje;
 
 -- Cedula: 56789012
 exec usuarios.insertar_plantilla 
@@ -1946,7 +1887,6 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 20,
     @mensaje = @mensaje output;
-print @mensaje;
 
 -- Cedula: 67890123
 exec usuarios.insertar_plantilla 
@@ -1957,7 +1897,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 5,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 -- Cedula: 87654321
 exec usuarios.insertar_plantilla 
@@ -1968,7 +1908,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 18,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 -- Cedula: 987654321
 exec usuarios.insertar_plantilla 
@@ -1979,7 +1919,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 22,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 
 go
@@ -1994,7 +1934,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 5,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 -- Cedula: 23456789 - Febrero 2022
 exec usuarios.insertar_plantilla 
@@ -2005,7 +1945,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 150,
     @h_extras = 10,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 -- Cedula: 34567890 - Marzo 2022
 exec usuarios.insertar_plantilla 
@@ -2016,7 +1956,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 15,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 -- Cedula: 45678901 - Abril 2023
 exec usuarios.insertar_plantilla 
@@ -2027,7 +1967,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 20,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 -- Cedula: 56789012 - Mayo 2023
 exec usuarios.insertar_plantilla 
@@ -2038,7 +1978,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 155,
     @h_extras = 12,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 -- Cedula: 67890123 - Junio 2023
 exec usuarios.insertar_plantilla 
@@ -2049,7 +1989,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 18,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 -- Cedula: 87654321 - Julio 2024
 exec usuarios.insertar_plantilla 
@@ -2060,7 +2000,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 10,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 -- Cedula: 987654321 - Agosto 2024
 exec usuarios.insertar_plantilla 
@@ -2071,7 +2011,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 25,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 -- Cedula: 12345678 - Septiembre 2024
 exec usuarios.insertar_plantilla 
@@ -2082,7 +2022,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 150,
     @h_extras = 8,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 -- Cedula: 23456789 - Octubre 2024
 exec usuarios.insertar_plantilla 
@@ -2093,7 +2033,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 10,
     @mensaje = @mensaje output;
-print @mensaje;
+
 go 
 ---EXTRAS
 -- Declaración de la variable para el mensaje
@@ -2107,7 +2047,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 10,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 12345678,
@@ -2117,7 +2057,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 12,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 12345678,
@@ -2127,7 +2067,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 14,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 12345678,
@@ -2137,7 +2077,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 15,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 12345678,
@@ -2147,7 +2087,6 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 20,
     @mensaje = @mensaje output;
-print @mensaje;
 
 -- Ingresar planillas para la cédula 23456789 en varias fechas
 exec usuarios.insertar_plantilla 
@@ -2158,7 +2097,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 10,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 23456789,
@@ -2168,7 +2107,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 11,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 23456789,
@@ -2178,7 +2117,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 12,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 23456789,
@@ -2188,7 +2127,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 14,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 23456789,
@@ -2198,7 +2137,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 16,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 -- Ingresar planillas para la cédula 34567890 en varias fechas
 exec usuarios.insertar_plantilla 
@@ -2209,7 +2148,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 15,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 34567890,
@@ -2219,7 +2158,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 18,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 34567890,
@@ -2229,7 +2168,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 20,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 34567890,
@@ -2239,7 +2178,6 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 25,
     @mensaje = @mensaje output;
-print @mensaje;
 
 exec usuarios.insertar_plantilla 
     @cedula = 34567890,
@@ -2249,8 +2187,6 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 30,
     @mensaje = @mensaje output;
-print @mensaje;
-
 
 
 exec usuarios.insertar_plantilla 
@@ -2261,7 +2197,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 12,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 45678901,
@@ -2271,7 +2207,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 14,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 45678901,
@@ -2281,7 +2217,6 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 16,
     @mensaje = @mensaje output;
-print @mensaje;
 
 exec usuarios.insertar_plantilla 
     @cedula = 45678901,
@@ -2291,7 +2226,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 18,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 45678901,
@@ -2312,7 +2247,6 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 15,
     @mensaje = @mensaje output;
-print @mensaje;
 
 exec usuarios.insertar_plantilla 
     @cedula = 56789012,
@@ -2322,7 +2256,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 17,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 56789012,
@@ -2332,7 +2266,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 19,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 56789012,
@@ -2342,7 +2276,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 22,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 56789012,
@@ -2352,7 +2286,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 25,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 -- Ingresar planillas para la cédula 67890123 en varias fechas
 exec usuarios.insertar_plantilla 
@@ -2363,7 +2297,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 10,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 67890123,
@@ -2373,7 +2307,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 12,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 67890123,
@@ -2383,7 +2317,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 13,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 67890123,
@@ -2393,7 +2327,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 14,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 67890123,
@@ -2403,7 +2337,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 18,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 -- Ingresar planillas para la cédula 78901234 en varias fechas
 exec usuarios.insertar_plantilla 
@@ -2414,7 +2348,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 11,
     @mensaje = @mensaje output;
-print @mensaje;
+
 GO
 -- Declaración de la variable para el mensaje
 declare @mensaje nvarchar(200);
@@ -2428,7 +2362,6 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 12,
     @mensaje = @mensaje output;
-print @mensaje;
 
 exec usuarios.insertar_plantilla 
     @cedula = 45678901,
@@ -2438,7 +2371,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 14,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 45678901,
@@ -2448,7 +2381,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 16,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 45678901,
@@ -2458,7 +2391,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 18,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 45678901,
@@ -2468,7 +2401,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 20,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 -- Ingresar planillas para la cédula 56789012 en varias fechas (año 2023 y 2022)
 exec usuarios.insertar_plantilla 
@@ -2479,7 +2412,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 15,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 56789012,
@@ -2489,7 +2422,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 17,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 56789012,
@@ -2499,7 +2432,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 19,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 56789012,
@@ -2509,7 +2442,6 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 22,
     @mensaje = @mensaje output;
-print @mensaje;
 
 exec usuarios.insertar_plantilla 
     @cedula = 56789012,
@@ -2519,7 +2451,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 25,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 -- Ingresar planillas para la cédula 67890123 en varias fechas (año 2023 y 2022)
 exec usuarios.insertar_plantilla 
@@ -2530,7 +2462,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 10,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 67890123,
@@ -2540,7 +2472,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 12,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 67890123,
@@ -2550,7 +2482,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 13,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 67890123,
@@ -2560,7 +2492,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 14,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 67890123,
@@ -2570,7 +2502,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 18,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 -- Ingresar planillas para la cédula 78901234 en varias fechas (año 2023 y 2022)
 exec usuarios.insertar_plantilla 
@@ -2581,7 +2513,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 11,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 78901234,
@@ -2591,7 +2523,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 13,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 78901234,
@@ -2601,7 +2533,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 15,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 78901234,
@@ -2611,7 +2543,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 17,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 78901234,
@@ -2621,7 +2553,6 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 20,
     @mensaje = @mensaje output;
-print @mensaje;
 
 -- Año 2022 para la cédula 45678901
 exec usuarios.insertar_plantilla 
@@ -2632,7 +2563,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 12,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 exec usuarios.insertar_plantilla 
     @cedula = 45678901,
@@ -2642,7 +2573,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 14,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 -- Ingresar planillas para la cédula 56789012 (año 2022)
 exec usuarios.insertar_plantilla 
@@ -2653,7 +2584,7 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 15,
     @mensaje = @mensaje output;
-print @mensaje;
+
 
 -- Ingresar planillas para la cédula 67890123 (año 2022)
 exec usuarios.insertar_plantilla 
@@ -2664,7 +2595,6 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 10,
     @mensaje = @mensaje output;
-print @mensaje;
 
 -- Ingresar planillas para la cédula 78901234 (año 2022)
 exec usuarios.insertar_plantilla 
@@ -2675,7 +2605,6 @@ exec usuarios.insertar_plantilla
     @h_normales = 160,
     @h_extras = 11,
     @mensaje = @mensaje output;
-print @mensaje;
 
 GO
 declare @mensaje nvarchar(200); 
